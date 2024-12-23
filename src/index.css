@@ -1,0 +1,18 @@
+:root {
+    --primary-color: #111;
+    --text-grey: #6E7984;
+    --text-dark-grey: #585858;
+}
+
+
+body {
+    font-family: "Inter", serif;
+}
+
+.form-input {
+    width: 100%;
+    border: 2px solid #fff;
+    outline: none;
+    background: #f1f1f1;
+    padding: 0.8rem;
+}

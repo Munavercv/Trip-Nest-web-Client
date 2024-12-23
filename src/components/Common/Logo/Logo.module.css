@@ -1,0 +1,12 @@
+.logo {
+    color: #111;
+    font-family: "Inter", serif;
+    font-weight: 700;
+    font-size: 40px;
+}
+
+@media (max-width: 567px) {
+    .logo{
+        font-size: 35px;
+    }
+}

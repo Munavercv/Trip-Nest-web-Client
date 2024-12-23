@@ -1,0 +1,21 @@
+.signupSec{
+    background-color: #eee;
+    height: 100vh;
+}
+
+label{
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-dark-grey);
+}
+
+.title{
+    font-size: 25px;
+    color:  var(--primary-color);
+}
+
+.formSignin {
+    max-width: 666px;
+    padding: 30px;
+    background: #fff;
+}
