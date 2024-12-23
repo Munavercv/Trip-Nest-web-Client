@@ -40,9 +40,11 @@ const LoginForm = ({ title, role }) => {
       const response = await axios.post('/api/auth/login', { email: formData.email, password: formData.password, userRole: role });
 
       const { token } = response.data;
-      dispatch(loginSuccess({ token, role }));
+      dispatch(loginSuccess({ token }));
 
-      navigate('/login-success');
+      if(role === 'user') navigate('/');
+      if(role === 'vendor') navigate('/vendor/home');
+      if(role === 'admin') navigate('/admin/home');
 
     } catch (error) {
       console.error(error)

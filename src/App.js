@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom';
 import Loginsuccess from "./components/Common/Loginsuccess";
 import UserLogin from "./pages/user/UserLogin";
 import UserSignup from "./pages/user/UserSignup";
+import AdminHome from "./pages/admin/AdminHome";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         {/* ADMIN routes */}
         <Route path="/admin/auth/login" element={<AdminLogin />} />
         <Route path="/login-success" element={<Loginsuccess />} />
+
+        <Route path="/admin/home" element={<AdminHome />} />
 
 
         {/* VENDOR routes */}
