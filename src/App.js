@@ -6,8 +6,18 @@ import Loginsuccess from "./components/Common/Loginsuccess";
 import UserLogin from "./pages/user/UserLogin";
 import UserSignup from "./pages/user/UserSignup";
 import AdminHome from "./pages/admin/AdminHome";
+import ProtectedRoutes from "./protectedRoutes";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { checkAuthStatus } from "./redux/slices/authSlice";
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(checkAuthStatus());
+}, [dispatch])
+
   return (
     <div className="App">
 
@@ -15,8 +25,7 @@ function App() {
         {/* ADMIN routes */}
         <Route path="/admin/auth/login" element={<AdminLogin />} />
         <Route path="/login-success" element={<Loginsuccess />} />
-
-        <Route path="/admin/home" element={<AdminHome />} />
+        <Route path="/admin/home" element={<ProtectedRoutes requiredRole='admin' ><AdminHome /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}

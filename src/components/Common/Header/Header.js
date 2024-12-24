@@ -24,7 +24,7 @@ const Header = () => {
 
     useEffect(() => {
         dispatch(checkAuthStatus());
-    }, [])
+    }, [dispatch])
 
     return (
         <header>

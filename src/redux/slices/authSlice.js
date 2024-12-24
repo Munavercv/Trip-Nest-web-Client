@@ -1,28 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { jwtDecode } from 'jwt-decode';
+import { createSlice } from '@reduxjs/toolkit';
+import { decodeToken, isTokenExpired } from '../../tokenUtils';
 
 const initialState = {
     token: localStorage.getItem('token') || null,
     user: null,
     userRole: null,
     loggedIn: false,
-}
-
-const decodeToken = (token) => {
-    try {
-        return jwtDecode(token);
-    } catch (error) {
-        return null;
-    }
-};
-
-const isTokenExpired = (token) => {
-    const decodedToken = decodeToken(token);
-    if (!decodedToken || !decodedToken.exp) {
-        return true;
-    }
-    const currentTime = Math.floor(Date.now() / 1000);
-    return decodedToken.exp < currentTime;
+    loading: true,
 };
 
 const authSlice = createSlice({
@@ -30,17 +14,26 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         loginSuccess: (state, action) => {
+            const decodedToken = decodeToken(action.payload.token);
+            if (!decodedToken) return;
+
             state.token = action.payload.token;
-            state.user = decodeToken(action.payload.token);
-            state.userRole = decodeToken.role;
-            console.log(decodeToken)
+            state.user = decodedToken;
+            state.userRole = decodedToken.role;
             state.loggedIn = true;
+
             localStorage.setItem('token', action.payload.token);
         },
         checkAuthStatus: (state) => {
+            state.loading = true;
             const token = state.token || localStorage.getItem('token');
             if (token && !isTokenExpired(token)) {
                 const decodedToken = decodeToken(token);
+                if (!decodedToken) {
+                    console.log("Failed to decode token.");
+                    return;
+                }
+
                 state.loggedIn = true;
                 state.user = decodedToken;
                 state.userRole = decodedToken.role;
@@ -51,19 +44,19 @@ const authSlice = createSlice({
                 state.userRole = null;
                 localStorage.removeItem('token');
             }
-
+            state.loading = false;
         },
+
         logout: (state) => {
             state.token = null;
             state.user = null;
             state.userRole = null;
             state.loggedIn = false;
+
             localStorage.removeItem('token');
         },
-    }
-})
-
+    },
+});
 
 export const { loginSuccess, checkAuthStatus, logout } = authSlice.actions;
-
 export default authSlice.reducer;
