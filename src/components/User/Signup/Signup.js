@@ -66,12 +66,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null)
-    
+
     if (!validateForm()) {
       return
     }
     setLoading(true);
-    
+
     try {
       await axios.post('/api/auth/signup', {
         name: formData.name,
@@ -85,6 +85,17 @@ const Signup = () => {
       console.error(error)
       setError(error.response?.data?.message || "An error occured");
       setLoading(false)
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    setError('')
+    try {
+      window.location.href = 'http://localhost:5000/api/auth/google-auth';
+
+    } catch (error) {
+      console.error('failed to login with google', error);
+      setError('failed to login with google');
     }
   }
 
@@ -186,10 +197,12 @@ const Signup = () => {
         <hr className='my-2 border-2' />
 
         <div className='mb-3'>
-          <ButtonFullOutline type='button' text={<>
-            <i className="fab fa-google me-2"></i>
-            Signup with Google
-          </>} />
+          <ButtonFullOutline type='button'
+            onClick={handleGoogleLogin}
+            text={<>
+              <i className="fab fa-google me-2"></i>
+              Signup with Google
+            </>} />
         </div>
 
         <p

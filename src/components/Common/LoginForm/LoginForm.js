@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './LoginForm.module.css'
 import Logo from '../Logo/Logo'
 import axios from 'axios'
@@ -42,9 +42,9 @@ const LoginForm = ({ title, role }) => {
       const { token } = response.data;
       dispatch(loginSuccess({ token }));
 
-      if(role === 'user') navigate('/');
-      if(role === 'vendor') navigate('/vendor/home');
-      if(role === 'admin') navigate('/admin/home');
+      if (role === 'user') navigate('/');
+      if (role === 'vendor') navigate('/vendor/home');
+      if (role === 'admin') navigate('/admin/home');
 
     } catch (error) {
       console.error(error)
@@ -52,7 +52,28 @@ const LoginForm = ({ title, role }) => {
       setLoading(false)
     }
 
+
   }
+
+  const handleGoogleLogin = async () => {
+    setError('')
+    try {
+      window.location.href = 'http://localhost:5000/api/auth/google-auth';
+
+    } catch (error) {
+      console.error('failed to login with google', error);
+      setError('failed to login with google')
+    }
+  }
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const token = query.get('token');
+    if (token) {
+      dispatch(loginSuccess({ token }));
+      navigate('/');
+    }
+  }, [dispatch, navigate]);
 
   return (
     <section className={`${styles.loginSec} container-fluid px-md-5 px-2 py-3`}>
@@ -115,26 +136,31 @@ const LoginForm = ({ title, role }) => {
           </div>
         </form>
 
-        {role !== 'admin' ? <>
-          <hr className='my-2 border-2' />
+        {role === 'user' ?
+          <>
+            <hr className='my-2 border-2' />
 
-          <div className='mb-3'>
-            <ButtonFullOutline type='button' text={<>
-              <i className="fab fa-google me-2"></i>
-              Continue with Google
-            </>} />
-          </div>
+            <div>
+              <ButtonFullOutline type='button' onClick={handleGoogleLogin} text={<>
+                <i className="fab fa-google me-2"></i>
+                Continue with Google
+              </>} />
+            </div>
+          </>
+          :
+          null
+        }
 
+        {role !== 'admin' ?
           <p
-            className='text-center fw-medium'
+            className='text-center fw-medium mt-3'
             style={{ fontSize: '15px', color: 'var(--text-grey)' }}
           >Don't have an account?
             <Link
               to='/auth/signup'
               style={{ color: 'var(--primary-color)' }}
             > Create account</Link>
-          </p>
-        </> : null
+          </p> : null
         }
       </div>
 
