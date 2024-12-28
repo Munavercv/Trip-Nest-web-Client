@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { ButtonNormal } from '../../Common/Buttons/ButtonNormal'
 import Logo from '../../Common/Logo/Logo'
-import { ButtonFull, ButtonFullOutline } from '../../Common/Buttons/ButtonFull'
 import { Link } from 'react-router-dom'
 import styles from './Signup.module.css'
 import axios from 'axios'
@@ -106,11 +104,12 @@ const Signup = () => {
           <Logo />
         </div>
         <div className="col text-end mt-2">
-          <ButtonNormal
-            type='button'
-            text='Signup'
+          <button
+            className='outline-btn'
             onClick={() => navigate('/auth/login')}
-          />
+          >
+            Login
+          </button>
         </div>
       </div>
 
@@ -190,19 +189,31 @@ const Signup = () => {
           <p className='text-danger mb-2 text-center' style={{ fontSize: '15px' }}> {error}</p>
 
           <div className="text-center mt-3">
-            <ButtonFull type="submit" text="Signup" loading={loading} />
+            {/* <ButtonFull type="submit" text="Signup" loading={loading} /> */}
+            <button
+              className='primary-btn w-100'
+              type='submit'
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              ) : (
+                'Signup'
+              )}
+            </button>
           </div>
         </form>
 
         <hr className='my-2 border-2' />
 
         <div className='mb-3'>
-          <ButtonFullOutline type='button'
+          <button
+            className='w-100 outline-btn'
+            type='button'
             onClick={handleGoogleLogin}
-            text={<>
-              <i className="fab fa-google me-2"></i>
-              Signup with Google
-            </>} />
+          >
+            Continue with google <i className="fab fa-google me-2"></i>
+          </button>
         </div>
 
         <p

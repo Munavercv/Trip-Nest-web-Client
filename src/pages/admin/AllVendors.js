@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from '../../components/Common/Header/Header'
-import HomeBanner from '../../components/Admin/HomeBanner.js/HomeBanner'
+import Vendors from '../../components/Admin/Vendors/Vendors'
 
-const AdminHome = () => {
+const AllVendors = () => {
     return (
         <div>
             <Header />
-            <HomeBanner />
+            <Vendors filter='active' />
         </div>
     )
 }
 
-export default AdminHome
+export default AllVendors

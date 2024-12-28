@@ -1,0 +1,9 @@
+.counts h3{
+    font-size: 48px;
+    color: var(--text-dark-grey);
+    font-weight: 400;
+}
+
+.counts h3 span{
+    font-weight: 600;
+}

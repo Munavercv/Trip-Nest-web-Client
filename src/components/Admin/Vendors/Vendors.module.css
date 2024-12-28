@@ -1,0 +1,8 @@
+.vendorsTable th {
+    background-color: var(--primary-color);
+    color: white;
+}
+.vendorsTable table, th, td {
+    border: 2px solid var(--primary-color);
+    border-collapse: collapse;
+}

@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './Header.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, checkAuthStatus } from '../../../redux/slices/authSlice';
-import { ButtonNormal } from '../Buttons/ButtonNormal'
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -15,7 +14,7 @@ const Header = () => {
         dispatch(logout());
         localStorage.removeItem('token');
 
-        if (userRole === "user"){
+        if (userRole === "user") {
             navigate('/');
         } else {
             navigate(`/${userRole}/auth/login`)
@@ -45,8 +44,17 @@ const Header = () => {
                             </li>
                             {loggedIn &&
                                 <>
-                                    <li className="nav-item">
-                                        <Link className={`nav-link ${styles.navLink}`} to="/admin/vendors">Vendors</Link>
+
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Vendors
+                                        </Link>
+                                        <ul className="dropdown-menu">
+                                            <li><Link className="dropdown-item" to='/admin/active-vendors' >Active</Link></li>
+                                            <li><Link className="dropdown-item" to='/admin/pending-vendors' >Pending</Link></li>
+                                            <li><Link className="dropdown-item" to='/admin/rejected-vendors' >Rejected</Link></li>
+                                            <li><Link className="dropdown-item" to='/admin/disabled-vendors' >Disabled</Link></li>
+                                        </ul>
                                     </li>
                                     <li className="nav-item">
                                         <Link className={`nav-link ${styles.navLink}`} to="/admin/users">Users</Link>
@@ -55,22 +63,10 @@ const Header = () => {
                                         <Link className={`nav-link ${styles.navLink}`} to="/admin/payments">Payments</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <ButtonNormal text='Logout' onClick={handleLogout} />
+                                        <button className='primary-btn' onClick={handleLogout}>Logout</button>
                                     </li>
                                 </>
                             }
-
-                            {/* <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" href="#">Action</a></li>
-                                    <li><a className="dropdown-item" href="#">Another action</a></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li> */}
                         </ul>
                     </div>
                 </div>

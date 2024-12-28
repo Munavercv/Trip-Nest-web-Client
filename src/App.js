@@ -10,6 +10,11 @@ import ProtectedRoutes from "./protectedRoutes";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { checkAuthStatus } from "./redux/slices/authSlice";
+import AllVendors from "./pages/admin/AllVendors";
+import PendingVendors from "./pages/admin/PendingVendors";
+import RejectedVendors from "./pages/admin/RejectedVendors";
+import ViewVendor from "./pages/admin/ViewVendor";
+import DisabledVendors from "./pages/admin/DisabledVendors";
 
 function App() {
   const dispatch = useDispatch()
@@ -26,6 +31,11 @@ function App() {
         <Route path="/admin/auth/login" element={<AdminLogin />} />
         <Route path="/login-success" element={<Loginsuccess />} />
         <Route path="/admin/home" element={<ProtectedRoutes requiredRole='admin' ><AdminHome /></ProtectedRoutes>} />
+        <Route path="/admin/active-vendors" element={<ProtectedRoutes requiredRole='admin' ><AllVendors /></ProtectedRoutes>} />
+        <Route path="/admin/pending-vendors" element={<ProtectedRoutes requiredRole='admin' ><PendingVendors /></ProtectedRoutes>} />
+        <Route path="/admin/rejected-vendors" element={<ProtectedRoutes requiredRole='admin' ><RejectedVendors /></ProtectedRoutes>} />
+        <Route path="/admin/disabled-vendors" element={<ProtectedRoutes requiredRole='admin' ><DisabledVendors /></ProtectedRoutes>} />
+        <Route path="/admin/view-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><ViewVendor /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}

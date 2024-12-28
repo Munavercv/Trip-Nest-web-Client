@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import styles from './LoginForm.module.css'
 import Logo from '../Logo/Logo'
 import axios from 'axios'
-import { ButtonFull, ButtonFullOutline } from '../Buttons/ButtonFull'
 import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../redux/slices/authSlice'
 import { useNavigate } from 'react-router'
-import { ButtonNormalOutline } from '../Buttons/ButtonNormal'
 import { Link } from 'react-router-dom';
 
 const LoginForm = ({ title, role }) => {
@@ -85,19 +83,19 @@ const LoginForm = ({ title, role }) => {
         {role !== 'admin' ?
           <div className="col text-end mt-2">
             {role === 'user' ?
-              <ButtonNormalOutline
-                type='button'
-                text='Login as vendor'
-                bsClasses=''
-                onClick={() => navigate('/vendor/auth/login')}
-              />
+              <button
+              onClick={() => navigate('/vendor/auth/login')}
+              className='outline-btn'
+              >
+                Login as vendor
+              </button>
               :
-              <ButtonNormalOutline
-                type='button'
-                text='Login as user'
-                bsClasses=''
+              <button
+                className='outline-btn'
                 onClick={() => navigate('/auth/login')}
-              />
+              >
+                Login as user
+              </button>
             }
           </div> : null}
       </div>
@@ -132,7 +130,20 @@ const LoginForm = ({ title, role }) => {
           <p className='text-danger mb-2' style={{ fontSize: '15px' }}> {error}</p>
 
           <div className="text-center">
-            <ButtonFull type='submit' text='Login' loading={loading} />
+            {/* <ButtonFull type='submit' text='Login' loading={loading} /> */}
+
+            <button
+              className='primary-btn w-100'
+              type='submit'
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              ) : (
+                'Login'
+              )}
+            </button>
+
           </div>
         </form>
 
@@ -141,10 +152,19 @@ const LoginForm = ({ title, role }) => {
             <hr className='my-2 border-2' />
 
             <div>
-              <ButtonFullOutline type='button' onClick={handleGoogleLogin} text={<>
+              {/* <ButtonFullOutline type='button' onClick={handleGoogleLogin} text={<>
                 <i className="fab fa-google me-2"></i>
                 Continue with Google
-              </>} />
+              </>} /> */}
+
+              <button
+                className='w-100 outline-btn'
+                type='button'
+                onClick={handleGoogleLogin}
+              >
+                Continue with google <i className="fab fa-google me-2"></i>
+              </button>
+
             </div>
           </>
           :

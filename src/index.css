@@ -16,3 +16,55 @@ body {
     background: #f1f1f1;
     padding: 0.8rem;
 }
+
+.banner-heading {
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.banner-subtitle{
+    font-size: 24px;
+    color: var(--text-dark-grey);
+}
+
+.section-title{
+    font-size: 28px;
+    color: var(--primary-color);
+}
+
+.primary-btn {
+    color: white;
+    background-color: var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border: none;
+    font-size: 17px;
+    font-weight: 400;
+    transition: all 200ms ease-in;
+}
+
+.primary-btn:hover{
+    background-color: #333;
+}
+
+.outline-btn{
+    color: var(--primary-color);
+    background-color: white;
+    padding: 0.2rem 0.7rem;
+    border: 2px solid #111;
+    font-size: 17px;
+    font-weight: 400;
+    transition: all 200ms ease-in;
+}
+
+.outline-btn:hover{
+    background-color: #dedede;
+}
+
+@media (max-width: 576px){
+    .primary-btn,
+    .outline-btn{
+        font-size: 15px;
+        padding: 0.2rem 0.7rem;
+    }
+}
