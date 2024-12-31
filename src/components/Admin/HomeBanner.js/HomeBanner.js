@@ -50,7 +50,7 @@ const HomeBanner = () => {
                             counts.vendors > 100 ? "100+" : counts.vendors
                         }</span>
                         <br />Vendors</h3>
-                    <Link to='/admin/all-vendors'>
+                    <Link to='/admin/active-vendors'>
                         <button
                             className='primary-btn'
                         >

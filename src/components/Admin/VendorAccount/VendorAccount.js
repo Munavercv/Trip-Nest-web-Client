@@ -8,7 +8,11 @@ const VendorAccount = () => {
     const { vendorId } = useParams()
     const navigate = useNavigate()
     const [vendorDetails, setVendorDetails] = useState()
-    const [logo, setLogo] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D')
+    const [logo, setLogo] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D');
+
+    const goback = () => {
+        navigate(-1)
+    }
 
     const fetchVendorDetails = async (vendorId) => {
         try {
@@ -25,8 +29,8 @@ const VendorAccount = () => {
 
     return (
         <section className='container py-5'>
-            <button className='btn btn-outline-secondary btn-sm'><i className="fa-solid fa-caret-left"></i> back</button>
-            
+            <button onClick={goback} className='btn btn-outline-secondary btn-sm'><i className="fa-solid fa-caret-left"></i> back</button>
+
             <h2 className='section-title text-center mb-5'>{vendorDetails ? vendorDetails.businessName : 'Loading...'}</h2>
 
             {vendorDetails &&

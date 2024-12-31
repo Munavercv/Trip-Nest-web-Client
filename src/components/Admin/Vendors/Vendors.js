@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import styles from './Vendors.module.css'
+// import styles from './Vendors.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -79,11 +79,11 @@ const Vendors = (props) => {
 
       <div>
         {vendors.length > 0 ?
-          <table className={`${styles.vendorsTable} table table-bordered`}>
+          <table className={`tableDefault table table-bordered`}>
             <thead>
               <tr>
                 <th>Company name</th>
-                <th>Name</th>
+                <th>Email</th>
               </tr>
             </thead>
             <tbody>

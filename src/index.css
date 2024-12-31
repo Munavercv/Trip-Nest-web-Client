@@ -68,3 +68,16 @@ body {
         padding: 0.2rem 0.7rem;
     }
 }
+
+
+.tableDefault th {
+    background-color: var(--primary-color);
+    color: white;
+}
+.tableDefault table, th, td {
+    border: 2px solid var(--primary-color);
+    border-collapse: collapse;
+}
+.tableDefault tr {
+    cursor: pointer;
+}
