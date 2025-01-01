@@ -8,7 +8,8 @@ const VendorAccount = () => {
     const { vendorId } = useParams()
     const navigate = useNavigate()
     const [vendorDetails, setVendorDetails] = useState()
-    const [logo, setLogo] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D');
+    const [logo, setLogo] = useState('https://img.freepik.com/free-vector/detailed-travel-logo-theme_23-2148630535.jpg?semt=ais_hybrid');
+    const [actionError, setActionError] = useState('')
 
     const goback = () => {
         navigate(-1)
@@ -16,16 +17,47 @@ const VendorAccount = () => {
 
     const fetchVendorDetails = async (vendorId) => {
         try {
-            const response = await axios.get(`/api/admin/get-package-details/${vendorId}`)
+            const response = await axios.get(`/api/admin/get-vendor-details/${vendorId}`)
             setVendorDetails(response.data.vendorDetails)
         } catch (error) {
             console.error('failed to fetch vendor details', error);
         }
     }
 
+    const handleStatusUpdate = async (vendorId, status) => {
+        setActionError('')
+        const confirm = window.confirm('Are you sure?')
+        if (!confirm) return
+
+        try {
+            await axios.put(`/api/admin/vendor-status-update/${vendorId}`, { status: status })
+            window.alert('successully updated user status')
+            setActionError('')
+            fetchVendorDetails(vendorId)
+        } catch (error) {
+            console.error(error);
+            setActionError('Error while updating user!')
+        }
+    }
+
+    const handleRemoveVendor = async (vendorId) => {
+        setActionError('')
+        const confirm = window.confirm('Are you sure want to remove this vendor?')
+        if (!confirm) return
+
+        try {
+            await axios.delete(`/api/admin/delete-vendor/${vendorId}`)
+            window.alert('Successfully removed user!')
+            navigate(-1)
+        } catch (error) {
+            console.error(error);
+            setActionError('Error while deleting vendor')
+        }
+    }
+
     useEffect(() => {
         fetchVendorDetails(vendorId)
-    }, [])
+    }, [vendorId])
 
     return (
         <section className='container py-5'>
@@ -61,7 +93,7 @@ const VendorAccount = () => {
                         <ul className={styles.quickLinks} style={{ listStyleType: 'none' }}>
                             <li>Quick Links</li>
                             <li>
-                                <Link className={styles.links} >Edit</Link>
+                                <Link to={`/admin/edit-vendor/${vendorDetails._id}`} className={styles.links} >Edit</Link>
                             </li>
                             <li>
                                 <Link className={styles.links} >Packages</Link>
@@ -76,21 +108,53 @@ const VendorAccount = () => {
             {vendorDetails &&
                 <div className="text-center">
                     {vendorDetails.status === 'pending' && <>
-                        <button className='primary-btn me-2'>Approve</button>
-                        <button className='primary-btn'>Reject</button>
+                        <button
+                            className='primary-btn me-2'
+                            onClick={() => {
+                                const status = 'active';
+                                handleStatusUpdate(vendorDetails._id, status)
+                            }}
+                        >Approve</button>
+                        <button
+                            className='primary-btn me-2'
+                            onClick={() => {
+                                const status = 'rejected';
+                                handleStatusUpdate(vendorDetails._id, status)
+                            }}
+                        >Reject</button>
                     </>}
                     {vendorDetails.status === 'rejected' && <>
-                        <button className='primary-btn me-2'>Approve</button>
-                        <button className='primary-btn'>Remove</button>
+                        <button
+                            className='primary-btn me-2'
+                            onClick={() => {
+                                const status = 'active';
+                                handleStatusUpdate(vendorDetails._id, status)
+                            }}
+                        >Approve</button>
                     </>}
                     {vendorDetails.status === 'active' && <>
-                        <button className='primary-btn me-2'>Disable</button>
-                        <button className='primary-btn'>Remove</button>
+                        <button
+                            className='primary-btn me-2'
+                            onClick={() => {
+                                const status = 'disabled';
+                                handleStatusUpdate(vendorDetails._id, status)
+                            }}
+                        >Disable</button>
                     </>}
                     {vendorDetails.status === 'disabled' && <>
-                        <button className='primary-btn me-2'>Activate</button>
-                        <button className='primary-btn'>Remove</button>
+                        <button
+                            className='primary-btn me-2'
+                            onClick={() => {
+                                const status = 'active';
+                                handleStatusUpdate(vendorDetails._id, status)
+                            }}
+                        >Activate</button>
                     </>}
+                    <button
+                        className='primary-btn'
+                        onClick={() => handleRemoveVendor(vendorDetails._id)}
+                    >Remove</button>
+                    <p className="text-center">{actionError}</p>
                 </div>
             }
 

@@ -19,6 +19,7 @@ import ViewUsers from "./pages/admin/ViewUsers";
 import ViewUserAccount from "./pages/admin/ViewUserAccount";
 import CreateUserPage from "./pages/admin/CreateUserPage";
 import EditUserPage from "./pages/admin/EditUserPage";
+import EditVendorPage from "./pages/admin/EditVendorPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -40,6 +41,7 @@ function App() {
         <Route path="/admin/rejected-vendors" element={<ProtectedRoutes requiredRole='admin' ><RejectedVendors /></ProtectedRoutes>} />
         <Route path="/admin/disabled-vendors" element={<ProtectedRoutes requiredRole='admin' ><DisabledVendors /></ProtectedRoutes>} />
         <Route path="/admin/view-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><ViewVendor /></ProtectedRoutes>} />
+        <Route path="/admin/edit-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><EditVendorPage /></ProtectedRoutes>} />
         <Route path="/admin/users" element={<ProtectedRoutes requiredRole='admin' ><ViewUsers /></ProtectedRoutes>} />
         <Route path="/admin/users/user-account/:userId" element={<ProtectedRoutes requiredRole='admin' ><ViewUserAccount /></ProtectedRoutes>} />
         <Route path="/admin/users/create-user" element={<ProtectedRoutes requiredRole='admin' ><CreateUserPage /></ProtectedRoutes>} />

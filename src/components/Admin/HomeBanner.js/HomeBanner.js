@@ -80,7 +80,7 @@ const HomeBanner = () => {
                             counts.users > 100 ? "100+" : counts.users
                         }</span>
                         <br />Users</h3>
-                    <Link to=''>
+                    <Link to='/admin/users'>
                         <button
                             className='primary-btn'
                         >
