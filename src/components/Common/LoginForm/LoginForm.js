@@ -77,15 +77,15 @@ const LoginForm = ({ title, role }) => {
     <section className={`${styles.loginSec} container-fluid px-md-5 px-2 py-3`}>
 
       <div className='row'>
-        <div className='col text-start'>
+        <Link to='/' className='col text-start logo-link'>
           <Logo />
-        </div>
+        </Link>
         {role !== 'admin' ?
           <div className="col text-end mt-2">
             {role === 'user' ?
               <button
-              onClick={() => navigate('/vendor/auth/login')}
-              className='outline-btn'
+                onClick={() => navigate('/vendor/auth/login')}
+                className='outline-btn'
               >
                 Login as vendor
               </button>
@@ -173,7 +173,7 @@ const LoginForm = ({ title, role }) => {
 
         {role !== 'admin' ?
           <p
-            className='text-center fw-medium mt-3'
+            className='text-center fw-medium mt-3 mb-0'
             style={{ fontSize: '15px', color: 'var(--text-grey)' }}
           >Don't have an account?
             <Link
@@ -182,6 +182,16 @@ const LoginForm = ({ title, role }) => {
             > Create account</Link>
           </p> : null
         }
+        <p className='text-center text-secondary m-0'>or</p>
+        <p
+          className='text-center fw-medium'
+          style={{ fontSize: '15px' }}
+        >
+          <Link
+            to='/'
+            style={{ color: 'var(--primary-color)' }}
+          > Continue without login <i className="fa-solid fa-caret-right"></i></Link>
+        </p>
       </div>
 
     </section>

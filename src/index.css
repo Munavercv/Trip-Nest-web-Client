@@ -97,3 +97,8 @@ body {
 .navbar-toggler:focus{
     box-shadow: none  !important;
 }
+
+
+.logo-link{
+    text-decoration: none;
+}
