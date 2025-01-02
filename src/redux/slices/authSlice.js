@@ -4,7 +4,7 @@ import { decodeToken, isTokenExpired } from '../../tokenUtils';
 const initialState = {
     token: localStorage.getItem('token') || null,
     user: null,
-    userRole: null,
+    userRole: 'user',
     loggedIn: false,
     loading: true,
 };
@@ -41,7 +41,7 @@ const authSlice = createSlice({
                 state.loggedIn = false;
                 state.token = null;
                 state.user = null;
-                state.userRole = null;
+                state.userRole = 'user';
                 localStorage.removeItem('token');
             }
             state.loading = false;
@@ -50,7 +50,7 @@ const authSlice = createSlice({
         logout: (state) => {
             state.token = null;
             state.user = null;
-            state.userRole = null;
+            state.userRole = 'user';
             state.loggedIn = false;
 
             localStorage.removeItem('token');

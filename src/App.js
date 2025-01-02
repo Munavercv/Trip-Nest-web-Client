@@ -20,6 +20,7 @@ import ViewUserAccount from "./pages/admin/ViewUserAccount";
 import CreateUserPage from "./pages/admin/CreateUserPage";
 import EditUserPage from "./pages/admin/EditUserPage";
 import EditVendorPage from "./pages/admin/EditVendorPage";
+import UserHomePage from "./pages/user/UserHomePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -56,7 +57,7 @@ function App() {
         {/* USER routes */}
         <Route path="/auth/login" element={<UserLogin />} />
         <Route path="/auth/signup" element={<UserSignup />} />
-        <Route path="/login-success" element={<Loginsuccess />} />
+        <Route path="/" element={<UserHomePage />} />
 
 
       </Routes>

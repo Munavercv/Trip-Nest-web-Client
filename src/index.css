@@ -17,6 +17,16 @@ body {
     padding: 0.8rem;
 }
 
+.form-btn{
+    color: white;
+    background-color: var(--primary-color);
+    padding: 0.8rem;
+    border: none;
+    font-size: 17px;
+    font-weight: 400;
+    transition: all 200ms ease-in;
+}
+
 .banner-heading {
     font-size: 48px;
     font-weight: 600;
@@ -30,6 +40,7 @@ body {
 
 .section-title{
     font-size: 28px;
+    font-weight: 700;
     color: var(--primary-color);
 }
 
@@ -80,4 +91,9 @@ body {
 }
 .tableDefault tr {
     cursor: pointer;
+}
+
+
+.navbar-toggler:focus{
+    box-shadow: none  !important;
 }
