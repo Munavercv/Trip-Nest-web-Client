@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import styles from './EditProfile.module.css'
+import { updateJwt } from '../../../redux/slices/authSlice'
 import axios from 'axios'
 
 const EditProfile = () => {
+    const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
     const [error, setError] = useState(null)
@@ -66,12 +68,15 @@ const EditProfile = () => {
                 },
             })
             setLoading(false)
-            navigate(-1)
-            window.alert('Updated successfully')
+            dispatch(updateJwt({ token: response.data.token }));
+            
         } catch (error) {
             console.error(error)
             setError(error.response?.data?.message || "An error occured");
             setLoading(false)
+        } finally {
+            navigate(-1)
+            window.alert('Updated successfully')
         }
     }
 

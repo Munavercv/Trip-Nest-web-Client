@@ -24,6 +24,15 @@ const authSlice = createSlice({
 
             localStorage.setItem('token', action.payload.token);
         },
+        updateJwt: (state, action) => {
+            const decodedToken = decodeToken(action.payload.token);
+            if (!decodedToken) return;
+
+            state.token = action.payload.token;
+            state.user = decodedToken;
+
+            localStorage.setItem('token', action.payload.token);
+        },
         checkAuthStatus: (state) => {
             state.loading = true;
             const token = state.token || localStorage.getItem('token');
@@ -58,5 +67,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { loginSuccess, checkAuthStatus, logout } = authSlice.actions;
+export const { loginSuccess, updateJwt, checkAuthStatus, logout } = authSlice.actions;
 export default authSlice.reducer;
