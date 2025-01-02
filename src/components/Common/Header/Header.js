@@ -13,7 +13,7 @@ const Header = () => {
     const handleLogout = () => {
         const confirm = window.confirm('Logout?');
         if(!confirm) return
-        
+
         dispatch(logout());
         localStorage.removeItem('token');
 
@@ -95,7 +95,7 @@ const Header = () => {
                                             Account
                                         </Link>
                                         <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='' >Profile</Link></li>
+                                            <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
                                             <li><Link className="dropdown-item" to='' >My packages</Link></li>
                                             <li><Link className="dropdown-item" to='' >Register as Vendor</Link></li>
                                         </ul>

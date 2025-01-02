@@ -1,40 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router';
-import styles from './EditUser.module.css'
-import axios from 'axios';
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import styles from './EditProfile.module.css'
+import axios from 'axios'
 
-const EditUser = () => {
-    const { userId } = useParams()
+const EditProfile = () => {
+    const { user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false);
-    const [dataStatus, setDataStatus] = useState('Loading...')
     const [validationErrors, setValidationErrors] = useState({});
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
     });
-
-    const fetchUserDetails = async (userId) => {
-        try {
-            const response = await axios.get(`/api/admin/get-user-details/${userId}`)
-            const userData = response.data.userDetails[0];
-            if (userData.length === 0) {
-                setDataStatus('Error fetching user details')
-                return
-            }
-            setFormData({
-                name: userData.name,
-                email: userData.email,
-                phone: userData.phone,
-            })
-            setDataStatus('')
-        } catch (error) {
-            console.log("Internal server error: ", error);
-            setDataStatus('Error fetching user details!')
-        }
-    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,12 +58,11 @@ const EditUser = () => {
         setLoading(true);
 
         try {
-            await axios.put(`/api/admin/edit-user/${userId}`, {
+            const response = await axios.put(`/api/user/edit-profile/${user.userId}`, {
                 data: {
                     name: formData.name,
                     email: formData.email,
                     phone: formData.phone,
-                    password: formData.password,
                 },
             })
             setLoading(false)
@@ -96,10 +75,6 @@ const EditUser = () => {
         }
     }
 
-    useEffect(() => {
-        fetchUserDetails(userId)
-    }, [])
-
     return (
         <section className={`${styles.editUserSec} container-fluid px-md-5 px-2 py-3`} >
 
@@ -107,9 +82,7 @@ const EditUser = () => {
                 <h1 className={`${styles.title} h3 fw-medium text-center`}>Edit User Account</h1>
                 <hr className='border-2 mt-0' />
 
-                {dataStatus ?
-                    <h4 className='text-secondary'>{dataStatus}</h4>
-                    :
+                {user ?
                     <form onSubmit={handleSubmit}>
 
                         <div className="mb-2 text-start">
@@ -171,7 +144,10 @@ const EditUser = () => {
                                 Cancel
                             </button>
                         </div>
-                    </form>}
+                    </form>
+                    :
+                    <h4 className='text-secondary text-center'>An error occured</h4>
+                    }
             </div>
 
 
@@ -180,4 +156,4 @@ const EditUser = () => {
     )
 }
 
-export default EditUser
+export default EditProfile
