@@ -1,26 +1,27 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './UserProfile.module.css'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import { logout } from '../../../redux/slices/authSlice'
 
 const UserProfile = () => {
+    const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const [dpUrl, setDpUrl] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D')
+    const dpUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D'
     const navigate = useNavigate()
-    const [deleteError, setDeleteError] = useState('')
 
     const goback = () => navigate(-1)
 
     const deleteUser = async (userId) => {
-        const confirmation = window.confirm('Are you sure want to delete this user?')
+        const confirmation = window.confirm('Are you sure want to delete your account?')
         if (!confirmation) return
 
         try {
-            await axios.delete(`/api/user/delete-user/${userId}`);
-            setDeleteError('')
+            await axios.delete(`/api/user/delete-account/${userId}`);
             alert('Successfully deleted your account!')
             navigate('/')
+            dispatch(logout())
         } catch (error) {
             console.log(error)
             alert('An error occured while deleting your account')
@@ -63,6 +64,7 @@ const UserProfile = () => {
                                 <li>
                                     <Link
                                         className={styles.links}
+                                        onClick={() => deleteUser(user.userId)}
                                     >Delete account</Link>
                                 </li>
                             </ul>
