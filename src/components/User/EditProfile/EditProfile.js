@@ -12,6 +12,7 @@ const EditProfile = () => {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [selectedFile, setSelectedFile] = useState(null);
     const [formData, setFormData] = useState({
         name: user.name,
         email: user.email,
@@ -24,6 +25,10 @@ const EditProfile = () => {
             ...prevData,
             [name]: value,
         }));
+    };
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
     };
 
     const validateForm = () => {
@@ -53,32 +58,37 @@ const EditProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null)
+        setError(null);
 
-        if (!validateForm()) return
+        if (!validateForm()) return;
+
+        const formDataObj = new FormData();
+        formDataObj.append('name', formData.name);
+        formDataObj.append('email', formData.email);
+        formDataObj.append('phone', formData.phone);
+
+        if (selectedFile) {
+            formDataObj.append('file', selectedFile); // Include file
+        }
 
         setLoading(true);
 
         try {
-            const response = await axios.put(`/api/user/edit-profile/${user.userId}`, {
-                data: {
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
+            const response = await axios.put(`/api/user/edit-profile/${user.userId}`, formDataObj, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
                 },
-            })
-            setLoading(false)
+            });
+            setLoading(false);
             dispatch(updateJwt({ token: response.data.token }));
-            
+            window.alert('Updated successfully');
+            navigate(-1);
         } catch (error) {
-            console.error(error)
-            setError(error.response?.data?.message || "An error occured");
-            setLoading(false)
-        } finally {
-            navigate(-1)
-            window.alert('Updated successfully')
+            console.error(error);
+            setError(error.response?.data?.message || 'An error occurred');
+            setLoading(false);
         }
-    }
+    };
 
     return (
         <section className={`${styles.editUserSec} container-fluid px-md-5 px-2 py-3`} >
@@ -89,6 +99,31 @@ const EditProfile = () => {
 
                 {user ?
                     <form onSubmit={handleSubmit}>
+
+                        <div className='mb-2 text-center'>
+                            <div className={`${styles.imgPreview}`}>
+                                <img
+                                    src={selectedFile ? URL.createObjectURL(selectedFile) : user.dpUrl}
+                                    alt="Profile picture" />
+                            </div>
+
+                                <label htmlFor="">Profile picture</label>
+                            <div className="input-group mb-3">
+                                <input
+                                    type="file"
+                                    className='form-control'
+                                    id="inputGroupFile04"
+                                    onChange={handleFileChange}
+                                />
+
+                                <button
+                                    class="outline-btn"
+                                    type="button"
+                                    id="inputGroupFileAddon04"
+                                    onClick={() => setSelectedFile(null)}
+                                >Remove</button>
+                            </div>
+                        </div>
 
                         <div className="mb-2 text-start">
                             <label htmlFor="name" className="ms-2">Name</label>
@@ -152,7 +187,7 @@ const EditProfile = () => {
                     </form>
                     :
                     <h4 className='text-secondary text-center'>An error occured</h4>
-                    }
+                }
             </div>
 
 

@@ -8,7 +8,7 @@ import { logout } from '../../../redux/slices/authSlice'
 const UserProfile = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const dpUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D'
+    const defaultDpUrl = '/images/default-dp.png'
     const navigate = useNavigate()
 
     const goback = () => navigate(-1)
@@ -39,12 +39,10 @@ const UserProfile = () => {
                     <div className="row my-4">
                         <div className="col-md-6 text-center mb-2">
                             <div className={`d-flex justify-content-center ${styles.profilePic}`} >
-                                {dpUrl ? <img
-                                    src={dpUrl}
+                                <img
+                                    src={user.dpUrl || defaultDpUrl}
                                     alt="Model"
                                 />
-                                    :
-                                    <div className={styles.circle} ></div>}
                             </div>
                             <div className={styles.details} >
                                 <p className='mb-1'>{user.email}</p>
