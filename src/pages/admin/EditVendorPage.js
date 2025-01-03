@@ -1,5 +1,5 @@
 import React from 'react'
-import EditVendor from '../../components/EditVendor/EditVendor'
+import EditVendor from '../../components/Admin/EditVendor/EditVendor'
 
 const EditVendorPage = () => {
     return (
