@@ -17,6 +17,21 @@ body {
     padding: 0.8rem;
 }
 
+.form-input[type="file"]{
+    padding: 0.67rem;
+}
+
+.form-input[type="number"]::-webkit-inner-spin-button,
+.form-input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.form-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .form-btn{
     color: white;
     background-color: var(--primary-color);
@@ -25,6 +40,17 @@ body {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+}
+
+.form-check-input:checked{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus{
+    box-shadow: none;
+    outline: none;
+    border-color: var(--text-dark-grey);
 }
 
 .banner-heading {
