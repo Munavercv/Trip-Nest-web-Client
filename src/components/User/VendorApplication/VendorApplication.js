@@ -3,8 +3,7 @@ import styles from './VendorApplication.module.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { checkAuthStatus } from '../../../redux/slices/authSlice'
-import { setTrue } from '../../../redux/slices/vendorApplictionSlice'
+import { checkAuthStatus, updateJwt } from '../../../redux/slices/authSlice'
 import ApplicationSuccessfull from './ApplicationSuccessfull'
 
 const VendorApplication = () => {
@@ -132,14 +131,15 @@ const VendorApplication = () => {
                 }
             });
 
-            await axios.post('/api/user/vendor-application', payload, {
+            const response = await axios.post('/api/user/vendor-application', payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
             setLoading(false);
-            dispatch(setTrue());
+            
+            dispatch(updateJwt({token: response.data.token}))
             setSubmitSuccess(true)
         } catch (error) {
             console.error(error);

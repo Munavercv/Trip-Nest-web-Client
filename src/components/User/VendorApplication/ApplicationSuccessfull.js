@@ -22,7 +22,7 @@ const ApplicationSuccessfull = () => {
                         <button
                             className='outline-btn'
                             onClick={() => navigate(-1)}
-                        >Back</button>
+                        >Home</button>
                     </div>
 
                 </div>

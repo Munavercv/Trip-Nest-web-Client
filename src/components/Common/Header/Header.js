@@ -7,7 +7,7 @@ import { logout, checkAuthStatus } from '../../../redux/slices/authSlice';
 
 const Header = () => {
     const dispatch = useDispatch()
-    const { loggedIn, userRole } = useSelector((state) => state.auth);
+    const { loggedIn, userRole, user } = useSelector((state) => state.auth);
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -97,7 +97,7 @@ const Header = () => {
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
                                             <li><Link className="dropdown-item" to='' >My packages</Link></li>
-                                            <li><Link className="dropdown-item" to='' >Register as Vendor</Link></li>
+                                            {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='' >Register as Vendor</Link></li>}
                                         </ul>
                                     </li>
                                 </>

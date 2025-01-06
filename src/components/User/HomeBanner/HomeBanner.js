@@ -4,12 +4,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const HomeBanner = () => {
-    const { loggedIn } = useSelector((state) => state.auth);
+    const { loggedIn, user } = useSelector((state) => state.auth);
 
     return (
         <section className={styles.banner}>
             <div className={styles.bannerOverlay}>
-                {loggedIn && <div className={styles.question}>Need to sell your packages?
+                {loggedIn && !user.isAppliedForVendor && <div className={styles.question}>Need to sell your packages?
                     <Link to='/vendor-application'> Get vendor account.</Link>
                 </div>}
                 <h1>Explore Best Travel Packages</h1>
