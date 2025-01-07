@@ -14,7 +14,7 @@ const ApplicationSuccessfull = () => {
                     </p>
 
                     <div>
-                        <Link>
+                        <Link to='/view-my-vendor-application' >
                             <button
                                 className='primary-btn me-2'
                             >View application</button>

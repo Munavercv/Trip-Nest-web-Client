@@ -65,6 +65,12 @@ const UserProfile = () => {
                                         onClick={() => deleteUser(user.userId)}
                                     >Delete account</Link>
                                 </li>
+                                {user.isAppliedForVendor && <li>
+                                    <Link
+                                    to='/view-my-vendor-application'
+                                        className={styles.links}
+                                    >Vendor application</Link>
+                                </li>}
                             </ul>
                         </div>
                     </div>

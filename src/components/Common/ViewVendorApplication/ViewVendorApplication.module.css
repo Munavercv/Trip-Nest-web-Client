@@ -1,0 +1,37 @@
+.item h5 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.item h6 {
+    color: var(--text-dark-grey);
+}
+
+.item h6 span {
+    color: var(--primary-color);
+}
+
+.item a {
+    text-decoration: none;
+}
+
+.item a h6 {
+    color: rgb(39, 39, 255);
+    font-weight: 600;
+}
+
+.item a h6:hover {
+    text-decoration: underline;
+}
+
+.logo {
+    height: 10rem;
+    width: auto;
+    overflow: hidden;
+}
+
+.logo img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}

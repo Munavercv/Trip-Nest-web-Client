@@ -25,6 +25,7 @@ import ProfilePage from "./pages/user/ProfilePage";
 import EditProfilePage from "./pages/user/EditProfilePage";
 import VendorApplicationPage from "./pages/user/VendorApplicationPage";
 import ApplicationSuccessfull from "./components/User/VendorApplication/ApplicationSuccessfull";
+import ViewVendorApplicationPage from "./pages/user/ViewVendorApplicationPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -65,6 +66,7 @@ function App() {
         <Route path="/profile" element={<ProtectedRoutes requiredRole='user' ><ProfilePage /></ProtectedRoutes>} />
         <Route path="/edit-profile" element={<ProtectedRoutes requiredRole='user' ><EditProfilePage /></ProtectedRoutes>} />
         <Route path="/vendor-application" element={<ProtectedRoutes requiredRole='user' ><VendorApplicationPage /></ProtectedRoutes>} />
+        <Route path="/view-my-vendor-application" element={<ProtectedRoutes requiredRole='user' ><ViewVendorApplicationPage /></ProtectedRoutes>} />
 
 
       </Routes>
