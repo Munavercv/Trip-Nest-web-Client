@@ -11,8 +11,6 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { checkAuthStatus } from "./redux/slices/authSlice";
 import AllVendors from "./pages/admin/AllVendors";
-import PendingVendors from "./pages/admin/PendingVendors";
-import RejectedVendors from "./pages/admin/RejectedVendors";
 import ViewVendor from "./pages/admin/ViewVendor";
 import DisabledVendors from "./pages/admin/DisabledVendors";
 import ViewUsers from "./pages/admin/ViewUsers";
@@ -24,8 +22,11 @@ import UserHomePage from "./pages/user/UserHomePage";
 import ProfilePage from "./pages/user/ProfilePage";
 import EditProfilePage from "./pages/user/EditProfilePage";
 import VendorApplicationPage from "./pages/user/VendorApplicationPage";
-import ApplicationSuccessfull from "./components/User/VendorApplication/ApplicationSuccessfull";
 import ViewVendorApplicationPage from "./pages/user/ViewVendorApplicationPage";
+import PendingApplicationsPage from "./pages/admin/PendingApplicationsPage";
+import RejectedApplicationsPage from "./pages/admin/RejectedApplicationsPage";
+import ApprovedApplicationsPage from "./pages/admin/ApprovedApplicationsPage";
+import AdminViewApplicationPage from "./pages/admin/AdminViewApplicationPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -43,9 +44,11 @@ function App() {
         <Route path="/login-success" element={<Loginsuccess />} />
         <Route path="/admin/home" element={<ProtectedRoutes requiredRole='admin' ><AdminHome /></ProtectedRoutes>} />
         <Route path="/admin/active-vendors" element={<ProtectedRoutes requiredRole='admin' ><AllVendors /></ProtectedRoutes>} />
-        <Route path="/admin/pending-vendors" element={<ProtectedRoutes requiredRole='admin' ><PendingVendors /></ProtectedRoutes>} />
-        <Route path="/admin/rejected-vendors" element={<ProtectedRoutes requiredRole='admin' ><RejectedVendors /></ProtectedRoutes>} />
         <Route path="/admin/disabled-vendors" element={<ProtectedRoutes requiredRole='admin' ><DisabledVendors /></ProtectedRoutes>} />
+        <Route path="/admin/pending-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><PendingApplicationsPage /></ProtectedRoutes>} />
+        <Route path="/admin/approved-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><ApprovedApplicationsPage /></ProtectedRoutes>} />
+        <Route path="/admin/rejected-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><RejectedApplicationsPage /></ProtectedRoutes>} />
+        <Route path="/admin/view-application/:id" element={<ProtectedRoutes requiredRole='admin' ><AdminViewApplicationPage /></ProtectedRoutes>} />
         <Route path="/admin/view-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><ViewVendor /></ProtectedRoutes>} />
         <Route path="/admin/edit-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><EditVendorPage /></ProtectedRoutes>} />
         <Route path="/admin/users" element={<ProtectedRoutes requiredRole='admin' ><ViewUsers /></ProtectedRoutes>} />

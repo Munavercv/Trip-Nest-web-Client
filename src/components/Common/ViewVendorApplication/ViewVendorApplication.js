@@ -70,7 +70,16 @@ const ViewVendorApplication = () => {
                     <i className="fa-solid fa-caret-left"></i> Back
                 </button>
 
-                <h5 className='fw-bold text-primary text-center'>pending</h5>
+                <h5
+                    className={`fw-bold text-end ${applicationData?.status === 'pending'
+                        ? 'text-primary'
+                        : applicationData?.status === 'approved'
+                            ? 'text-success'
+                            : 'text-danger'
+                        }`}
+                >
+                    {applicationData?.status}
+                </h5>
             </div>
 
 

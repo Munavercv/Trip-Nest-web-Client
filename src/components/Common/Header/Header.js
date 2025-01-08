@@ -58,9 +58,17 @@ const Header = () => {
                                         </Link>
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to='/admin/active-vendors' >Active</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/pending-vendors' >Pending</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/rejected-vendors' >Rejected</Link></li>
                                             <li><Link className="dropdown-item" to='/admin/disabled-vendors' >Disabled</Link></li>
+                                        </ul>
+                                    </li>
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Applications
+                                        </Link>
+                                        <ul className="dropdown-menu">
+                                            <li><Link className="dropdown-item" to='/admin/approved-vendor-applications' >Approved</Link></li>
+                                            <li><Link className="dropdown-item" to='/admin/rejected-vendor-applications' >Rejected</Link></li>
+                                            <li><Link className="dropdown-item" to='/admin/pending-vendor-applications' >Pending</Link></li>
                                         </ul>
                                     </li>
                                     <li className="nav-item">
