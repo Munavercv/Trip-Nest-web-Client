@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import styles from './Vendors.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,9 +7,9 @@ const Vendors = (props) => {
   const { filter } = props;
   const navigate = useNavigate()
   const [dataStatus, setDataStatus] = useState('Loading...');
-  const [searchError, setSearchError] = useState('')
+  // const [searchError, setSearchError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [keyword, setKeyword] = useState('')
+  // const [keyword, setKeyword] = useState('')
   const [vendors, setVendors] = useState([])
 
   const fetchVendors = async () => {
@@ -28,11 +27,6 @@ const Vendors = (props) => {
     }
   }
 
-  const handleSearch = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-  }
-
   useEffect(() => {
     fetchVendors()
   }, [])
@@ -45,7 +39,6 @@ const Vendors = (props) => {
         <form
           className="d-flex me-auto col-lg-4 col-md-5"
           role="search"
-          onSubmit={handleSearch}
           method="get"
         >
           <input
@@ -54,8 +47,8 @@ const Vendors = (props) => {
             placeholder="Search"
             aria-label="Search"
             name="keyword"
-            value={keyword}
-            onChange={(e) => e.target.value}
+            // value={keyword}
+            // onChange={(e) => e.target.value}
           />
 
           <button
@@ -74,7 +67,7 @@ const Vendors = (props) => {
             )}
           </button>
         </form>
-        <p className="text-danger">{searchError}</p>
+        {/* <p className="text-danger">{searchError}</p> */}
       </div>
 
       <div>
@@ -82,6 +75,7 @@ const Vendors = (props) => {
           <table className={`tableDefault table table-bordered`}>
             <thead>
               <tr>
+                <th>#</th>
                 <th>Company name</th>
                 <th>Email</th>
               </tr>
@@ -93,7 +87,8 @@ const Vendors = (props) => {
                   style={{ cursor: 'pointer' }}
                   onClick={() => navigate(`/admin/view-vendor/${vendor._id}`)}
                 >
-                  <td>{vendor.businessName}</td>
+                  <td>{index + 1}</td>
+                  <td>{vendor.name}</td>
                   <td>{vendor.contact.email}</td>
                 </tr>
               ))}

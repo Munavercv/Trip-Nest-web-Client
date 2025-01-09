@@ -1,0 +1,21 @@
+.applicationSec{
+    background-color: #eee;
+    height: 100vh;
+}
+
+label{
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-dark-grey);
+}
+
+.title{
+    font-size: 23px;
+    color:  var(--primary-color);
+}
+
+.formApplication {
+    max-width: 350px;
+    padding: 30px;
+    background: #fff;
+}

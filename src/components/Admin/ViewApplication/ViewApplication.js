@@ -118,16 +118,19 @@ const ViewApplication = () => {
                 </button>
 
 
-                <h5
-                    className={`fw-bold text-end ${applicationData?.status === 'pending'
+                {applicationData?.status && <h5
+                    className={`fw-bold text-end ${applicationData.status === 'pending'
                         ? 'text-primary'
-                        : applicationData?.status === 'approved'
+                        : applicationData.status === 'approved'
                             ? 'text-success'
-                            : 'text-danger'
+                            : applicationData.status === 'activated'
+                                ? 'text-secondary'
+                                : 'text-danger'
                         }`}
                 >
-                    {applicationData?.status}
-                </h5>
+                    {applicationData.status}
+                </h5>}
+
             </div>
 
 
@@ -168,7 +171,7 @@ const ViewApplication = () => {
                         <hr className='border-2' />
                         <div className={`${styles.item} ms-md-5`}>
                             <h5>Website Url</h5>
-                             <a href={applicationData.websiteUrl} target='_blank'>
+                            <a href={applicationData.websiteUrl} target='_blank'>
                                 <h6>{applicationData.websiteUrl}</h6>
                             </a>
                         </div>
@@ -222,7 +225,7 @@ const ViewApplication = () => {
                         <h5>User</h5>
                         <h6>{user.name}</h6>
                         <h6>{user.email}</h6>
-                         <Link to={`/admin/users/user-account/${user._id}`}>
+                        <Link to={`/admin/users/user-account/${user._id}`}>
                             <h6>View profile <i className="fa-solid fa-chevron-right"></i></h6>
                         </Link>
                     </div>

@@ -8,7 +8,6 @@ const VendorAccount = () => {
     const { vendorId } = useParams()
     const navigate = useNavigate()
     const [vendorDetails, setVendorDetails] = useState()
-    const [logo, setLogo] = useState('https://img.freepik.com/free-vector/detailed-travel-logo-theme_23-2148630535.jpg?semt=ais_hybrid');
     const [actionError, setActionError] = useState('')
 
     const goback = () => {
@@ -63,27 +62,27 @@ const VendorAccount = () => {
         <section className='container py-5'>
             <button onClick={goback} className='btn btn-outline-secondary btn-sm'><i className="fa-solid fa-caret-left"></i> back</button>
 
-            <h2 className='section-title text-center mb-5'>{vendorDetails ? vendorDetails.businessName : 'Loading...'}</h2>
+            <h2 className='section-title text-center mb-5'>{vendorDetails ? vendorDetails.name : 'Loading...'}</h2>
 
             {vendorDetails &&
                 <div className="row my-4">
                     <div className="col-md-6 text-center mb-2">
                         <div className={`d-flex justify-content-center ${styles.profilePic}`} >
-                            {logo ? <img
-                                src={logo}
-                                alt="Model"
+                            {vendorDetails.logoUrl ? <img
+                                src={vendorDetails.logoUrl}
+                                alt="Profile pic"
                             />
                                 :
                                 <div className={styles.circle} ></div>}
                         </div>
                         <div className={styles.details} >
-                            <p className='mb-1'>{vendorDetails.contact?.email}</p>
-                            <p className='mb-1'>Phone: {vendorDetails.contact?.phone}</p>
-                            {vendorDetails.businessAddress && <p className='mb-1'>
-                                {vendorDetails.businessAddress.state},
-                                {vendorDetails.businessAddress.district},
-                                {vendorDetails.businessAddress.address},
-                                {vendorDetails.businessAddress.pin}
+                            <p className='mb-1'>{vendorDetails.contact.email}</p>
+                            <p className='mb-1'>Phone: {vendorDetails.contact.phone}</p>
+                            {vendorDetails.address && <p className='mb-1'>
+                                {vendorDetails.address.state},
+                                {vendorDetails.address.address},
+                                {vendorDetails.address.district},
+                                {vendorDetails.address.pin}
                             </p>}
                             <p>Status: <span>{vendorDetails.status}</span></p>
                         </div>

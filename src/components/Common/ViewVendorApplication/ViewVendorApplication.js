@@ -4,8 +4,7 @@ import styles from './ViewVendorApplication.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import ConfirmPopup from '../Popups/ConfirmPopup'
-import { updateJwt, logout } from '../../../redux/slices/authSlice'
-import SuccessPopup from '../Popups/SuccessPopup'
+import { updateJwt } from '../../../redux/slices/authSlice'
 
 const ViewVendorApplication = () => {
     const navigate = useNavigate()
@@ -15,8 +14,6 @@ const ViewVendorApplication = () => {
     const [applicationData, setApplicationData] = useState()
     const [formattedDate, setFormattedDate] = useState('')
     const [showDeletePopup, setShowDeletePopup] = useState(false)
-    const [showActivateAccountPopup, setShowActivateAccountPopup] = useState(false)
-    const [showSuccessPopup, setShowSuccessPopup] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
     const [actionError, setActionError] = useState('')
 
@@ -50,20 +47,6 @@ const ViewVendorApplication = () => {
         }
     };
 
-    const activateVendorAccount = async (applicationId) => {
-        setIsLoading(true)
-        try {
-            await axios.put(`/api/user/activate-vendor-account/${applicationId}`)
-            setShowSuccessPopup(true);
-        } catch (error) {
-            console.error();
-            setActionError(error.response?.data?.message || 'An error occured while activating account')
-        } finally {
-            setIsLoading(false)
-            setShowActivateAccountPopup(false)
-        }
-    }
-
     const handleDeletePopupAction = (confirmed) => {
         if (confirmed) {
             deleteApplication();
@@ -71,23 +54,6 @@ const ViewVendorApplication = () => {
             setShowDeletePopup(false)
         }
     };
-
-    const handleActivateAccountPopupAction = (confirmed) => {
-        if (confirmed) {
-            activateVendorAccount(applicationData._id);
-        } else {
-            setShowActivateAccountPopup(false)
-        }
-    }
-
-    const handleSuccessPopupAction = (confirmed) => {
-        if (confirmed) {
-            dispatch(logout())
-            navigate('/vendor/auth/login')
-        } else {
-            setShowSuccessPopup(false)
-        }
-    }
 
     useEffect(() => {
         fetchApplication(user.userId)
@@ -152,13 +118,15 @@ const ViewVendorApplication = () => {
                         <h6><span>Email : </span>{applicationData.supportContacts.email}</h6>
                     </div>
 
-                    <hr className='border-2' />
-                    <div className={`${styles.item} ms-md-5`}>
-                        <h5>Website Url</h5>
-                        {applicationData.websiteUrl && <a href={applicationData.websiteUrl} target='_blank'>
-                            <h6>{applicationData.websiteUrl}</h6>
-                        </a>}
-                    </div>
+                    {applicationData.websiteUrl && <>
+                        <hr className='border-2' />
+                        <div className={`${styles.item} ms-md-5`}>
+                            <h5>Website Url</h5>
+                            <a href={applicationData.websiteUrl} target='_blank'>
+                                <h6>{applicationData.websiteUrl}</h6>
+                            </a>
+                        </div>
+                    </>}
 
                     <hr className='border-2' />
                     <div className={`${styles.item} ms-md-5`}>
@@ -176,7 +144,6 @@ const ViewVendorApplication = () => {
                             <a href={applicationData.certificateUrl}
                                 target='_blank'
                             >
-                                {/* make imags popup */}
                                 <button className='primary-btn ms-3'>View</button>
                             </a></h6>
                         <h6>Owner ID:
@@ -216,8 +183,7 @@ const ViewVendorApplication = () => {
                         </button>
                         {applicationData?.status === 'approved' && <button
                             onClick={() => {
-                                setActionError('')
-                                setShowActivateAccountPopup(true)
+                                navigate(`/activate-vendor-account/${applicationData._id}`)
                             }}
                             className='green-btn'
                         >
@@ -239,23 +205,6 @@ const ViewVendorApplication = () => {
                     onAction={handleDeletePopupAction}
                     isLoading={isLoading}
                 />}
-
-            {showActivateAccountPopup &&
-                <ConfirmPopup
-                    title='Activate your Vendor account'
-                    allowText='Ok'
-                    denyText='Cancel'
-                    onAction={handleActivateAccountPopupAction}
-                    isLoading={isLoading}
-                />}
-            {showSuccessPopup &&
-                <SuccessPopup
-                    title='Congratulations! Your vendor account has been created'
-                    description='You will be Logged out and redirected to Vendor Login page'
-                    onAction={handleSuccessPopupAction}
-                />
-
-            }
 
         </section>
     )

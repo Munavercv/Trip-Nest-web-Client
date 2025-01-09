@@ -18,12 +18,6 @@ const SuccessPopup = ({ title, description, onAction }) => {
                         >
                             Ok
                         </button>
-
-                        {/* Remove this button */}
-                        <button
-                            className='outline-btn'
-                            onClick={() => onAction(false)}
-                        >Cancel</button>
                     </div>
 
                 </div>

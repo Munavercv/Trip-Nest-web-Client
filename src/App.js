@@ -27,6 +27,8 @@ import PendingApplicationsPage from "./pages/admin/PendingApplicationsPage";
 import RejectedApplicationsPage from "./pages/admin/RejectedApplicationsPage";
 import ApprovedApplicationsPage from "./pages/admin/ApprovedApplicationsPage";
 import AdminViewApplicationPage from "./pages/admin/AdminViewApplicationPage";
+import ActivatedApplicationsPage from "./pages/admin/ActivatedApplicationsPage";
+import VendorActivationPage from "./pages/user/VendorActivationPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -48,6 +50,7 @@ function App() {
         <Route path="/admin/pending-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><PendingApplicationsPage /></ProtectedRoutes>} />
         <Route path="/admin/approved-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><ApprovedApplicationsPage /></ProtectedRoutes>} />
         <Route path="/admin/rejected-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><RejectedApplicationsPage /></ProtectedRoutes>} />
+        <Route path="/admin/activated-vendor-applications" element={<ProtectedRoutes requiredRole='admin' ><ActivatedApplicationsPage /></ProtectedRoutes>} />
         <Route path="/admin/view-application/:id" element={<ProtectedRoutes requiredRole='admin' ><AdminViewApplicationPage /></ProtectedRoutes>} />
         <Route path="/admin/view-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><ViewVendor /></ProtectedRoutes>} />
         <Route path="/admin/edit-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><EditVendorPage /></ProtectedRoutes>} />
@@ -70,6 +73,7 @@ function App() {
         <Route path="/edit-profile" element={<ProtectedRoutes requiredRole='user' ><EditProfilePage /></ProtectedRoutes>} />
         <Route path="/vendor-application" element={<ProtectedRoutes requiredRole='user' ><VendorApplicationPage /></ProtectedRoutes>} />
         <Route path="/view-my-vendor-application" element={<ProtectedRoutes requiredRole='user' ><ViewVendorApplicationPage /></ProtectedRoutes>} />
+        <Route path="/activate-vendor-account/:applicationId" element={<ProtectedRoutes requiredRole='user' ><VendorActivationPage /></ProtectedRoutes>} />
 
 
       </Routes>
