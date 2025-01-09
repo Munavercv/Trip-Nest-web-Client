@@ -1,5 +1,6 @@
 :root {
     --primary-color: #111;
+    --green-color: rgb(3, 90, 3);
     --text-grey: #6E7984;
     --text-dark-grey: #585858;
 }
@@ -7,6 +8,10 @@
 
 body {
     font-family: "Inter", serif;
+}
+
+a{
+    text-decoration: none;
 }
 
 .form-input {
@@ -82,6 +87,20 @@ body {
 
 .primary-btn:hover{
     background-color: #333;
+}
+
+.green-btn {
+    color: white;
+    background-color: var(--green-color);
+    padding: 0.3rem 0.8rem;
+    border: none;
+    font-size: 17px;
+    font-weight: 400;
+    transition: all 200ms ease-in;
+}
+
+.green-btn:hover{
+    background-color: rgb(3, 70, 3);
 }
 
 .outline-btn{

@@ -4,7 +4,8 @@ import styles from './ViewVendorApplication.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import ConfirmPopup from '../Popups/ConfirmPopup'
-import { updateJwt } from '../../../redux/slices/authSlice'
+import { updateJwt, logout } from '../../../redux/slices/authSlice'
+import SuccessPopup from '../Popups/SuccessPopup'
 
 const ViewVendorApplication = () => {
     const navigate = useNavigate()
@@ -13,9 +14,11 @@ const ViewVendorApplication = () => {
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [applicationData, setApplicationData] = useState()
     const [formattedDate, setFormattedDate] = useState('')
-    const [showPopup, setShowPopup] = useState(false)
+    const [showDeletePopup, setShowDeletePopup] = useState(false)
+    const [showActivateAccountPopup, setShowActivateAccountPopup] = useState(false)
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false)
     const [isLoading, setIsLoading] = useState(false);
-    const [deleteError, setDeleteError] = useState('')
+    const [actionError, setActionError] = useState('')
 
 
     const fetchApplication = async (userId) => {
@@ -40,20 +43,51 @@ const ViewVendorApplication = () => {
             navigate('/');
         } catch (error) {
             console.error(error);
-            setDeleteError(error.response?.data?.message || 'Error occurred while deleting application.')
+            setActionError(error.response?.data?.message || 'Error occurred while deleting application.')
         } finally {
             setIsLoading(false);
-            setShowPopup(false)
+            setShowDeletePopup(false)
         }
     };
 
-    const handlePopupAction = (confirmed) => {
+    const activateVendorAccount = async (applicationId) => {
+        setIsLoading(true)
+        try {
+            await axios.put(`/api/user/activate-vendor-account/${applicationId}`)
+            setShowSuccessPopup(true);
+        } catch (error) {
+            console.error();
+            setActionError(error.response?.data?.message || 'An error occured while activating account')
+        } finally {
+            setIsLoading(false)
+            setShowActivateAccountPopup(false)
+        }
+    }
+
+    const handleDeletePopupAction = (confirmed) => {
         if (confirmed) {
             deleteApplication();
         } else {
-            setShowPopup(false)
+            setShowDeletePopup(false)
         }
     };
+
+    const handleActivateAccountPopupAction = (confirmed) => {
+        if (confirmed) {
+            activateVendorAccount(applicationData._id);
+        } else {
+            setShowActivateAccountPopup(false)
+        }
+    }
+
+    const handleSuccessPopupAction = (confirmed) => {
+        if (confirmed) {
+            dispatch(logout())
+            navigate('/vendor/auth/login')
+        } else {
+            setShowSuccessPopup(false)
+        }
+    }
 
     useEffect(() => {
         fetchApplication(user.userId)
@@ -70,16 +104,18 @@ const ViewVendorApplication = () => {
                     <i className="fa-solid fa-caret-left"></i> Back
                 </button>
 
-                <h5
-                    className={`fw-bold text-end ${applicationData?.status === 'pending'
+                {applicationData?.status && <h5
+                    className={`fw-bold text-end ${applicationData.status === 'pending'
                         ? 'text-primary'
-                        : applicationData?.status === 'approved'
+                        : applicationData.status === 'approved'
                             ? 'text-success'
-                            : 'text-danger'
+                            : applicationData.status === 'activated'
+                                ? 'text-secondary'
+                                : 'text-danger'
                         }`}
                 >
-                    {applicationData?.status}
-                </h5>
+                    {applicationData.status}
+                </h5>}
             </div>
 
 
@@ -170,27 +206,56 @@ const ViewVendorApplication = () => {
                     <hr className='border-2' />
                     <div className='text-center'>
                         <button
-                            onClick={() => setShowPopup(true)}
-                            className='primary-btn'
+                            onClick={() => {
+                                setActionError('')
+                                setShowDeletePopup(true)
+                            }}
+                            className='primary-btn me-2'
                         >
                             Delete Application
                         </button>
-                        <p className='text-danger'>{deleteError}</p>
+                        {applicationData?.status === 'approved' && <button
+                            onClick={() => {
+                                setActionError('')
+                                setShowActivateAccountPopup(true)
+                            }}
+                            className='green-btn'
+                        >
+                            Activate vendor account
+                        </button>}
+                        <p className='text-danger'>{actionError}</p>
                     </div>
                 </div>
                 :
                 <h4 className='text-center fw-light'>{dataStatus}</h4>
             }
 
-            {showPopup &&
+            {showDeletePopup &&
                 <ConfirmPopup
                     title='Are you sure to delete this application!'
                     description="You won't be able to Retrieve this application once deleted."
                     allowText='Ok'
                     denyText='Cancel'
-                    onAction={handlePopupAction}
+                    onAction={handleDeletePopupAction}
                     isLoading={isLoading}
                 />}
+
+            {showActivateAccountPopup &&
+                <ConfirmPopup
+                    title='Activate your Vendor account'
+                    allowText='Ok'
+                    denyText='Cancel'
+                    onAction={handleActivateAccountPopupAction}
+                    isLoading={isLoading}
+                />}
+            {showSuccessPopup &&
+                <SuccessPopup
+                    title='Congratulations! Your vendor account has been created'
+                    description='You will be Logged out and redirected to Vendor Login page'
+                    onAction={handleSuccessPopupAction}
+                />
+
+            }
 
         </section>
     )

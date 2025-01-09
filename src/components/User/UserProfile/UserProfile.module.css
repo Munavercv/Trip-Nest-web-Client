@@ -1,28 +1,44 @@
-.profilePic img{
+.profilePic img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.quickLinks :first-child{
+.quickLinks :first-child {
     font-size: 15px;
     color: var(--text-grey);
 }
 
-.quickLinks .links{
+.quickLinks .links {
     text-decoration: none;
     font-size: 20px;
     font-weight: 500;
     color: var(--primary-color);
 }
 
-.details p{
+.details p {
     color: var(--text-dark-grey);
     font-size: 16px;
 }
 
-.details p span{
+.details p span {
     color: var(--primary-color);
     font-weight: 500;
+}
+
+.applicationTile {
+    color: var(--primary-color);
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.applicationTile:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
