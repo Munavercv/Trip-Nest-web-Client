@@ -39,13 +39,13 @@ const LoginForm = ({ title, role }) => {
 
       const { token } = response.data;
       dispatch(loginSuccess({ token }));
+      setLoading(false)
 
       if (role === 'user') navigate('/');
-      if (role === 'vendor') navigate('/vendor/home');
+      if (role === 'vendor') navigate('/vendor');
       if (role === 'admin') navigate('/admin/home');
 
     } catch (error) {
-      console.error(error)
       setError(error.response?.data?.message || "Invalid email or password");
       setLoading(false)
     }
@@ -127,10 +127,9 @@ const LoginForm = ({ title, role }) => {
             />
           </div>
 
-          <p className='text-danger mb-2' style={{ fontSize: '15px' }}> {error}</p>
+          <p className='text-danger mb-2 text-center' style={{ fontSize: '15px' }}> {error}</p>
 
           <div className="text-center">
-            {/* <ButtonFull type='submit' text='Login' loading={loading} /> */}
 
             <button
               className='primary-btn w-100'
@@ -152,11 +151,6 @@ const LoginForm = ({ title, role }) => {
             <hr className='my-2 border-2' />
 
             <div>
-              {/* <ButtonFullOutline type='button' onClick={handleGoogleLogin} text={<>
-                <i className="fab fa-google me-2"></i>
-                Continue with Google
-              </>} /> */}
-
               <button
                 className='w-100 outline-btn'
                 type='button'

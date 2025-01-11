@@ -8,14 +8,15 @@ const Vendors = (props) => {
   const navigate = useNavigate()
   const [dataStatus, setDataStatus] = useState('Loading...');
   // const [searchError, setSearchError] = useState('')
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
+  const loading = false
   // const [keyword, setKeyword] = useState('')
   const [vendors, setVendors] = useState([])
 
   const fetchVendors = async () => {
     try {
       const response = await axios.get(`/api/admin/all-${filter}-vendors`)
-      if(response.data.vendors.length === 0){
+      if (response.data.vendors.length === 0) {
         setDataStatus('No vendors found!')
         return;
       }
@@ -47,8 +48,8 @@ const Vendors = (props) => {
             placeholder="Search"
             aria-label="Search"
             name="keyword"
-            // value={keyword}
-            // onChange={(e) => e.target.value}
+          // value={keyword}
+          // onChange={(e) => e.target.value}
           />
 
           <button

@@ -1,0 +1,36 @@
+.cardsSec {
+    background-color: #eee;
+}
+
+
+.card{
+    border: 0;
+    padding: 1rem 0rem;
+    border-radius: 18px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .card{
+        margin-bottom: 1rem;
+    }
+}
+
+
+.card h5{
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+
+.card h6 span{
+    font-weight: 700;
+}
+
+
+.card h6{
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-dark-grey);
+}

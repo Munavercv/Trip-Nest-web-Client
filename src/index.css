@@ -3,6 +3,7 @@
     --green-color: rgb(3, 90, 3);
     --text-grey: #6E7984;
     --text-dark-grey: #585858;
+    --section-grey: #eee;
 }
 
 
@@ -12,6 +13,20 @@ body {
 
 a{
     text-decoration: none;
+}
+
+section{
+    margin-bottom: 2rem;
+}
+
+.slick-prev, .slick-next {
+    display: block !important; /* Ensure arrows are displayed */
+    z-index: 1; /* Bring them above other elements */
+}
+
+.slick-prev:before, .slick-next:before {
+    color: black; /* Change arrow color */
+    font-size: 20px; /* Adjust size */
 }
 
 .form-input {
@@ -73,6 +88,12 @@ a{
     font-size: 28px;
     font-weight: 700;
     color: var(--primary-color);
+}
+
+.section-subtitle{
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-dark-grey);
 }
 
 .primary-btn {

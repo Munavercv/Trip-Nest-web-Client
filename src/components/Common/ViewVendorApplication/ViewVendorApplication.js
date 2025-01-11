@@ -122,7 +122,7 @@ const ViewVendorApplication = () => {
                         <hr className='border-2' />
                         <div className={`${styles.item} ms-md-5`}>
                             <h5>Website Url</h5>
-                            <a href={applicationData.websiteUrl} target='_blank'>
+                            <a href={applicationData.websiteUrl} target='_blank' rel="noopener noreferrer">
                                 <h6>{applicationData.websiteUrl}</h6>
                             </a>
                         </div>
@@ -143,12 +143,14 @@ const ViewVendorApplication = () => {
                         <h6>Certificate:
                             <a href={applicationData.certificateUrl}
                                 target='_blank'
+                                rel="noopener noreferrer"
                             >
                                 <button className='primary-btn ms-3'>View</button>
                             </a></h6>
                         <h6>Owner ID:
                             <a href={applicationData.ownerIdUrl}
                                 target='_blank'
+                                rel="noopener noreferrer"
                             >
                                 <button className='primary-btn ms-3'>View</button>
                             </a></h6>

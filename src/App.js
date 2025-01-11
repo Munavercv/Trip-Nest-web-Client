@@ -1,8 +1,9 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import AdminLogin from "./pages/admin/AdminLogin";
 import VendorLogin from "./pages/vendor/VendorLogin";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Route, Routes } from 'react-router-dom';
-import Loginsuccess from "./components/Common/Loginsuccess";
 import UserLogin from "./pages/user/UserLogin";
 import UserSignup from "./pages/user/UserSignup";
 import AdminHome from "./pages/admin/AdminHome";
@@ -29,13 +30,14 @@ import ApprovedApplicationsPage from "./pages/admin/ApprovedApplicationsPage";
 import AdminViewApplicationPage from "./pages/admin/AdminViewApplicationPage";
 import ActivatedApplicationsPage from "./pages/admin/ActivatedApplicationsPage";
 import VendorActivationPage from "./pages/user/VendorActivationPage";
+import VendorHomePage from "./pages/vendor/VendorHomePage";
 
 function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(checkAuthStatus());
-}, [dispatch])
+  }, [dispatch])
 
   return (
     <div className="App">
@@ -43,7 +45,6 @@ function App() {
       <Routes>
         {/* ADMIN routes */}
         <Route path="/admin/auth/login" element={<AdminLogin />} />
-        <Route path="/login-success" element={<Loginsuccess />} />
         <Route path="/admin/home" element={<ProtectedRoutes requiredRole='admin' ><AdminHome /></ProtectedRoutes>} />
         <Route path="/admin/active-vendors" element={<ProtectedRoutes requiredRole='admin' ><AllVendors /></ProtectedRoutes>} />
         <Route path="/admin/disabled-vendors" element={<ProtectedRoutes requiredRole='admin' ><DisabledVendors /></ProtectedRoutes>} />
@@ -62,7 +63,7 @@ function App() {
 
         {/* VENDOR routes */}
         <Route path="/vendor/auth/login" element={<VendorLogin />} />
-        <Route path="/login-success" element={<Loginsuccess />} />
+        <Route path="/vendor" element={<ProtectedRoutes requiredRole='vendor' > <VendorHomePage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}

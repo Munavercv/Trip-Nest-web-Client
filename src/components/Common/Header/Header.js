@@ -12,7 +12,7 @@ const Header = () => {
 
     const handleLogout = () => {
         const confirm = window.confirm('Logout?');
-        if(!confirm) return
+        if (!confirm) return
 
         dispatch(logout());
         localStorage.removeItem('token');
@@ -32,7 +32,13 @@ const Header = () => {
         <header>
             <nav className="navbar navbar-expand-md bg-white shadow-sm">
                 <div className="container-fluid px-md-5">
-                    <Link className="navbar-brand" to={userRole === 'user' ? '/' : `/${userRole}/home`} >
+                    <Link className="navbar-brand" to={
+                        userRole === 'user'
+                            ? '/'
+                            : userRole === 'admin'
+                                ? '/admin/home'
+                                : '/vendor'
+                    } >
                         <Logo />
                     </Link>
                     <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
@@ -41,17 +47,17 @@ const Header = () => {
                         <i className="fa-solid fa-bars"></i>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav ms-auto mb-2 mb-md-0">
-                            <li className="nav-item">
-                                <Link
-                                    className={`nav-link ${styles.navLink}`}
-                                    aria-current="page"
-                                    to={userRole === 'user' ? '/' : `/${userRole}/home`}
-                                >Home</Link>
-                            </li>
+                        <ul className="navbar-nav mb-2 mb-md-0 text-end me-md-0 me-4 ms-md-auto">
+
                             {loggedIn && userRole === 'admin' &&
                                 <>
-
+                                    <li className="nav-item">
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                            aria-current="page"
+                                            to='/admin/home'
+                                        >Home</Link>
+                                    </li>
                                     <li className="nav-item dropdown">
                                         <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Vendors
@@ -83,6 +89,13 @@ const Header = () => {
 
 
                             {userRole === 'user' && <>
+                                <li className="nav-item">
+                                    <Link
+                                        className={`nav-link ${styles.navLink}`}
+                                        aria-current="page"
+                                        to='/'
+                                    >Home</Link>
+                                </li>
                                 <li className="nav-item dropdown">
                                     <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Packages
@@ -112,6 +125,51 @@ const Header = () => {
                                 </>
                                 }
                             </>
+                            }
+
+                            {/* For vendors */}
+                            {loggedIn && userRole === 'vendor' &&
+                                <>
+                                    <li>
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                        ><i className="fa-solid fa-bell"></i></Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                            aria-current="page"
+                                            to='/vendor'
+                                        >Home</Link>
+                                    </li>
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            packages
+                                        </Link>
+                                        <ul className="dropdown-menu">
+                                            <li><Link className="dropdown-item" to='/vendor' >Inactive</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor' >Approved</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor' >Rejected</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor' >Pending</Link></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                        >Payments</Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                        >Chat</Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className={`nav-link ${styles.navLink}`}
+                                            to='/vendor/profile'
+                                        >Account</Link>
+                                    </li>
+                                </>
                             }
 
                             <li className="nav-item ms-md-2">
