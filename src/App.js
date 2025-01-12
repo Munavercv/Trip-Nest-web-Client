@@ -31,6 +31,7 @@ import AdminViewApplicationPage from "./pages/admin/AdminViewApplicationPage";
 import ActivatedApplicationsPage from "./pages/admin/ActivatedApplicationsPage";
 import VendorActivationPage from "./pages/user/VendorActivationPage";
 import VendorHomePage from "./pages/vendor/VendorHomePage";
+import VendorProfilePage from "./pages/vendor/VendorProfilePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -64,6 +65,7 @@ function App() {
         {/* VENDOR routes */}
         <Route path="/vendor/auth/login" element={<VendorLogin />} />
         <Route path="/vendor" element={<ProtectedRoutes requiredRole='vendor' > <VendorHomePage /></ProtectedRoutes>} />
+        <Route path="/vendor/profile" element={<ProtectedRoutes requiredRole='vendor' > <VendorProfilePage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}

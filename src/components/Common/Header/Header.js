@@ -127,7 +127,7 @@ const Header = () => {
                             </>
                             }
 
-                            {/* For vendors */}
+                            {/* For VENDORS */}
                             {loggedIn && userRole === 'vendor' &&
                                 <>
                                     <li>
