@@ -8,42 +8,42 @@ const YourTopPackages = () => {
 
     const packages = [
         {
-            imgUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
+            imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
             price: 19999,
             title: 'A trip to paris',
-            type: 'HoneyMoon',
+            category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
             destination: 'Paris'
         },
         {
-            imgUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
+            imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
             price: 19999,
             title: 'A trip to paris',
-            type: 'HoneyMoon',
+            category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
             destination: 'Paris'
         },
         {
-            imgUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
+            imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
             price: 19999,
             title: 'A trip to paris',
-            type: 'HoneyMoon',
+            category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
             destination: 'Paris'
         },
         {
-            imgUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
+            imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
             price: 19999,
             title: 'A trip to paris',
-            type: 'HoneyMoon',
+            category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
             destination: 'Paris'
         },
         {
-            imgUrl: 'https://images.unsplash.com/photo-1562060726-e47264af32bd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFsYXlzaWF8ZW58MHwxfDB8fHww',
+            imageUrl: 'https://images.unsplash.com/photo-1562060726-e47264af32bd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFsYXlzaWF8ZW58MHwxfDB8fHww',
             price: 19999,
             title: 'A road trip to Malaysia',
-            type: 'Adventure',
+            category: 'Adventure',
             discription: 'An adventure road trip',
             destination: 'Malaysia'
         }

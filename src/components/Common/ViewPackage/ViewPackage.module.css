@@ -1,0 +1,44 @@
+.imageContainer {
+  height: 300px;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.packageImage {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.detailsSection {
+  width: 100%;
+  background: var(--section-grey);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.detailsSection .container {
+  max-width: 1200px;
+  padding: 0 15px;
+}
+
+.detailsSection div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.descriptionSection p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.actions a {
+  color: var(--primary-color);
+}

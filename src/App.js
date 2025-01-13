@@ -33,6 +33,11 @@ import VendorActivationPage from "./pages/user/VendorActivationPage";
 import VendorHomePage from "./pages/vendor/VendorHomePage";
 import VendorProfilePage from "./pages/vendor/VendorProfilePage";
 import VendorCreatePackagePage from "./pages/vendor/VendorCreatePackagePage";
+import VendorPendingPackagesPage from "./pages/vendor/VendorPendingPackagesPage";
+import VendorApprovedPackages from "./pages/vendor/VendorApprovedPackages";
+import VendorRejectedPackages from "./pages/vendor/VendorRejectedPackages";
+import VendorInactivePackages from "./pages/vendor/VendorInactivePackages";
+import VendorViewPackagePage from "./pages/vendor/VendorViewPackagePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -68,6 +73,11 @@ function App() {
         <Route path="/vendor" element={<ProtectedRoutes requiredRole='vendor' > <VendorHomePage /></ProtectedRoutes>} />
         <Route path="/vendor/profile" element={<ProtectedRoutes requiredRole='vendor' > <VendorProfilePage /></ProtectedRoutes>} />
         <Route path="/vendor/create-package" element={<ProtectedRoutes requiredRole='vendor' > <VendorCreatePackagePage /></ProtectedRoutes>} />
+        <Route path="/vendor/pending-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorPendingPackagesPage /></ProtectedRoutes>} />
+        <Route path="/vendor/approved-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorApprovedPackages /></ProtectedRoutes>} />
+        <Route path="/vendor/rejected-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorRejectedPackages /></ProtectedRoutes>} />
+        <Route path="/vendor/inactive-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorInactivePackages /></ProtectedRoutes>} />
+        <Route path="/vendor/view-package/:id" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackagePage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}

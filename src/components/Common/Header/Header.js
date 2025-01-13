@@ -147,10 +147,10 @@ const Header = () => {
                                             packages
                                         </Link>
                                         <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='/vendor' >Inactive</Link></li>
-                                            <li><Link className="dropdown-item" to='/vendor' >Approved</Link></li>
-                                            <li><Link className="dropdown-item" to='/vendor' >Rejected</Link></li>
-                                            <li><Link className="dropdown-item" to='/vendor' >Pending</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/inactive-packages' >Inactive</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/approved-packages' >Approved</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/rejected-packages' >Rejected</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/pending-packages' >Pending</Link></li>
                                         </ul>
                                     </li>
                                     <li>
