@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const VendorHomeBanner = () => {
     return (
@@ -8,9 +9,11 @@ const VendorHomeBanner = () => {
                 we create a big opportunity to get and interact with your clients.
             </p>
 
-            <button className='primary-btn'>
-                Create package +
-            </button>
+            <Link to='/vendor/create-package'>
+                <button className='primary-btn'>
+                    Create package +
+                </button>
+            </Link>
 
             {/* <div className="row cols-md-4 mt-5 py-5">
 

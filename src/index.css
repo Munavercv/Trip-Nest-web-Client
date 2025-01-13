@@ -19,6 +19,13 @@ section{
     margin-bottom: 2rem;
 }
 
+label{
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-dark-grey);
+}
+
+
 .slick-prev, .slick-next {
     display: block !important; /* Ensure arrows are displayed */
     z-index: 1; /* Bring them above other elements */
@@ -73,6 +80,11 @@ section{
     border-color: var(--text-dark-grey);
 }
 
+.form-required label:after {
+    content:"*";
+    color:red;
+  }
+
 .banner-heading {
     font-size: 48px;
     font-weight: 600;
@@ -104,6 +116,13 @@ section{
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+}
+
+.primary-btn:disabled{
+    background-color: #585858;
+}
+.primary-btn:disabled:hover{
+    background-color: #585858;
 }
 
 .primary-btn:hover{
