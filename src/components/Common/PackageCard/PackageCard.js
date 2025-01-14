@@ -25,6 +25,14 @@ const PackageCard = ({ imageUrl, price, title, description, destination, categor
                     </Link>
                 }
 
+                {userRole === 'admin' &&
+                    < Link to={`/admin/view-package/${_id}`}>
+                        <button className='primary-btn my-2'>
+                            View
+                        </button>
+                    </Link>
+                }
+
             </div>
         </div >
     )

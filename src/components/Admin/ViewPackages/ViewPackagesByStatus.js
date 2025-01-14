@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import styles from './VendorViewPackage.module.css'
+import styles from './ViewPackagesByStatus.module.css'
 import PackageCard from '../../Common/PackageCard/PackageCard'
-import { useSelector } from 'react-redux'
 import axios from 'axios'
 
-const VendorViewPackages = ({ status }) => {
-    const { user } = useSelector((state) => state.auth)
+const ViewPackagesByStatus = ({ status }) => {
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [packages, setPackages] = useState([])
 
-    const fetchPackages = async (vendorId, status) => {
+    const fetchPackages = async (status) => {
         try {
-            const response = await axios.get(`/api/vendor/get-${status}-packages/${vendorId}`)
+            const response = await axios.get(`/api/admin/get-all-${status}-packages`)
             if (response.data.packages.length === 0) {
                 setDataStatus('No packages found')
                 return
             }
-
             setPackages(response.data.packages)
+            setDataStatus('')
         } catch (error) {
             console.error(error.response?.data?.message || 'Internal server error');
             setDataStatus(error.response?.data?.message || 'Internal server error')
@@ -25,12 +23,12 @@ const VendorViewPackages = ({ status }) => {
     }
 
     useEffect(() => {
-        fetchPackages(user.userId, status)
-    }, [user, status])
+        fetchPackages(status)
+    }, [status])
 
     return (
         <section className={`${styles.PackagesSec} container-fluid py-4`}>
-            <h4 className='section-title text-center'>My {status} Packages</h4>
+            <h4 className='section-title text-center mb-4'> {status} Packages</h4>
 
             <div className="row">
                 {packages.length > 0 ?
@@ -45,8 +43,7 @@ const VendorViewPackages = ({ status }) => {
                 }
             </div>
         </section>
-
     )
 }
 
-export default VendorViewPackages
+export default ViewPackagesByStatus

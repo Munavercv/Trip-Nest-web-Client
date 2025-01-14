@@ -38,6 +38,12 @@ import VendorApprovedPackages from "./pages/vendor/VendorApprovedPackages";
 import VendorRejectedPackages from "./pages/vendor/VendorRejectedPackages";
 import VendorInactivePackages from "./pages/vendor/VendorInactivePackages";
 import VendorViewPackagePage from "./pages/vendor/VendorViewPackagePage";
+import AdminViewPendingPackages from "./pages/admin/AdminViewPendingPackages";
+import AdminViewApprovedPackages from "./pages/admin/AdminViewApprovedPackages";
+import AdminViewRejectedPackages from "./pages/admin/AdminViewRejectedPackages";
+import AdminViewActivePackages from "./pages/admin/AdminViewActivePackages";
+import AdminViewInactivePackages from "./pages/admin/AdminViewInactivePackages";
+import AdminViewPackagePage from "./pages/admin/AdminViewPackagePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -66,6 +72,12 @@ function App() {
         <Route path="/admin/users/user-account/:userId" element={<ProtectedRoutes requiredRole='admin' ><ViewUserAccount /></ProtectedRoutes>} />
         <Route path="/admin/users/create-user" element={<ProtectedRoutes requiredRole='admin' ><CreateUserPage /></ProtectedRoutes>} />
         <Route path="/admin/users/edit-user/:userId" element={<ProtectedRoutes requiredRole='admin' ><EditUserPage /></ProtectedRoutes>} />
+        <Route path="/admin/pending-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPendingPackages /></ProtectedRoutes>} />
+        <Route path="/admin/approved-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewApprovedPackages /></ProtectedRoutes>} />
+        <Route path="/admin/rejected-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewRejectedPackages /></ProtectedRoutes>} />
+        <Route path="/admin/active-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewActivePackages /></ProtectedRoutes>} />
+        <Route path="/admin/inactive-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewInactivePackages /></ProtectedRoutes>} />
+        <Route path="/admin/view-package/:id" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackagePage /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}
