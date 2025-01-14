@@ -18,6 +18,8 @@ const ViewPackage = () => {
     const [loading, setLoading] = useState(false)
     const [actionError, setActionError] = useState('')
     const [isLoading, setIsLoading] = useState(false);
+    const [activating, setActivating] = useState(false)
+    const [deactivating, setDeactivating] = useState(false)
 
     const fetchPackage = async (id) => {
         try {
@@ -51,7 +53,7 @@ const ViewPackage = () => {
         setActionError('')
         const confirmed = window.confirm('Are you sure to approve this package')
         if (!confirmed) return
-        try {   
+        try {
             const response = await axios.put(`/api/admin/approve-package/${id}`)
             window.alert('Successfully approved package')
             setPackageDetails(response.data.package)
@@ -74,6 +76,36 @@ const ViewPackage = () => {
         } finally {
             setIsLoading(false)
             setShowRejectPopup(false)
+        }
+    }
+
+    const handleActivatePackage = async (id) => {
+        setActionError('')
+        setActivating(true)
+        try {
+            const response = await axios.put(`/api/vendor/activate-package/${id}`)
+            window.alert('Congratulations! Your package is now active')
+            setPackageDetails(response.data.package)
+        } catch (error) {
+            console.error(error.response?.data?.message || "An error occured while activating package");
+            setActionError(error.response?.data?.message || "An error occured while activating package")
+        } finally {
+            setActivating(false)
+        }
+    }
+
+    const handleDeactivatePackage = async (id) => {
+        setActionError('')
+        setDeactivating(true)
+        try {
+            const response = await axios.put(`/api/vendor/deactivate-package/${id}`)
+            window.alert('Your package deactivated successfully')
+            setPackageDetails(response.data.package)
+        } catch (error) {
+            console.error(error.response?.data?.message || "An error occured while deactivating package");
+            setActionError(error.response?.data?.message || "An error occured while deactivating package")
+        } finally {
+            setDeactivating(false)
         }
     }
 
@@ -117,7 +149,9 @@ const ViewPackage = () => {
                             ? 'text-success'
                             : packageDetails.status === 'inactive'
                                 ? 'text-secondary'
-                                : 'text-danger'
+                                : packageDetails.status === 'active'
+                                    ? 'text-info'
+                                    : 'text-danger'
                         }`}
                 >
                     {packageDetails.status}
@@ -178,29 +212,30 @@ const ViewPackage = () => {
                                 </Link>
                             </div>
                             <div className="text-center">
+                                {(packageDetails.status === 'approved' || packageDetails.status === 'inactive') && (
+                                    <>
+                                        <button
+                                            onClick={() => handleActivatePackage(packageDetails._id)}
+                                            disabled={activating}
+                                            className="primary-btn me-2"
+                                        >
+                                            {activating ? "Activating..." : "Activate"}
+                                        </button>
+                                    </>
+                                )}
+
                                 <Link to={`/vendor/edit-package/${packageDetails._id}`}>
                                     <button
                                         className="primary-btn me-2"
                                     >Edit</button>
                                 </Link>
 
-                                {(packageDetails.status === 'approved' || packageDetails.status === 'inactive') && (
-                                    <>
-                                        <button
-                                            onClick={handleDeletePackage}
-                                            disabled={loading}
-                                            className="primary-btn me-2"
-                                        >
-                                            {loading ? "Activating..." : "Activate"}
-                                        </button>
-                                    </>
-                                )}
 
 
                                 {packageDetails.status === 'active' && <>
                                     <button
-                                        onClick={handleDeletePackage}
-                                        disabled={loading}
+                                        onClick={() => handleDeactivatePackage(packageDetails._id)}
+                                        disabled={deactivating}
                                         className="primary-btn me-2"
                                     >
                                         {loading ?
