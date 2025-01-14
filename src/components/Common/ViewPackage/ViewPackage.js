@@ -169,7 +169,10 @@ const ViewPackage = () => {
                                 className={`${styles.packageImage} img-fluid rounded`}
                             />
                         </div>
-                        <h2 className="mt-3 fw-bold">{packageDetails.title}</h2>
+                        <p className="text-muted mt-3 mb-0">
+                        <i className="fa-solid fa-star" style={{ color: '#ffdf00' }}></i> {packageDetails.rating.avgRating}
+                        </p>
+                        <h2 className="mt-1 fw-bold">{packageDetails.title}</h2>
                         <h4 className="mt-3 fw-semibold">
                             <i className="fa-solid fa-map-location-dot"></i> {packageDetails.destination}
                         </h4>
@@ -203,6 +206,23 @@ const ViewPackage = () => {
                     <div className={`${styles.descriptionSection} mt-4 text-center`}>
                         <p className="text-muted">{packageDetails.description}</p>
                     </div>
+
+                    {userRole === 'user' &&
+                        <div className={`${styles.actions} text-center mt-5`}>
+                            <button
+                                className="primary-btn me-2"
+                            >
+                                Book Now
+                            </button>
+                            <Link>
+                                <button
+                                    className="outline-btn me-2 mt-2 mt-sm-0"
+                                >
+                                    want to know More? chat
+                                </button>
+                            </Link>
+                        </div>
+                    }
 
                     {userRole === 'vendor' && user.userId === packageDetails.vendorId &&
                         <div className={styles.actions}>

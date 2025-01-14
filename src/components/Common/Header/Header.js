@@ -112,7 +112,7 @@ const Header = () => {
                                         Packages
                                     </Link>
                                     <ul className="dropdown-menu">
-                                        <li><Link className="dropdown-item" to='' >Top packages</Link></li>
+                                        <li><Link className="dropdown-item" to='/#topPackages' >Top packages</Link></li>
                                         <li><Link className="dropdown-item" to='' >Adventure</Link></li>
                                         <li><Link className="dropdown-item" to='' >Honeymoon</Link></li>
                                         <li><Link className="dropdown-item" to='' >Holiday</Link></li>
@@ -158,6 +158,7 @@ const Header = () => {
                                             packages
                                         </Link>
                                         <ul className="dropdown-menu">
+                                            <li><Link className="dropdown-item" to='/vendor/active-packages' >Active</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/inactive-packages' >Inactive</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/approved-packages' >Approved</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/rejected-packages' >Rejected</Link></li>
