@@ -46,6 +46,8 @@ import AdminViewInactivePackages from "./pages/admin/AdminViewInactivePackages";
 import AdminViewPackagePage from "./pages/admin/AdminViewPackagePage";
 import UserViewPackagePage from "./pages/user/UserViewPackagePage";
 import VendorActivePackages from "./pages/vendor/VendorActivePackages";
+import UserChatPage from "./pages/user/UserChatPage";
+import VendorChatPage from "./pages/vendor/VendorChatPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -93,6 +95,8 @@ function App() {
         <Route path="/vendor/inactive-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorInactivePackages /></ProtectedRoutes>} />
         <Route path="/vendor/active-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorActivePackages /></ProtectedRoutes>} />
         <Route path="/vendor/view-package/:id" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackagePage /></ProtectedRoutes>} />
+        <Route path="/vendor/inbox" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
+        <Route path="/vendor/chat/:chatId" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}
@@ -105,6 +109,8 @@ function App() {
         <Route path="/view-my-vendor-application" element={<ProtectedRoutes requiredRole='user' ><ViewVendorApplicationPage /></ProtectedRoutes>} />
         <Route path="/activate-vendor-account/:applicationId" element={<ProtectedRoutes requiredRole='user' ><VendorActivationPage /></ProtectedRoutes>} />
         <Route path="/view-package/:id" element={<ProtectedRoutes requiredRole='user' ><UserViewPackagePage /></ProtectedRoutes>} />
+        <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
+        <Route path="/inbox/:chatId" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
 
 
       </Routes>

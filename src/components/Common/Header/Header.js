@@ -121,7 +121,7 @@ const Header = () => {
 
                                 {loggedIn && <>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${styles.navLink}`} to="">Inbox</Link>
+                                        <Link className={`nav-link ${styles.navLink}`} to="/inbox">Inbox</Link>
                                     </li>
                                     <li className="nav-item dropdown">
                                         <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -172,6 +172,7 @@ const Header = () => {
                                     </li>
                                     <li>
                                         <Link
+                                            to='/vendor/inbox'
                                             className={`nav-link ${styles.navLink}`}
                                         >Chat</Link>
                                     </li>
