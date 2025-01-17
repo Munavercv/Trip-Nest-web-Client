@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styles from './ViewPackage.module.css'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { checkAuthStatus } from '../../../redux/slices/authSlice'
+import { selectChat } from '../../../redux/slices/chatSlice'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import InputPopup from '../Popups/InputPopup'
 
 const ViewPackage = () => {
     const { id } = useParams()
-    const { user, userRole } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const { user, userRole, loggedIn } = useSelector((state) => state.auth)
     const navigate = useNavigate()
 
     const [showRejectPopup, setShowRejectPopup] = useState(false)
@@ -20,6 +23,7 @@ const ViewPackage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activating, setActivating] = useState(false)
     const [deactivating, setDeactivating] = useState(false)
+    const [chatLoading, setChatLoading] = useState(false)
 
     const fetchPackage = async (id) => {
         try {
@@ -117,6 +121,30 @@ const ViewPackage = () => {
         }
     }
 
+    const handleStartConversation = async (vendorId, userId) => {
+        setActionError('')
+        setChatLoading(true)
+        dispatch(checkAuthStatus())
+        if (!loggedIn) {
+            window.alert('Please login')
+            setChatLoading(false)
+            return
+        }
+
+        try {
+            const response = await axios.post('/api/common/start-conversation', { userId, vendorId })
+            const chatId = response.data.conversation._id
+            dispatch(selectChat({ chatId }))
+            userRole === 'vendor' ? navigate(`/vendor/inbox`)
+                : navigate(`/inbox`)
+        } catch (error) {
+            console.error(error.response.data.message || 'Error creating conversation');
+            setActionError(error.response.data.message || 'Error creating conversation')
+        } finally {
+            setChatLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchPackage(id)
     }, [id])
@@ -170,7 +198,7 @@ const ViewPackage = () => {
                             />
                         </div>
                         <p className="text-muted mt-3 mb-0">
-                        <i className="fa-solid fa-star" style={{ color: '#ffdf00' }}></i> {packageDetails.rating.avgRating}
+                            <i className="fa-solid fa-star" style={{ color: '#ffdf00' }}></i> {packageDetails.rating.avgRating}
                         </p>
                         <h2 className="mt-1 fw-bold">{packageDetails.title}</h2>
                         <h4 className="mt-3 fw-semibold">
@@ -216,9 +244,14 @@ const ViewPackage = () => {
                             </button>
                             <Link>
                                 <button
+                                    disabled={chatLoading}
+                                    onClick={() => {
+                                        handleStartConversation(packageDetails.vendorId, user?.userId)
+                                    }}
                                     className="outline-btn me-2 mt-2 mt-sm-0"
                                 >
-                                    want to know More? chat
+                                    {chatLoading ? 'Loading...'
+                                        : 'want to know More? chat'}
                                 </button>
                             </Link>
                         </div>
@@ -335,4 +368,4 @@ const ViewPackage = () => {
     )
 }
 
-export default ViewPackage
+export default ViewPackage;                                                                                         

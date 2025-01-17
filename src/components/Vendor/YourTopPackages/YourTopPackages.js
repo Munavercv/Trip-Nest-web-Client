@@ -13,7 +13,10 @@ const YourTopPackages = () => {
             title: 'A trip to paris',
             category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
-            destination: 'Paris'
+            destination: 'Paris',
+            rating: {
+                avgRating: 4.0
+            }
         },
         {
             imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
@@ -21,7 +24,10 @@ const YourTopPackages = () => {
             title: 'A trip to paris',
             category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
-            destination: 'Paris'
+            destination: 'Paris',
+            rating: {
+                avgRating: 4.0
+            }
         },
         {
             imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
@@ -29,7 +35,10 @@ const YourTopPackages = () => {
             title: 'A trip to paris',
             category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
-            destination: 'Paris'
+            destination: 'Paris',
+            rating: {
+                avgRating: 4.0
+            }
         },
         {
             imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBhcmlzfGVufDB8MXwwfHx8MA%3D%3D',
@@ -37,7 +46,10 @@ const YourTopPackages = () => {
             title: 'A trip to paris',
             category: 'HoneyMoon',
             discription: 'A honeymoon trip to paris',
-            destination: 'Paris'
+            destination: 'Paris',
+            rating: {
+                avgRating: 4.0
+            }
         },
         {
             imageUrl: 'https://images.unsplash.com/photo-1562060726-e47264af32bd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFsYXlzaWF8ZW58MHwxfDB8fHww',
@@ -45,7 +57,10 @@ const YourTopPackages = () => {
             title: 'A road trip to Malaysia',
             category: 'Adventure',
             discription: 'An adventure road trip',
-            destination: 'Malaysia'
+            destination: 'Malaysia',
+            rating: {
+                avgRating: 4.0
+            }
         }
     ]
 

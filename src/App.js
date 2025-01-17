@@ -96,7 +96,6 @@ function App() {
         <Route path="/vendor/active-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorActivePackages /></ProtectedRoutes>} />
         <Route path="/vendor/view-package/:id" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackagePage /></ProtectedRoutes>} />
         <Route path="/vendor/inbox" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
-        <Route path="/vendor/chat/:chatId" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}
@@ -108,9 +107,8 @@ function App() {
         <Route path="/vendor-application" element={<ProtectedRoutes requiredRole='user' ><VendorApplicationPage /></ProtectedRoutes>} />
         <Route path="/view-my-vendor-application" element={<ProtectedRoutes requiredRole='user' ><ViewVendorApplicationPage /></ProtectedRoutes>} />
         <Route path="/activate-vendor-account/:applicationId" element={<ProtectedRoutes requiredRole='user' ><VendorActivationPage /></ProtectedRoutes>} />
-        <Route path="/view-package/:id" element={<ProtectedRoutes requiredRole='user' ><UserViewPackagePage /></ProtectedRoutes>} />
+        <Route path="/view-package/:id" element={<UserViewPackagePage />} />
         <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
-        <Route path="/inbox/:chatId" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
 
 
       </Routes>
