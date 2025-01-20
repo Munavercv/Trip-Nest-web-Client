@@ -1,0 +1,15 @@
+.bookingTile {
+    color: var(--primary-color);
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    box-shadow: 0 4px 10px 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bookingTile:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}

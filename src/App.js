@@ -48,6 +48,8 @@ import UserViewPackagePage from "./pages/user/UserViewPackagePage";
 import VendorActivePackages from "./pages/vendor/VendorActivePackages";
 import UserChatPage from "./pages/user/UserChatPage";
 import VendorChatPage from "./pages/vendor/VendorChatPage";
+import UserViewBookingsPage from "./pages/user/UserViewBookingsPage";
+import UserViewBookingDetailsPage from "./pages/user/UserViewBookingDetailsPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -109,6 +111,8 @@ function App() {
         <Route path="/activate-vendor-account/:applicationId" element={<ProtectedRoutes requiredRole='user' ><VendorActivationPage /></ProtectedRoutes>} />
         <Route path="/view-package/:id" element={<UserViewPackagePage />} />
         <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
+        <Route path="/my-bookings" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingsPage /></ProtectedRoutes>} />
+        <Route path="/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingDetailsPage /></ProtectedRoutes>} />
 
 
       </Routes>

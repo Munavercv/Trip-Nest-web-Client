@@ -7,6 +7,8 @@ import { selectChat } from '../../../redux/slices/chatSlice'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import InputPopup from '../Popups/InputPopup'
+import ConfirmPopup from '../Popups/ConfirmPopup'
+import UserBookingModal from './UserBookingModal'
 
 const ViewPackage = () => {
     const { id } = useParams()
@@ -24,6 +26,9 @@ const ViewPackage = () => {
     const [activating, setActivating] = useState(false)
     const [deactivating, setDeactivating] = useState(false)
     const [chatLoading, setChatLoading] = useState(false)
+    const [showBookingModal, setShowBookingModal] = useState(false)
+    const [bookingError, setBookingError] = useState('')
+    const [bookingSuccess, setBookingSuccess] = useState(false)
 
     const fetchPackage = async (id) => {
         try {
@@ -113,14 +118,6 @@ const ViewPackage = () => {
         }
     }
 
-    const handleRejectPopupAction = (confirm, inputvalue) => {
-        if (confirm) {
-            handleRejectPackage(packageDetails._id, inputvalue)
-        } else {
-            setShowRejectPopup(false)
-        }
-    }
-
     const handleStartConversation = async (vendorId, userId) => {
         setActionError('')
         setChatLoading(true)
@@ -142,6 +139,56 @@ const ViewPackage = () => {
             setActionError(error.response.data.message || 'Error creating conversation')
         } finally {
             setChatLoading(false)
+        }
+    }
+
+    const handleBookingPackage = async (inputData, totalAmount) => {
+        setBookingError('')
+        setIsLoading(true)
+        try {
+            await axios.post(`/api/user/book-package/${packageDetails._id}`, {
+                formData: inputData,
+                userId: user.userId,
+                totalAmount,
+            })
+            setShowBookingModal(false)
+            setBookingSuccess(true)
+        } catch (error) {
+            setBookingError(error.response?.data?.message || 'Internal server error')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleRejectPopupAction = (confirm, inputvalue) => {
+        if (confirm) {
+            handleRejectPackage(packageDetails._id, inputvalue)
+        } else {
+            setShowRejectPopup(false)
+        }
+    }
+
+    const handleBookingPopupAction = (confirm, inputValue, totalAmount) => {
+        setBookingError('')
+        if (confirm) {
+            if (inputValue.numberOfSeats < 1) {
+                setBookingError('Please enter the number of seats you want')
+                return
+            } else if (inputValue.numberOfSeats > packageDetails.availableSlots) {
+                setBookingError(`Only ${packageDetails.availableSlots} seats left`)
+                return
+            }
+            handleBookingPackage(inputValue, totalAmount)
+        } else {
+            setShowBookingModal(false)
+        }
+    }
+
+    const handleBookingSuccessPopupAction = (confirm) => {
+        if(confirm) {
+            navigate('/my-bookings')
+        } else {
+            setBookingSuccess(false)
         }
     }
 
@@ -239,6 +286,14 @@ const ViewPackage = () => {
                         <div className={`${styles.actions} text-center mt-5`}>
                             <button
                                 className="primary-btn me-2"
+                                onClick={() => {
+                                    dispatch(checkAuthStatus())
+                                    if (!user) {
+                                        alert('please login')
+                                        return
+                                    }
+                                    setShowBookingModal(true)
+                                }}
                             >
                                 Book Now
                             </button>
@@ -364,6 +419,26 @@ const ViewPackage = () => {
                     onAction={handleRejectPopupAction}
                 />
             }
+
+            {showBookingModal &&
+                <UserBookingModal
+                    onAction={handleBookingPopupAction}
+                    isLoading={isLoading}
+                    error={bookingError}
+                    price={packageDetails.price}
+                />
+            }
+
+            {bookingSuccess &&
+                <ConfirmPopup
+                    title='Booking successfull'
+                    description='See your bookings'
+                    allowText='Ok'
+                    denyText='Cancel'
+                    onAction={handleBookingSuccessPopupAction}
+                />
+            }
+
         </section >
     )
 }
