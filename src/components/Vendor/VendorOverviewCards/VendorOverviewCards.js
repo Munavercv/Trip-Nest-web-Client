@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './VendorOverviewCards.module.css'
+import { Link } from 'react-router-dom'
 
 const VendorOverviewCards = () => {
     return (
@@ -12,7 +13,8 @@ const VendorOverviewCards = () => {
                         <div className="card-body text-center">
                             <h5 className="card-title">Bookings</h5>
                             <h6 className="card-subtitle mb-3"><span>0</span> pending</h6>
-                            <button className='primary-btn'>View</button>
+                            <Link to='/vendor/view-pending-bookings'
+                            ><button className='primary-btn'>View</button></Link>
                         </div>
                     </div>
                 </div>

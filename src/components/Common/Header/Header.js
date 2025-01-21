@@ -130,7 +130,7 @@ const Header = () => {
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
                                             <li><Link className="dropdown-item" to='/my-bookings' >My Bookings</Link></li>
-                                            {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='' >Register as Vendor</Link></li>}
+                                            {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='/vendor-application' >Register as Vendor</Link></li>}
                                         </ul>
                                     </li>
                                 </>
@@ -145,6 +145,12 @@ const Header = () => {
                                         <Link
                                             className={`nav-link ${styles.navLink}`}
                                         ><i className="fa-solid fa-bell"></i></Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to='/vendor/inbox'
+                                            className={`nav-link ${styles.navLink}`}
+                                        ><i className="fa-solid fa-message"></i></Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link
@@ -168,19 +174,29 @@ const Header = () => {
                                     <li>
                                         <Link
                                             className={`nav-link ${styles.navLink}`}
-                                        >Payments</Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to='/vendor/inbox'
-                                            className={`nav-link ${styles.navLink}`}
-                                        >Chat</Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            className={`nav-link ${styles.navLink}`}
                                             to='/vendor/profile'
                                         >Account</Link>
+                                    </li>
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Bookings
+                                        </Link>
+                                        <ul className="dropdown-menu">
+                                            <li><Link className="dropdown-item" to='/vendor/view-pending-bookings' >Pending Bookings</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/view-approved-bookings' >Approved Bookings</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/view-rejected-bookings' >Rejected Bookings</Link></li>
+                                        </ul>
+                                    </li>
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Other
+                                        </Link>
+                                        <ul className="dropdown-menu">
+                                            <li>
+                                        <Link
+                                            className='dropdown-item'
+                                        >Payments</Link> </li>
+                                        </ul>
                                     </li>
                                 </>
                             }

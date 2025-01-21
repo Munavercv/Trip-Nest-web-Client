@@ -50,6 +50,10 @@ import UserChatPage from "./pages/user/UserChatPage";
 import VendorChatPage from "./pages/vendor/VendorChatPage";
 import UserViewBookingsPage from "./pages/user/UserViewBookingsPage";
 import UserViewBookingDetailsPage from "./pages/user/UserViewBookingDetailsPage";
+import VendorViewPendingBookingsPage from "./pages/vendor/VendorViewPendingBookingsPage";
+import VendorViewBookingDetailsPage from "./pages/vendor/VendorViewBookingDetailsPage";
+import VendorViewApprovedBookingsPage from "./pages/vendor/VendorViewApprovedBookingsPage";
+import VendorViewRejectedBookingsPage from "./pages/vendor/VendorViewRejectedBookingsPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -98,6 +102,10 @@ function App() {
         <Route path="/vendor/active-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorActivePackages /></ProtectedRoutes>} />
         <Route path="/vendor/view-package/:id" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackagePage /></ProtectedRoutes>} />
         <Route path="/vendor/inbox" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
+        <Route path="/vendor/view-pending-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPendingBookingsPage /></ProtectedRoutes>} />
+        <Route path="/vendor/view-approved-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewApprovedBookingsPage /></ProtectedRoutes>} />
+        <Route path="/vendor/view-rejected-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewRejectedBookingsPage /></ProtectedRoutes>} />
+        <Route path="/vendor/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewBookingDetailsPage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}
