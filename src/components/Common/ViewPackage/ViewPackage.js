@@ -149,6 +149,7 @@ const ViewPackage = () => {
             await axios.post(`/api/user/book-package/${packageDetails._id}`, {
                 formData: inputData,
                 userId: user.userId,
+                vendorId: packageDetails.vendorId,
                 totalAmount,
             })
             setShowBookingModal(false)
