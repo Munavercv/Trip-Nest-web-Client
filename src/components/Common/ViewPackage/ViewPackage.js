@@ -23,6 +23,7 @@ const ViewPackage = () => {
     const [loading, setLoading] = useState(false)
     const [actionError, setActionError] = useState('')
     const [isLoading, setIsLoading] = useState(false);
+    const [deleting, setDeleting] = useState(false)
     const [activating, setActivating] = useState(false)
     const [deactivating, setDeactivating] = useState(false)
     const [chatLoading, setChatLoading] = useState(false)
@@ -48,13 +49,13 @@ const ViewPackage = () => {
         try {
             const confirmed = window.confirm('Are you sure to delete this package')
             if (!confirmed) return
-            setLoading(true)
+            setDeleting(true)
             await axios.delete(`/api/common/delete-package/${packageDetails._id}`)
             window.alert('Package deleted successfully')
             navigate(-1)
         } catch (error) {
             setActionError(error.response?.data?.message || "Something went wrong while deleting package")
-            setLoading(false)
+            setDeleting(false)
         }
     }
 
@@ -357,10 +358,10 @@ const ViewPackage = () => {
 
                                 <button
                                     onClick={handleDeletePackage}
-                                    disabled={loading}
+                                    disabled={deleting}
                                     className="outline-btn"
                                 >
-                                    {loading ?
+                                    {deleting ?
                                         "Deleting..."
                                         :
                                         "Delete"
