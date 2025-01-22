@@ -54,6 +54,7 @@ import VendorViewPendingBookingsPage from "./pages/vendor/VendorViewPendingBooki
 import VendorViewBookingDetailsPage from "./pages/vendor/VendorViewBookingDetailsPage";
 import VendorViewApprovedBookingsPage from "./pages/vendor/VendorViewApprovedBookingsPage";
 import VendorViewRejectedBookingsPage from "./pages/vendor/VendorViewRejectedBookingsPage";
+import VendorEditProfilePage from "./pages/vendor/VendorEditProfilePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -106,6 +107,7 @@ function App() {
         <Route path="/vendor/view-approved-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewApprovedBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-rejected-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewRejectedBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewBookingDetailsPage /></ProtectedRoutes>} />
+        <Route path="/vendor/edit-profile" element={<ProtectedRoutes requiredRole='vendor' > <VendorEditProfilePage /></ProtectedRoutes>} />
 
 
         {/* USER routes */}
