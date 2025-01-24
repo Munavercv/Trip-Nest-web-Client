@@ -22,8 +22,6 @@ const ProtectedRoutes = ({ children, requiredRole }) => {
     }
 
     if (requiredRole && userRole !== requiredRole) {
-        console.log(userRole);
-
         return <Navigate to="/auth/login" replace />;
     }
 

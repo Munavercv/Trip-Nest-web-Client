@@ -42,9 +42,9 @@ const ChatWindow = ({ chat, onBack, messages, messageStatus, onSendMessage }) =>
           <button className="transparent-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i className="fa-solid fa-ellipsis-vertical"></i>
           </button>
-          <ul class="dropdown-menu border-0 shadow-sm">
-            <li><a class="dropdown-item" href="#">Delete chat</a></li>
-            <li><a class="dropdown-item" href="#">Clear chat</a></li>
+          <ul className="dropdown-menu border-0 shadow-sm">
+            <li><a className="dropdown-item" href="#">Delete chat</a></li>
+            <li><a className="dropdown-item" href="#">Clear chat</a></li>
           </ul>
         </div>
       </div>

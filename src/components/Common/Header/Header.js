@@ -4,11 +4,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './Header.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, checkAuthStatus } from '../../../redux/slices/authSlice';
+import { setCount } from '../../../redux/slices/notificationSlice'
+import axios from 'axios'
 
 const Header = () => {
     const dispatch = useDispatch()
     const { loggedIn, userRole, user } = useSelector((state) => state.auth);
+    const { notificationCount } = useSelector(state => state.notification)
     const navigate = useNavigate()
+
 
     const handleLogout = () => {
         const confirm = window.confirm('Logout?');
@@ -28,6 +32,20 @@ const Header = () => {
         dispatch(checkAuthStatus());
     }, [dispatch])
 
+    useEffect(() => {
+        const fetchNotificationCount = async () => {
+                const response = await axios.get(`/api/common/get-notification-count/${user.userId}`)
+                const count = response.data.count
+                dispatch(setCount({ count }))
+
+        }
+
+        if (loggedIn && user) {
+            fetchNotificationCount()
+        }
+    }, [user, dispatch, loggedIn])
+
+
     return (
         <header>
             <nav className="navbar navbar-expand-md bg-white shadow-sm">
@@ -41,13 +59,26 @@ const Header = () => {
                     } >
                         <Logo />
                     </Link>
-                    <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                    <button
+                        className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                         style={{ color: 'var(--primary-color)', fontSize: '25px' }}
                     >
                         <i className="fa-solid fa-bars"></i>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mb-2 mb-md-0 text-end me-md-0 me-4 ms-md-auto">
+
+                            {
+                                loggedIn &&
+                                <li>
+                                    <button className={`nav-link position-relative ${styles.navLink} ${styles.notificationIcon}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                                        <i className="fa-solid fa-bell"></i>
+                                        <span className="position-absolute top-1 px-1 py-1 translate-middle badge rounded-pill bg-danger">
+                                            {notificationCount && notificationCount}
+                                        </span>
+                                    </button>
+                                </li>
+                            }
 
                             {loggedIn && userRole === 'admin' &&
                                 <>
@@ -143,11 +174,6 @@ const Header = () => {
                                 <>
                                     <li>
                                         <Link
-                                            className={`nav-link ${styles.navLink}`}
-                                        ><i className="fa-solid fa-bell"></i></Link>
-                                    </li>
-                                    <li>
-                                        <Link
                                             to='/vendor/inbox'
                                             className={`nav-link ${styles.navLink}`}
                                         ><i className="fa-solid fa-message"></i></Link>
@@ -193,9 +219,9 @@ const Header = () => {
                                         </Link>
                                         <ul className="dropdown-menu">
                                             <li>
-                                        <Link
-                                            className='dropdown-item'
-                                        >Payments</Link> </li>
+                                                <Link
+                                                    className='dropdown-item'
+                                                >Payments</Link> </li>
                                         </ul>
                                     </li>
                                 </>
@@ -215,6 +241,7 @@ const Header = () => {
                     </div>
                 </div>
             </nav>
+
         </header>
     )
 }

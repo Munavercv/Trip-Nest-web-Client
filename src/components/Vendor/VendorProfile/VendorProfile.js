@@ -41,11 +41,11 @@ const VendorProfile = () => {
                                 className={styles.links}
                             >Manage Pacakges</Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 className={styles.links}
                             >Delete account</Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

@@ -117,7 +117,7 @@ const EditProfile = () => {
                                 />
 
                                 <button
-                                    class="outline-btn"
+                                    className="outline-btn"
                                     type="button"
                                     id="inputGroupFileAddon04"
                                     onClick={() => setSelectedFile(null)}

@@ -10,7 +10,6 @@
 body {
     font-family: "Inter", serif;
 }
-
 a {
     text-decoration: none;
 }
@@ -26,20 +25,21 @@ label {
 }
 
 
+.cursor-pointer{
+    cursor: pointer;
+}
+
+
 .slick-prev,
 .slick-next {
     display: block !important;
-    /* Ensure arrows are displayed */
     z-index: 1;
-    /* Bring them above other elements */
 }
 
 .slick-prev:before,
 .slick-next:before {
     color: black;
-    /* Change arrow color */
     font-size: 20px;
-    /* Adjust size */
 }
 
 .form-input {

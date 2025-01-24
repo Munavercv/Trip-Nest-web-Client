@@ -55,6 +55,7 @@ import VendorViewBookingDetailsPage from "./pages/vendor/VendorViewBookingDetail
 import VendorViewApprovedBookingsPage from "./pages/vendor/VendorViewApprovedBookingsPage";
 import VendorViewRejectedBookingsPage from "./pages/vendor/VendorViewRejectedBookingsPage";
 import VendorEditProfilePage from "./pages/vendor/VendorEditProfilePage";
+import NotificationSidebar from "./components/Common/NotificationSideBar/NotificationSidebar";
 
 function App() {
   const dispatch = useDispatch()
@@ -127,6 +128,7 @@ function App() {
 
       </Routes>
 
+      <NotificationSidebar />
 
     </div>
   );
