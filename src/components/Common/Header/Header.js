@@ -144,9 +144,7 @@ const Header = () => {
                                     </Link>
                                     <ul className="dropdown-menu">
                                         <li><Link className="dropdown-item" to='/#topPackages' >Top packages</Link></li>
-                                        <li><Link className="dropdown-item" to='' >Adventure</Link></li>
-                                        <li><Link className="dropdown-item" to='' >Honeymoon</Link></li>
-                                        <li><Link className="dropdown-item" to='' >Holiday</Link></li>
+                                        <li><Link className="dropdown-item" to='/packages-by-category' >Categories</Link></li>
                                     </ul>
                                 </li>
 
