@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const FindPackagesForm = () => {
-    const themes = ['Adventure', 'Honeymoon', 'Holiday'];
+    const themes = ['Beach', 'Adventure', 'HoneyMoon', 'Family', 'Road Trip', 'Luxury', 'Cultural', 'Holiday']
+    const navigate = useNavigate()
+
     const [formData, setFormData] = useState({
         destination: '',
         month: '',
-        theme: '',
+        category: '',
     });
+    const [error, setError] = useState('')
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,7 +22,13 @@ const FindPackagesForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        setError('')
+        if (!formData.destination && !formData.month && !formData.category)
+            return setError('Please enter anything')
+
+        const queryParams = new URLSearchParams(formData).toString()
+
+        navigate(`/find-packages?${queryParams}`)
     };
 
     return (
@@ -49,12 +59,12 @@ const FindPackagesForm = () => {
                     </div>
                     <div className="col-md-3 mb-3">
                         <select
-                            name="theme"
+                            name="category"
                             className="form-input w-100"
                             value={formData.theme}
                             onChange={handleChange}
                         >
-                            <option value="" disabled>
+                            <option value="">
                                 Choose a Theme
                             </option>
                             {themes.map((theme, index) => (
@@ -71,6 +81,7 @@ const FindPackagesForm = () => {
                     </div>
                 </div>
             </form>
+            <p className='text-center text-danger'>{error}</p>
         </section>
     );
 };
