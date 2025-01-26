@@ -170,7 +170,7 @@ const CreateUser = () => {
                             {loading ? (
                                 <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             ) : (
-                                'Signup'
+                                'Create'
                             )}
                         </button>
                         <button

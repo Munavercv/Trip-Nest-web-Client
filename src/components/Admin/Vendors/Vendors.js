@@ -7,10 +7,9 @@ const Vendors = (props) => {
   const { filter } = props;
   const navigate = useNavigate()
   const [dataStatus, setDataStatus] = useState('Loading...');
-  // const [searchError, setSearchError] = useState('')
-  // const [loading, setLoading] = useState(false)
-  const loading = false
-  // const [keyword, setKeyword] = useState('')
+  const [searchError, setSearchError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [keyword, setKeyword] = useState('')
   const [vendors, setVendors] = useState([])
 
   const fetchVendors = async () => {
@@ -23,8 +22,27 @@ const Vendors = (props) => {
       setVendors(response.data.vendors)
       setDataStatus('')
     } catch (error) {
-      console.error(error)
       setDataStatus('Internal server error')
+    }
+  }
+
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    if (!keyword)
+      return setSearchError('Please enter a keyword')
+
+    setLoading(true)
+    setSearchError('')
+    try {
+      const response = await axios.get('/api/admin/search-vendors',
+        { params: { keyword, status: filter } }
+      )
+
+      setVendors(response.data.result)
+    } catch (error) {
+      setSearchError(error.response?.data?.message || 'Error searching vendors')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -38,9 +56,9 @@ const Vendors = (props) => {
 
       <div className="mb-3 row">
         <form
-          className="d-flex me-auto col-lg-4 col-md-5"
+          className="d-flex me-auto col-md-5"
           role="search"
-          method="get"
+          onSubmit={handleSearch}
         >
           <input
             className="form-input me-2"
@@ -48,27 +66,29 @@ const Vendors = (props) => {
             placeholder="Search"
             aria-label="Search"
             name="keyword"
-          // value={keyword}
-          // onChange={(e) => e.target.value}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
           />
 
           <button
-            className="primary-btn"
+            className="primary-btn me-2"
             type="submit"
             disabled={loading}
           >
-            {loading ? (
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-            ) : (
-              'Search'
-            )}
+            {loading ? 'Searching...' : 'Search'}
+          </button>
+          <button
+            className="outline-btn"
+            type="button"
+            onClick={() => {
+              setKeyword('')
+              fetchVendors()
+            }}
+          >
+            Clear
           </button>
         </form>
-        {/* <p className="text-danger">{searchError}</p> */}
+        <p className="text-danger">{searchError}</p>
       </div>
 
       <div>

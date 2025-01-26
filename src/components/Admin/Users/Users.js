@@ -57,64 +57,58 @@ const Users = () => {
         <section className="container py-5">
             <h2 className="section-title text-center mb-3">Users</h2>
 
-            <div className="mb-3 row">
-                <form
-                    className="d-flex me-auto col-lg-4 col-md-5"
-                    role="search"
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        searchUsers(keyword)
-                    }}
-                >
-                    <input
-                        className="form-input me-2"
-                        type="search"
-                        placeholder="Search Name or email"
-                        aria-label="Search"
-                        name="keyword"
-                        value={keyword}
-                        onChange={(e) => setKeyword(e.target.value)}
-                    />
-
-                    <button
-                        className="primary-btn"
-                        type="submit"
-                        disabled={loading}
-                    >
-                        {loading ? (
-                            <span
-                                className="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"
-                            ></span>
-                        ) : (
-                            'Search'
-                        )}
-                    </button>
-                    <button
-                        className='outline-btn ms-2'
-                        type='button'
-                        onClick={() => {
-                            fetchAllUsers()
-                            setKeyword('')
+            <div className="mb-3 d-flex justify-content-md-between">
+                    <form
+                        className="d-flex "
+                        role="search"
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            searchUsers(keyword)
                         }}
-                    >Clear</button>
-                </form>
-                <p className="text-danger">{searchError}</p>
+                    >
+                        <input
+                            className="form-input me-2"
+                            type="search"
+                            placeholder="Search Name or email"
+                            aria-label="Search"
+                            name="keyword"
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                        />
 
-                <div className="text-end">
-                    <Link to='/admin/users/create-user' >
                         <button
-                            className='primary-btn'
-                        >Add +</button>
-                    </Link>
-                </div>
+                            className="primary-btn"
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <span
+                                    className="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                ></span>
+                            ) : (
+                                'Search'
+                            )}
+                        </button>
+                        <button
+                            className='outline-btn ms-2'
+                            type='button'
+                            onClick={() => {
+                                fetchAllUsers()
+                                setKeyword('')
+                            }}
+                        >Clear</button>
+                    </form>
+                    <p className="text-danger">{searchError}</p>
+
             </div>
 
             <div className='row px-sm-0 px-2'>
                 <table className='tableDefault table table-bordered'>
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>User Name</th>
                             <th>Email</th>
                         </tr>
@@ -129,6 +123,7 @@ const Users = () => {
                                     key={index}
                                     onClick={() => navigate(`/admin/users/user-account/${user._id}`)}
                                 >
+                                    <td>{index + 1}</td>
                                     <td>{user.name}</td>
                                     <td>{user.email}</td>
                                 </tr>))
@@ -136,7 +131,13 @@ const Users = () => {
                     </tbody>
                 </table>
             </div>
-
+            <div className="text-end">
+                    <Link to='/admin/users/create-user' >
+                        <button
+                            className='primary-btn'
+                        >Add user +</button>
+                    </Link>
+                </div>
 
         </section >
     )
