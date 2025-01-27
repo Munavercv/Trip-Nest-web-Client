@@ -10,6 +10,7 @@
 body {
     font-family: "Inter", serif;
 }
+
 a {
     text-decoration: none;
 }
@@ -25,7 +26,7 @@ label {
 }
 
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
 }
 
@@ -164,10 +165,10 @@ label {
     background-color: #dedede;
 }
 
-.transparent-btn{
+.transparent-btn {
     background: none;
     border: none;
-    
+
 }
 
 @media (max-width: 576px) {
@@ -175,7 +176,7 @@ label {
     .primary-btn,
     .outline-btn {
         font-size: 15px;
-        padding: 0.2rem 0.7rem;
+        padding: 0.2rem 0.5rem;
     }
 }
 
@@ -190,6 +191,21 @@ th,
 td {
     border: 2px solid var(--primary-color);
     border-collapse: collapse;
+}
+
+@media screen and (max-width: 576px) {
+
+    .tableDefault table,
+    th,
+    td {
+        font-size: 12px;
+        padding: 0;
+    }
+
+    .section-title{
+        font-size: 24px;
+        font-weight: 600;
+    }
 }
 
 .tableDefault tr {
@@ -230,13 +246,13 @@ td {
     background: transparent;
 }
 
-.dropdown-menu{
+.dropdown-menu {
     border: 0;
     box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
 }
 
-.dropdown-item:focus{
+.dropdown-item:focus {
     color: #212529;
     background-color: rgb(170, 170, 170);
 }

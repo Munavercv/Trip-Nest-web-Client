@@ -95,7 +95,10 @@ const VendorAccount = () => {
                                 <Link to={`/admin/edit-vendor/${vendorDetails._id}`} className={styles.links} >Edit</Link>
                             </li>
                             <li>
-                                <Link className={styles.links} >Packages</Link>
+                                <Link
+                                to={`/admin/view-packages-by-vendor/${vendorDetails._id}`}
+                                 className={styles.links} 
+                                 >Packages</Link>
                             </li>
                             <li>
                                 <Link className={styles.links} >Remove account</Link>

@@ -1,13 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
 
 const VendorApplications = ({ filter }) => {
     const [loading, setLoading] = useState(false)
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [applications, setApplications] = useState([])
-    
+    const [keyword, setKeyword] = useState('')
+    const [searchError, setSearchError] = useState('')
+
     const navigate = useNavigate()
 
     const fetchApplications = async (filter) => {
@@ -15,25 +16,54 @@ const VendorApplications = ({ filter }) => {
             const response = await axios.get(`/api/admin/get-${filter}-applications`)
             setApplications(response.data.applications)
         } catch (error) {
-            console.error(error);
             setDataStatus(error.response?.data?.message || 'Error while fetching applications')
+        }
+    }
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        setSearchError('')
+
+        if (!keyword)
+            return setSearchError('Please enter a keyword!')
+        try {
+            const response = await axios.get('/api/admin/search-applications', {
+                params: {
+                    keyword,
+                    status: filter,
+                }
+            })
+            const results = response.data.results
+
+            if (results.length === 0) {
+                setApplications([])
+                setDataStatus('No applications found for "' + keyword + '"')
+                return
+            }
+
+            setApplications(results)
+        } catch (error) {
+            setSearchError(error.response?.data?.message || 'Error while searching applications')
+        } finally {
+            setKeyword('')
+            setLoading(false)
         }
     }
 
     useEffect(() => {
         fetchApplications(filter)
-    })
+    }, [filter])
 
     return (
-        <section className='container py-5'>
+        <section className='container-fluid py-5 px-lg-5'>
             <h2 className='section-title text-center mb-3'>{filter} Vendors</h2>
 
             <div className="mb-3 row">
                 <form
-                    className="d-flex me-auto col-lg-4 col-md-5"
+                    className="d-flex me-auto col-lg-5 col-md-7 col-12"
                     role="search"
-                    // onSubmit={handleSearch}
-                    method="get"
+                    onSubmit={handleSearch}
                 >
                     <input
                         className="form-input me-2"
@@ -41,27 +71,26 @@ const VendorApplications = ({ filter }) => {
                         placeholder="Search"
                         aria-label="Search"
                         name="keyword"
-                    // value={keyword}
-                    // onChange={(e) => e.target.value}
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
                     />
 
                     <button
-                        className="primary-btn"
+                        className="primary-btn me-2"
                         type="submit"
                         disabled={loading}
                     >
-                        {loading ? (
-                            <span
-                                className="spinner-border spinner-border-sm"
-                                role="status"
-                                aria-hidden="true"
-                            ></span>
-                        ) : (
-                            'Search'
-                        )}
+                        {loading ? 'Searching...' : 'Search'}
+                    </button>
+                    <button
+                        className='outline-btn'
+                        type='button'
+                        onClick={() => fetchApplications(filter)}
+                    >
+                        clear
                     </button>
                 </form>
-                {/* <p className="text-danger">{searchError}</p> */}
+                <p className="text-danger">{searchError}</p>
             </div>
 
             <div>
@@ -71,6 +100,7 @@ const VendorApplications = ({ filter }) => {
                             <tr>
                                 <th>#</th>
                                 <th>Company name</th>
+                                <th>Email</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,10 +108,11 @@ const VendorApplications = ({ filter }) => {
                                 <tr
                                     key={index}
                                     style={{ cursor: 'pointer' }}
-                                onClick={() => navigate(`/admin/view-application/${application._id}`)}
+                                    onClick={() => navigate(`/admin/view-application/${application._id}`)}
                                 >
                                     <td>{index + 1}</td>
                                     <td>{application.businessName}</td>
+                                    <td>{application.contact.email}</td>
                                 </tr>
                             ))}
                         </tbody>

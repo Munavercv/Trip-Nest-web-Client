@@ -187,7 +187,7 @@ const ViewPackage = () => {
     }
 
     const handleBookingSuccessPopupAction = (confirm) => {
-        if(confirm) {
+        if (confirm) {
             navigate('/my-bookings')
         } else {
             setBookingSuccess(false)
@@ -374,7 +374,9 @@ const ViewPackage = () => {
                     {userRole === 'admin' &&
                         <div className={styles.actions}>
                             <div className="text-center mt-5 mb-2">
-                                <Link>
+                                <Link
+                                    to={`/admin/view-bookings-by-package/${packageDetails._id}`}
+                                >
                                     View bookings <i className="fa-solid fa-arrow-right"></i>
                                 </Link>
                             </div>

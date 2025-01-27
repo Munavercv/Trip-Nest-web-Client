@@ -1,16 +1,16 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AdminLogin from "./pages/admin/AdminLogin";
-import VendorLogin from "./pages/vendor/VendorLogin";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Route, Routes } from 'react-router-dom';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { checkAuthStatus } from "./redux/slices/authSlice";
 import UserLogin from "./pages/user/UserLogin";
 import UserSignup from "./pages/user/UserSignup";
 import AdminHome from "./pages/admin/AdminHome";
 import ProtectedRoutes from "./protectedRoutes";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { checkAuthStatus } from "./redux/slices/authSlice";
+import AdminLogin from "./pages/admin/AdminLogin";
+import VendorLogin from "./pages/vendor/VendorLogin";
 import AllVendors from "./pages/admin/AllVendors";
 import ViewVendor from "./pages/admin/ViewVendor";
 import DisabledVendors from "./pages/admin/DisabledVendors";
@@ -58,6 +58,8 @@ import VendorEditProfilePage from "./pages/vendor/VendorEditProfilePage";
 import NotificationSidebar from "./components/Common/NotificationSideBar/NotificationSidebar";
 import UserViewCategoryPackagesPage from "./pages/user/UserViewCategoryPackagesPage";
 import UserFindPackagesPage from "./pages/user/UserFindPackagesPage";
+import AdminViewPackagesByVendorPage from "./pages/admin/AdminViewPackagesByVendorPage";
+import AdminViewPackageBookingsPage from "./pages/admin/AdminViewPackageBookingsPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -92,6 +94,8 @@ function App() {
         <Route path="/admin/active-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewActivePackages /></ProtectedRoutes>} />
         <Route path="/admin/inactive-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewInactivePackages /></ProtectedRoutes>} />
         <Route path="/admin/view-package/:id" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackagePage /></ProtectedRoutes>} />
+        <Route path="/admin/view-packages-by-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackagesByVendorPage /></ProtectedRoutes>} />
+        <Route path="/admin/view-bookings-by-package/:packageId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackageBookingsPage /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}

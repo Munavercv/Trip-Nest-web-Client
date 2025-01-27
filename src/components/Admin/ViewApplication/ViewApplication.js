@@ -18,6 +18,8 @@ const ViewApplication = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [actionError, setActionError] = useState('')
     const [user, setUser] = useState()
+    const [vendor, setVendor] = useState('')
+    const [vendorLoading, setVendorLoading] = useState(false)
 
     const fetchApplication = async (id) => {
         try {
@@ -31,6 +33,19 @@ const ViewApplication = () => {
         } catch (error) {
             console.error(error);
             setDataStatus(error.response?.data?.message || 'Error occured while fetching data')
+        }
+    }
+
+    const gotoVendorAccount = async (email) => {
+        setActionError('')
+        setVendorLoading(true)
+        try {
+            const response = await axios.get('/api/admin/get-vendor-by-email', { params: { email } })
+            navigate(`/admin/view-vendor/${response.data.vendor._id}`)
+        } catch (error) {
+            setActionError(error.response?.data?.message || 'Vendor not found')
+        } finally {
+            setVendorLoading(false)
         }
     }
 
@@ -261,6 +276,16 @@ const ViewApplication = () => {
                             Delete
                         </button>
                     </div>}
+                    {applicationData.status === 'activated' &&
+                        < div className='text-center'>
+                            <button
+                                disabled={vendorLoading}
+                                onClick={() => gotoVendorAccount(applicationData.contact.email)}
+                                className='primary-btn me-2'
+                            >
+                                {vendorLoading ? 'Please wait...' : 'View account'}
+                            </button>
+                        </div>}
                     {applicationData.status === 'approved' && < div className='text-center'>
                         <button
                             onClick={() => setShowDeletePopup(true)}
