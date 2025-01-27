@@ -1,9 +1,9 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { checkAuthStatus } from "./redux/slices/authSlice";
 import UserLogin from "./pages/user/UserLogin";
 import UserSignup from "./pages/user/UserSignup";
@@ -63,6 +63,7 @@ import AdminViewPackageBookingsPage from "./pages/admin/AdminViewPackageBookings
 
 function App() {
   const dispatch = useDispatch()
+  const { userRole } = useSelector(state => state.auth)
 
   useEffect(() => {
     dispatch(checkAuthStatus());
@@ -120,7 +121,15 @@ function App() {
         {/* USER routes */}
         <Route path="/auth/login" element={<UserLogin />} />
         <Route path="/auth/signup" element={<UserSignup />} />
-        <Route path="/" element={<UserHomePage />} />
+        <Route path="/" element={
+          userRole === 'vendor' ? (
+            <Navigate to='/vendor' replace />
+          ) : userRole === 'admin' ? (
+            <Navigate to='/admin/home' replace />
+          ) : (
+            < UserHomePage />
+          )
+        } />
         <Route path="/profile" element={<ProtectedRoutes requiredRole='user' ><ProfilePage /></ProtectedRoutes>} />
         <Route path="/edit-profile" element={<ProtectedRoutes requiredRole='user' ><EditProfilePage /></ProtectedRoutes>} />
         <Route path="/vendor-application" element={<ProtectedRoutes requiredRole='user' ><VendorApplicationPage /></ProtectedRoutes>} />
