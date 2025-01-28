@@ -17,7 +17,6 @@ const PackageCard = ({ imageUrl, price, title, description, destination, categor
                 </div>
                 <h5 className={`${styles.title} my-0`}>{title}</h5>
                 <p className={`${styles.price} my-0`}>Rs. {price}</p>
-                <p className={`${styles.description} my-0`}>{description}</p>
                 <p className={`${styles.destination} my-0`}><i className="fa-solid fa-location-arrow"></i> {destination}</p>
 
                 {userRole === 'vendor' &&

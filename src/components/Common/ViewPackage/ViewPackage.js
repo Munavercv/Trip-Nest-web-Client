@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { useLocation, useNavigate, useParams } from 'react-router'
 import styles from './ViewPackage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuthStatus } from '../../../redux/slices/authSlice'
@@ -14,13 +14,14 @@ const ViewPackage = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { user, userRole, loggedIn } = useSelector((state) => state.auth)
+    const location = useLocation()
+    const currentPath = location.pathname
     const navigate = useNavigate()
 
     const [showRejectPopup, setShowRejectPopup] = useState(false)
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [packageDetails, setPackageDetails] = useState()
     const [formattedDate, setFormattedDate] = useState('')
-    const [loading, setLoading] = useState(false)
     const [actionError, setActionError] = useState('')
     const [isLoading, setIsLoading] = useState(false);
     const [deleting, setDeleting] = useState(false)
@@ -30,6 +31,7 @@ const ViewPackage = () => {
     const [showBookingModal, setShowBookingModal] = useState(false)
     const [bookingError, setBookingError] = useState('')
     const [bookingSuccess, setBookingSuccess] = useState(false)
+    const [favourite, setFavourite] = useState(false)
 
     const fetchPackage = async (id) => {
         try {
@@ -41,6 +43,24 @@ const ViewPackage = () => {
             setFormattedDate(date.toISOString().split('T')[0]);
         } catch (error) {
             setDataStatus(error.response?.data?.message || "internal server error")
+        }
+    }
+
+    const handleUpdateFavourites = async (id, action) => {
+        if (!user) {
+            const confirmed = window.confirm('Please login')
+            if (confirmed) {
+                navigate('/auth/login', { state: { from: `/view-package/${packageDetails?._id}` } });
+            }
+            return
+        }
+        try {
+            await axios.put('/api/user/add-or-remove-favourite', { packageId: id, userId: user.userId, action })
+
+            if (action === 'add') setFavourite(true)
+            else setFavourite(false)
+        } catch (error) {
+            console.error(error.response?.data?.message);
         }
     }
 
@@ -120,28 +140,34 @@ const ViewPackage = () => {
     }
 
     const handleStartConversation = async (vendorId, userId) => {
-        setActionError('')
-        setChatLoading(true)
-        dispatch(checkAuthStatus())
+        setActionError('');
+        await dispatch(checkAuthStatus());
+
         if (!loggedIn) {
-            window.alert('Please login')
-            setChatLoading(false)
-            return
+            const confirmed = window.confirm('Please log in to start a conversation.');
+            if (confirmed) {
+                navigate('/auth/login', { state: { from: `/view-package/${packageDetails?._id}` } });
+            }
+            return;
         }
 
+        setChatLoading(true);
+
         try {
-            const response = await axios.post('/api/common/start-conversation', { userId, vendorId })
-            const chatId = response.data.conversation._id
-            dispatch(selectChat({ chatId }))
-            userRole === 'vendor' ? navigate(`/vendor/inbox`)
-                : navigate(`/inbox`)
+            const response = await axios.post('/api/common/start-conversation', { userId, vendorId });
+            const chatId = response.data.conversation._id;
+            dispatch(selectChat({ chatId }));
+
+            const inboxPath = userRole === 'vendor' ? `/vendor/inbox` : `/inbox`;
+            navigate(inboxPath);
         } catch (error) {
-            console.error(error.response.data.message || 'Error creating conversation');
-            setActionError(error.response.data.message || 'Error creating conversation')
+            const errorMessage = error.response?.data?.message || 'Error creating conversation';
+            console.error(errorMessage);
+            setActionError(errorMessage);
         } finally {
-            setChatLoading(false)
+            setChatLoading(false);
         }
-    }
+    };
 
     const handleBookingPackage = async (inputData, totalAmount) => {
         setBookingError('')
@@ -196,7 +222,25 @@ const ViewPackage = () => {
 
     useEffect(() => {
         fetchPackage(id)
-    }, [id])
+
+        const checkFavourite = async () => {
+            try {
+                const checkIsFavourite = await axios.get('/api/user/check-package-is-favourite', {
+                    params: { packageId: id, userId: user.userId }
+                })
+                if (checkIsFavourite.data.isFavourite)
+                    setFavourite(true)
+                else
+                    setFavourite(false)
+            } catch (error) {
+                console.log(error);
+                setFavourite(false)
+            }
+
+        }
+
+        if (user) checkFavourite()
+    }, [id, user])
 
     return (
         <section className={`container-fluid ${styles.packagePage} py-3`}>
@@ -233,6 +277,21 @@ const ViewPackage = () => {
                 >
                     {packageDetails.status}
                 </h5>}
+
+                {userRole === 'user' &&
+                    <button
+                        onClick={() => {
+                            if (!favourite)
+                                handleUpdateFavourites(packageDetails._id, 'add')
+                            else
+                                handleUpdateFavourites(packageDetails._id, 'remove')
+                        }}
+                        className={`${styles.addToFavouriteButton}`}
+                    >
+                        {favourite ? <i className="fa-solid fa-heart"></i>
+                            : <i className="fa-regular fa-heart"></i>}
+                    </button>
+                }
 
             </div>
 
@@ -291,8 +350,12 @@ const ViewPackage = () => {
                                 onClick={() => {
                                     dispatch(checkAuthStatus())
                                     if (!user) {
-                                        alert('please login')
-                                        return
+                                        const confirmed = window.confirm('please login')
+                                        if (confirmed) {
+                                            navigate('/auth/login', { state: { from: currentPath } })
+                                        } else {
+                                            return
+                                        }
                                     }
                                     setShowBookingModal(true)
                                 }}
@@ -307,7 +370,7 @@ const ViewPackage = () => {
                                     }}
                                     className="outline-btn me-2 mt-2 mt-sm-0"
                                 >
-                                    {chatLoading ? 'Loading...'
+                                    {chatLoading ? 'Please wait...'
                                         : 'want to know More? chat'}
                                 </button>
                             </Link>
@@ -348,7 +411,7 @@ const ViewPackage = () => {
                                         disabled={deactivating}
                                         className="primary-btn me-2"
                                     >
-                                        {loading ?
+                                        {deactivating ?
                                             "Deactivating..."
                                             :
                                             "Deactivate"
@@ -395,10 +458,10 @@ const ViewPackage = () => {
                                 >Reject</button>}
                                 <button
                                     onClick={handleDeletePackage}
-                                    disabled={loading}
+                                    disabled={deleting}
                                     className="outline-btn"
                                 >
-                                    {loading ?
+                                    {deleting ?
                                         "Deleting..."
                                         :
                                         "Delete"

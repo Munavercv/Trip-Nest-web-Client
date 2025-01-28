@@ -60,6 +60,7 @@ import UserViewCategoryPackagesPage from "./pages/user/UserViewCategoryPackagesP
 import UserFindPackagesPage from "./pages/user/UserFindPackagesPage";
 import AdminViewPackagesByVendorPage from "./pages/admin/AdminViewPackagesByVendorPage";
 import AdminViewPackageBookingsPage from "./pages/admin/AdminViewPackageBookingsPage";
+import UserViewFavourites from "./pages/user/UserViewFavourites";
 
 function App() {
   const dispatch = useDispatch()
@@ -141,6 +142,7 @@ function App() {
         <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
         <Route path="/my-bookings" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingsPage /></ProtectedRoutes>} />
         <Route path="/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingDetailsPage /></ProtectedRoutes>} />
+        <Route path="/favorites" element={<ProtectedRoutes requiredRole='user' ><UserViewFavourites /></ProtectedRoutes>} />
 
 
       </Routes>

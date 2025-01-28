@@ -4,7 +4,7 @@ import Logo from '../Logo/Logo'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../redux/slices/authSlice'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom';
 
 const LoginForm = ({ title, role }) => {
@@ -12,6 +12,7 @@ const LoginForm = ({ title, role }) => {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false);
+  const location = useLocation()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -41,9 +42,11 @@ const LoginForm = ({ title, role }) => {
       dispatch(loginSuccess({ token }));
       setLoading(false)
 
-      if (role === 'user') navigate('/');
-      if (role === 'vendor') navigate('/vendor');
-      if (role === 'admin') navigate('/admin/home');
+      // if (role === 'user') navigate('/');
+      // if (role === 'vendor') navigate('/vendor');
+      // if (role === 'admin') navigate('/admin/home');
+      const redirectPath = location.state?.from?.pathname || location.state?.from || '/';
+      navigate(redirectPath, { replace: true });
 
     } catch (error) {
       setError(error.response?.data?.message || "Invalid email or password");

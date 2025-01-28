@@ -160,6 +160,7 @@ const Header = () => {
                                         <ul className="dropdown-menu">
                                             <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
                                             <li><Link className="dropdown-item" to='/my-bookings' >My Bookings</Link></li>
+                                            <li><Link className="dropdown-item" to='/favorites' >Favourites</Link></li>
                                             {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='/vendor-application' >Register as Vendor</Link></li>}
                                         </ul>
                                     </li>
