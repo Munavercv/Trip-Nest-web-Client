@@ -3,7 +3,8 @@ import styles from './YourTopPackages.module.css'
 import PackageCard from '../../Common/PackageCard/PackageCard'
 import CustomSlider from '../../../Slider/CustomSlider';
 import { sliderSettings } from '../../../Slider/settings/packageSliderSettings';
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 import { useSelector } from 'react-redux';
 
 const YourTopPackages = () => {
@@ -13,7 +14,7 @@ const YourTopPackages = () => {
 
     const fetchPackages = async () => {
         try {
-            const response = await axios.get(`/api/vendor/get-vendor-top-packages/${user.userId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/vendor/get-vendor-top-packages/${user.userId}`)
             setPackages(response.data.packages)
         } catch (error) {
             setPackages(null)

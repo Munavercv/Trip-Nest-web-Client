@@ -1,4 +1,5 @@
 import axios from 'axios'
+import config from '../../../config/api'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 
@@ -13,7 +14,7 @@ const VendorApplications = ({ filter }) => {
 
     const fetchApplications = async (filter) => {
         try {
-            const response = await axios.get(`/api/admin/get-${filter}-applications`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-${filter}-applications`)
             setApplications(response.data.applications)
         } catch (error) {
             setDataStatus(error.response?.data?.message || 'Error while fetching applications')
@@ -28,7 +29,7 @@ const VendorApplications = ({ filter }) => {
         if (!keyword)
             return setSearchError('Please enter a keyword!')
         try {
-            const response = await axios.get('/api/admin/search-applications', {
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/search-applications`, {
                 params: {
                     keyword,
                     status: filter,

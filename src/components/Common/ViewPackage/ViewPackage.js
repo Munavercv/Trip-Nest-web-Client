@@ -6,6 +6,7 @@ import { checkAuthStatus } from '../../../redux/slices/authSlice'
 import { selectChat } from '../../../redux/slices/chatSlice'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 import InputPopup from '../Popups/InputPopup'
 import ConfirmPopup from '../Popups/ConfirmPopup'
 import UserBookingModal from './UserBookingModal'
@@ -35,7 +36,7 @@ const ViewPackage = () => {
 
     const fetchPackage = async (id) => {
         try {
-            const response = await axios.get(`/api/common/get-package/${id}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-package/${id}`)
             setPackageDetails(response.data.package);
             setDataStatus('')
             const isoDate = response.data.package.startDate;
@@ -55,7 +56,7 @@ const ViewPackage = () => {
             return
         }
         try {
-            await axios.put('/api/user/add-or-remove-favourite', { packageId: id, userId: user.userId, action })
+            await axios.put(`${config.API_BASE_URL}/api/user/add-or-remove-favourite`, { packageId: id, userId: user.userId, action })
 
             if (action === 'add') setFavourite(true)
             else setFavourite(false)
@@ -70,7 +71,7 @@ const ViewPackage = () => {
             const confirmed = window.confirm('Are you sure to delete this package')
             if (!confirmed) return
             setDeleting(true)
-            await axios.delete(`/api/common/delete-package/${packageDetails._id}`)
+            await axios.delete(`${config.API_BASE_URL}/api/common/delete-package/${packageDetails._id}`)
             window.alert('Package deleted successfully')
             navigate(-1)
         } catch (error) {
@@ -84,7 +85,7 @@ const ViewPackage = () => {
         const confirmed = window.confirm('Are you sure to approve this package')
         if (!confirmed) return
         try {
-            const response = await axios.put(`/api/admin/approve-package/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/approve-package/${id}`)
             window.alert('Successfully approved package')
             setPackageDetails(response.data.package)
         } catch (error) {
@@ -97,7 +98,7 @@ const ViewPackage = () => {
         setActionError('')
         setIsLoading(true)
         try {
-            const response = await axios.put(`/api/admin/reject-package/${id}`, { rejectionReason })
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/reject-package/${id}`, { rejectionReason })
             window.alert('Successfully rejected package')
             setPackageDetails(response.data.package)
         } catch (error) {
@@ -113,7 +114,7 @@ const ViewPackage = () => {
         setActionError('')
         setActivating(true)
         try {
-            const response = await axios.put(`/api/vendor/activate-package/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/activate-package/${id}`)
             window.alert('Congratulations! Your package is now active')
             setPackageDetails(response.data.package)
         } catch (error) {
@@ -128,7 +129,7 @@ const ViewPackage = () => {
         setActionError('')
         setDeactivating(true)
         try {
-            const response = await axios.put(`/api/vendor/deactivate-package/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/deactivate-package/${id}`)
             window.alert('Your package deactivated successfully')
             setPackageDetails(response.data.package)
         } catch (error) {
@@ -154,7 +155,7 @@ const ViewPackage = () => {
         setChatLoading(true);
 
         try {
-            const response = await axios.post('/api/common/start-conversation', { userId, vendorId });
+            const response = await axios.post(`${config.API_BASE_URL}/api/common/start-conversation`, { userId, vendorId });
             const chatId = response.data.conversation._id;
             dispatch(selectChat({ chatId }));
 
@@ -173,7 +174,7 @@ const ViewPackage = () => {
         setBookingError('')
         setIsLoading(true)
         try {
-            await axios.post(`/api/user/book-package/${packageDetails._id}`, {
+            await axios.post(`${config.API_BASE_URL}/api/user/book-package/${packageDetails._id}`, {
                 formData: inputData,
                 userId: user.userId,
                 vendorId: packageDetails.vendorId,
@@ -225,7 +226,7 @@ const ViewPackage = () => {
 
         const checkFavourite = async () => {
             try {
-                const checkIsFavourite = await axios.get('/api/user/check-package-is-favourite', {
+                const checkIsFavourite = await axios.get(`${config.API_BASE_URL}/api/user/check-package-is-favourite`, {
                     params: { packageId: id, userId: user.userId }
                 })
                 if (checkIsFavourite.data.isFavourite)

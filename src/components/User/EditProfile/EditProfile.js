@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import styles from './EditProfile.module.css'
 import { updateJwt } from '../../../redux/slices/authSlice'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const EditProfile = () => {
     const dispatch = useDispatch()
@@ -74,7 +75,7 @@ const EditProfile = () => {
         setLoading(true);
 
         try {
-            const response = await axios.put(`/api/user/edit-profile/${user.userId}`, formDataObj, {
+            const response = await axios.put(`${config.API_BASE_URL}/api/user/edit-profile/${user.userId}`, formDataObj, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

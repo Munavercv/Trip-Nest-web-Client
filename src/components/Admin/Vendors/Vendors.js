@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 import { useNavigate } from 'react-router-dom';
 
 const Vendors = (props) => {
@@ -14,11 +15,11 @@ const Vendors = (props) => {
 
   const fetchVendors = async () => {
     try {
-      const response = await axios.get(`/api/admin/all-${filter}-vendors`)
+      const response = await axios.get(`${config.API_BASE_URL}/api/admin/all-${filter}-vendors`)
       if (response.data.vendors.length === 0) {
         setDataStatus('No vendors found!')
         return;
-      }
+      } 
       setVendors(response.data.vendors)
       setDataStatus('')
     } catch (error) {
@@ -34,7 +35,7 @@ const Vendors = (props) => {
     setLoading(true)
     setSearchError('')
     try {
-      const response = await axios.get('/api/admin/search-vendors',
+      const response = await axios.get(`${config.API_BASE_URL}/api/admin/search-vendors`,
         { params: { keyword, status: filter } }
       )
 

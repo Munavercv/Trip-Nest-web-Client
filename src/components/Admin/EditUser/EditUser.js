@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router';
 import styles from './EditUser.module.css'
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 
 const EditUser = () => {
     const { userId } = useParams()
@@ -16,9 +17,10 @@ const EditUser = () => {
         phone: '',
     });
 
+
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await axios.get(`/api/admin/get-user-details/${userId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-user-details/${userId}`)
             const userData = response.data.userDetails[0];
             if (userData.length === 0) {
                 setDataStatus('Error fetching user details')
@@ -78,7 +80,7 @@ const EditUser = () => {
         setLoading(true);
 
         try {
-            await axios.put(`/api/admin/edit-user/${userId}`, {
+            await axios.put(`${config.API_BASE_URL}/api/admin/edit-user/${userId}`, {
                 data: {
                     name: formData.name,
                     email: formData.email,

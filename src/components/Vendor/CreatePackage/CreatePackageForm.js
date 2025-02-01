@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './CreatePackageForm.module.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import config from '../../../config/api'
 import { useSelector } from 'react-redux'
 import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
 
@@ -76,7 +77,7 @@ const CreatePackageForm = () => {
         }
 
         try {
-            const response = await axios.post(`/api/vendor/create-package/${user.userId}`, form, {
+            const response = await axios.post(`${config.API_BASE_URL}/api/vendor/create-package/${user.userId}`, form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -4,9 +4,10 @@ import ChatWindow from "./ChatWindow";
 import styles from "./Chat.module.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import config from '../../../config/api'
 import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://tripnest.xyz");
 
 const ChatPage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -19,7 +20,7 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const response = await axios.get(`/api/common/get-conversations/${user.userId}`);
+        const response = await axios.get(`${config.API_BASE_URL}/api/common/get-conversations/${user.userId}`);
         setChats(response.data.conversations || []);
       } catch (error) {
         console.error("Error fetching conversations:", error.response?.data?.message || error.message);
@@ -59,7 +60,7 @@ const ChatPage = () => {
     const fetchMessages = async () => {
       if (selectedChat) {
         try {
-          const response = await axios.get(`/api/common/get-messages/${selectedChat._id}`);
+          const response = await axios.get(`${config.API_BASE_URL}/api/common/get-messages/${selectedChat._id}`);
           if (response.data.messages.length === 0) {
             setMessageStatus("No messages Yet");
           } else {

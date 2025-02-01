@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './LoginForm.module.css'
 import Logo from '../Logo/Logo'
 import axios from 'axios'
+import config from '../../../config/api'
 import { useDispatch } from 'react-redux'
 import { loginSuccess } from '../../../redux/slices/authSlice'
 import { useLocation, useNavigate } from 'react-router'
@@ -36,7 +37,7 @@ const LoginForm = ({ title, role }) => {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/auth/login', { email: formData.email, password: formData.password, userRole: role });
+      const response = await axios.post(`${config.API_BASE_URL}/api/auth/login`, { email: formData.email, password: formData.password, userRole: role });
 
       const { token } = response.data;
       dispatch(loginSuccess({ token }));
@@ -59,7 +60,7 @@ const LoginForm = ({ title, role }) => {
   const handleGoogleLogin = async () => {
     setError('')
     try {
-      window.location.href = 'http://localhost:5000/api/auth/google-auth';
+      window.location.href = 'https://tripnest.xyz/api/auth/google-auth';
 
     } catch (error) {
       console.error('failed to login with google', error);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ const Users = () => {
 
     const fetchAllUsers = async () => {
         try {
-            const response = await axios.get('/api/admin/get-all-users')
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-all-users`)
             if (response.data.users.length === 0) {
                 setDataStatus('No users found!')
                 return;
@@ -34,7 +35,7 @@ const Users = () => {
             return;
         }
         try {
-            const response = await axios.get(`/api/admin/search-users`, { params: { keyword } })
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/search-users`, { params: { keyword } })
             if (response.data.users.length === 0) {
                 setDataStatus('No users found!')
                 setLoading(false)

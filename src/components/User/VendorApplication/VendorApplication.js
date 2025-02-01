@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './VendorApplication.module.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import config from '../../../config/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuthStatus, updateJwt } from '../../../redux/slices/authSlice'
 import ApplicationSuccessfull from './ApplicationSuccessfull'
@@ -38,7 +39,7 @@ const VendorApplication = () => {
 
     const fetchStatesData = async () => {
         try {
-            const response = await axios.get('/api/common/get-all-states-data')
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-all-states-data`)
             setStateData(response.data.states)
         } catch (error) {
             console.log('Error while fetching states');
@@ -131,7 +132,7 @@ const VendorApplication = () => {
                 }
             });
 
-            const response = await axios.post('/api/user/vendor-application', payload, {
+            const response = await axios.post(`${config.API_BASE_URL}/api/user/vendor-application`, payload, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

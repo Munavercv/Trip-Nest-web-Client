@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './UserProfile.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import config from '../../../config/api'
 import { logout } from '../../../redux/slices/authSlice'
 
 const UserProfile = () => {
@@ -19,7 +20,7 @@ const UserProfile = () => {
         if (!confirmation) return
 
         try {
-            await axios.delete(`/api/user/delete-account/${userId}`);
+            await axios.delete(`${config.API_BASE_URL}/api/user/delete-account/${userId}`);
             alert('Successfully deleted your account!')
             navigate('/')
             dispatch(logout())
@@ -31,7 +32,7 @@ const UserProfile = () => {
 
     const fetchApplicationNameAndStatus = async (userId) => {
         try {
-            const response = await axios.get(`/api/user/get-application-name-and-status/${userId}`);
+            const response = await axios.get(`${config.API_BASE_URL}/api/user/get-application-name-and-status/${userId}`);
             setApplication(response.data.application)
         } catch (error) {
             console.error(error)

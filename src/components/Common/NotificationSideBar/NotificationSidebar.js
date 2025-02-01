@@ -1,4 +1,5 @@
 import axios from 'axios'
+import config from '../../../config/api'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -15,21 +16,21 @@ const NotificationSidebar = () => {
 
     const handleNotificationMarkAsRead = async (id) => {
         setNotifications(notifications => notifications.filter(notification => notification._id !== id))
-        await axios.put(`/api/common/mark-notification-as-read/${id}`)
+        await axios.put(`${config.API_BASE_URL}/api/common/mark-notification-as-read/${id}`)
         dispatch(setCount({ count: notificationCount - 1 }))
     }
 
     const handleClearNotifications = async () => {
         setNotifications(null)
         setDataStatus('No notifications')
-        await axios.put(`/api/common/mark-notifications-as-read/${user.userId}`)
+        await axios.put(`${config.API_BASE_URL}/api/common/mark-notifications-as-read/${user.userId}`)
         dispatch(setCount({ count: 0 }))
     }
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await axios.get(`/api/common/get-notifications/${user.userId}`)
+                const response = await axios.get(`${config.API_BASE_URL}/api/common/get-notifications/${user.userId}`)
                 setNotifications(response.data.notifications)
                 setDataStatus('')
             } catch (error) {

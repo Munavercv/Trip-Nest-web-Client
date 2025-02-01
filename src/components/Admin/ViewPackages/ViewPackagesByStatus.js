@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './ViewPackagesByStatus.module.css'
 import PackageCard from '../../Common/PackageCard/PackageCard'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const ViewPackagesByStatus = ({ status }) => {
     const [dataStatus, setDataStatus] = useState('Loading...')
@@ -9,7 +10,7 @@ const ViewPackagesByStatus = ({ status }) => {
 
     const fetchPackages = async (status) => {
         try {
-            const response = await axios.get(`/api/admin/get-all-${status}-packages`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-all-${status}-packages`)
             if (response.data.packages.length === 0) {
                 setDataStatus('No packages found')
                 return

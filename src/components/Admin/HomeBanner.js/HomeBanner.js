@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './HomeBanner.module.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const HomeBanner = () => {
 
@@ -15,10 +16,10 @@ const HomeBanner = () => {
     const fetchCounts = async () => {
         try {
             const [vendorsResponse, packagesResponse, usersResponse, paymentsResponse] = await Promise.all([
-                axios.get('/api/admin/get-vendors-count'),
-                axios.get('/api/admin/get-packages-count'),
-                axios.get('/api/admin/get-users-count'),
-                axios.get('/api/admin/get-payments-count'),
+                axios.get(`${config.API_BASE_URL}/api/admin/get-vendors-count`),
+                axios.get(`${config.API_BASE_URL}/api/admin/get-packages-count`),
+                axios.get(`${config.API_BASE_URL}/api/admin/get-users-count`),
+                axios.get(`${config.API_BASE_URL}/api/admin/get-payments-count`),
             ]);
 
             setCounts((prev) => ({

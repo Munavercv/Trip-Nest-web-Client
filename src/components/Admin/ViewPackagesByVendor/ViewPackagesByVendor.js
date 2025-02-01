@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 
 const ViewPackagesByVendor = () => {
     const { vendorId } = useParams()
@@ -18,7 +19,7 @@ const ViewPackagesByVendor = () => {
     const fetchPackages = async () => {
         setLoading(true)
         try {
-            const response = await axios.get(`/api/common/get-packages-by-vendor/${vendorId}`, { params: { page, limit } })
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-packages-by-vendor/${vendorId}`, { params: { page, limit } })
             if (response.data.packages.length > 0) {
                 setPackages(response.data.packages);
                 setDataStatus('');
@@ -42,7 +43,7 @@ const ViewPackagesByVendor = () => {
         setSearching(true)
         setSearchError('')
         try {
-            const response = await axios.get('/api/common/search-packages', {
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/search-packages`, {
                 params: {
                     keyword,
                     vendorId

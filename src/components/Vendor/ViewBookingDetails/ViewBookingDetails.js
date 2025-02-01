@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './ViewBookingDetails.module.css'
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
+import config from '../../../config/api'
 import { Link } from 'react-router-dom'
 
 const ViewBookingDetails = () => {
@@ -14,7 +15,7 @@ const ViewBookingDetails = () => {
 
     const fetchBookingDetails = async () => {
         try {
-            const response = await axios.get(`/api/vendor/get-booking-details/${bookingId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/vendor/get-booking-details/${bookingId}`)
             setBookingDetails(response.data.bookingDetails)
         } catch (error) {
             setDataStatus(error.response?.data?.message || 'Error fetching booking details')
@@ -27,7 +28,7 @@ const ViewBookingDetails = () => {
         if (!confirmed) return
 
         try {
-            await axios.put(`/api/vendor/approve-booking/${bookingId}`)
+            await axios.put(`${config.API_BASE_URL}/api/vendor/approve-booking/${bookingId}`)
             window.alert('successfully approved booking')
             fetchBookingDetails()
         } catch (error) {
@@ -42,7 +43,7 @@ const ViewBookingDetails = () => {
         if(!confirmed) return
 
         try {
-            await axios.put(`/api/vendor/reject-booking/${bookingId}`)
+            await axios.put(`${config.API_BASE_URL}/api/vendor/reject-booking/${bookingId}`)
             window.alert('successfully rejected booking');
             fetchBookingDetails()
         } catch (error) {

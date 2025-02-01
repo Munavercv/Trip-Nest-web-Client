@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router'
 import styles from './ViewVendorApplication.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import config from '../../../config/api'
 import ConfirmPopup from '../Popups/ConfirmPopup'
 import { updateJwt } from '../../../redux/slices/authSlice'
 
@@ -20,7 +21,7 @@ const ViewVendorApplication = () => {
 
     const fetchApplication = async (userId) => {
         try {
-            const response = await axios.get(`/api/common/get-vendor-application/${userId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-vendor-application/${userId}`)
             setApplicationData(response.data.application)
             setDataStatus('')
             const isoDate = response.data.application.yearEst;
@@ -35,7 +36,7 @@ const ViewVendorApplication = () => {
     const deleteApplication = async () => {
         setIsLoading(true)
         try {
-            const response = await axios.delete(`/api/common/delete-vendor-application/${user.userId}`);
+            const response = await axios.delete(`${config.API_BASE_URL}/api/common/delete-vendor-application/${user.userId}`);
             dispatch(updateJwt({ token: response.data.token }));
             navigate('/');
         } catch (error) {

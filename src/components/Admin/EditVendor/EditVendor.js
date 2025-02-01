@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styles from './EditVendor.module.css'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const EditVendor = () => {
     const { vendorId } = useParams()
@@ -39,7 +40,7 @@ const EditVendor = () => {
 
     const fetchVendorDetails = async (vendorId) => {
         try {
-            const response = await axios.get(`/api/admin/get-vendor-details/${vendorId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-vendor-details/${vendorId}`)
             const vendorDetails = response.data.vendorDetails;
             setFormData({
                 businessName: vendorDetails.businessName,
@@ -74,7 +75,7 @@ const EditVendor = () => {
         setLoading(true)
 
         try {
-            await axios.post(`/api/admin/edit-vendor/${vendorId}`, {
+            await axios.post(`${config.API_BASE_URL}/api/admin/edit-vendor/${vendorId}`, {
                 data: {
                     ...formData,
                 }

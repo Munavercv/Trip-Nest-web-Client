@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const BookingsByPackage = () => {
     const { packageId } = useParams()
@@ -11,7 +12,7 @@ const BookingsByPackage = () => {
 
     const fetchBookings = async () => {
         try {
-            const response = await axios.get(`/api/common/view-bookings-by-package/${packageId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/view-bookings-by-package/${packageId}`)
             setBookings(response.data.bookings)
         } catch (error) {
             setDataStatus(error.response?.data?.message || 'Error fetching bookings')

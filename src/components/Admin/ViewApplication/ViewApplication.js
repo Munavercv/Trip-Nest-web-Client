@@ -3,6 +3,7 @@ import styles from './ViewApplication.module.css'
 import { useNavigate, useParams } from 'react-router'
 import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
 import axios from 'axios'
+import config from '../../../config/api'
 import { Link } from 'react-router-dom'
 
 const ViewApplication = () => {
@@ -23,7 +24,7 @@ const ViewApplication = () => {
 
     const fetchApplication = async (id) => {
         try {
-            const response = await axios.get(`/api/admin/get-application/${id}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-application/${id}`)
             setApplicationData(response.data.application)
             setUser(response.data.user)
             setDataStatus('')
@@ -40,7 +41,7 @@ const ViewApplication = () => {
         setActionError('')
         setVendorLoading(true)
         try {
-            const response = await axios.get('/api/admin/get-vendor-by-email', { params: { email } })
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-vendor-by-email`, { params: { email } })
             navigate(`/admin/view-vendor/${response.data.vendor._id}`)
         } catch (error) {
             setActionError(error.response?.data?.message || 'Vendor not found')
@@ -52,7 +53,7 @@ const ViewApplication = () => {
     const approveApplication = async (id) => {
         setIsLoading(true)
         try {
-            const response = await axios.put(`/api/admin/approve-application/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/approve-application/${id}`)
             setApplicationData(response.data.application)
         } catch (error) {
             console.error(error);
@@ -66,7 +67,7 @@ const ViewApplication = () => {
     const rejectApplication = async (id) => {
         setIsLoading(true)
         try {
-            const response = await axios.put(`/api/admin/reject-application/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/reject-application/${id}`)
             setApplicationData(response.data.application)
         } catch (error) {
             console.error(error);
@@ -80,7 +81,7 @@ const ViewApplication = () => {
     const deleteApplication = async (id) => {
         setIsLoading(true)
         try {
-            await axios.delete(`/api/admin/delete-application/${id}`)
+            await axios.delete(`${config.API_BASE_URL}/api/admin/delete-application/${id}`)
         } catch (error) {
             console.error(error);
             setActionError(error.response?.data?.message || 'Internal server error')

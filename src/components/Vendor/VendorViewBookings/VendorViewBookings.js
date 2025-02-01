@@ -1,4 +1,5 @@
 import axios from 'axios'
+import config from '../../../config/api'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -13,7 +14,7 @@ const VendorViewBookings = ({ filter }) => {
     const fetchBookings = async () => {
         try {
             
-            const response = await axios.get(`/api/common/get-${filter}-bookings-by-vendor/${user.userId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-${filter}-bookings-by-vendor/${user.userId}`)
             setBookings(response.data.bookings)
         } catch (error) {
             setDataStatus(error.response?.data?.message || 'Error fetching bookings')

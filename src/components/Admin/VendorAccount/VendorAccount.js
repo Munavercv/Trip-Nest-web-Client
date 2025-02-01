@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './VendorAccount.module.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const VendorAccount = () => {
 
@@ -16,7 +17,7 @@ const VendorAccount = () => {
 
     const fetchVendorDetails = async (vendorId) => {
         try {
-            const response = await axios.get(`/api/admin/get-vendor-details/${vendorId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-vendor-details/${vendorId}`)
             setVendorDetails(response.data.vendorDetails)
         } catch (error) {
             console.error('failed to fetch vendor details', error);
@@ -29,7 +30,7 @@ const VendorAccount = () => {
         if (!confirm) return
 
         try {
-            await axios.put(`/api/admin/vendor-status-update/${vendorId}`, { status: status })
+            await axios.put(`${config.API_BASE_URL}/api/admin/vendor-status-update/${vendorId}`, { status: status })
             window.alert('successully updated user status')
             setActionError('')
             fetchVendorDetails(vendorId)
@@ -45,7 +46,7 @@ const VendorAccount = () => {
         if (!confirm) return
 
         try {
-            await axios.delete(`/api/admin/delete-vendor/${vendorId}`)
+            await axios.delete(`${config.API_BASE_URL}/api/admin/delete-vendor/${vendorId}`)
             window.alert('Successfully removed user!')
             navigate(-1)
         } catch (error) {

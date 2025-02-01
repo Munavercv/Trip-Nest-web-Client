@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './VendorAccountActivation.module.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 import SuccessPopup from '../../Common/Popups/SuccessPopup'
 import { useDispatch } from 'react-redux'
 import { logout } from '../../../redux/slices/authSlice'
@@ -34,7 +35,7 @@ const VendorAccountActivation = () => {
     setError('')
     if (validateForm()) {
       try {
-        await axios.put(`/api/auth/activate-vendor-account/${applicationId}`, { password })
+        await axios.put(`${config.API_BASE_URL}/api/auth/activate-vendor-account/${applicationId}`, { password })
         setShowSuccessPopup(true);
       } catch (error) {
         console.error();

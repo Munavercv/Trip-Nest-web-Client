@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PackageCard from '../../Common/PackageCard/PackageCard'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const ViewPackagesByCategory = () => {
 
@@ -17,7 +18,7 @@ const ViewPackagesByCategory = () => {
     const fetchPackages = async (category) => {
         setLoading(true)
         try {
-            const response = await axios.get('/api/user/get-packages-by-category', { params: { category, page, limit } })
+            const response = await axios.get(`${config.API_BASE_URL}/api/user/get-packages-by-category`, { params: { category, page, limit } })
             if (response.data.packages.length > 0) {
                 setPackages(response.data.packages);
                 setDataStatus('');

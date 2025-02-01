@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import styles from './UserViewBookingDetails.module.css'
 import axios from 'axios'
+import config from '../../../config/api'
 import { Link } from 'react-router-dom'
 
 const UserViewBookingDetails = () => {
@@ -14,7 +15,7 @@ const UserViewBookingDetails = () => {
 
     const fetchBookingDetails = async () => {
         try {
-            const response = await axios.get(`/api/user/get-booking-details/${bookingId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/user/get-booking-details/${bookingId}`)
             setBookingDetails(response.data.bookingDetails)
         } catch (error) {
             setDataStatus(error.response?.data?.message || 'Error fetching booking details')
@@ -27,7 +28,7 @@ const UserViewBookingDetails = () => {
         if(!confirmed) return
 
         try {
-            await axios.delete(`/api/common/delete-booking/${bookingId}`)
+            await axios.delete(`${config.API_BASE_URL}/api/common/delete-booking/${bookingId}`)
             window.alert('Booking cancelled')
             navigate(-1)
         } catch (error) {

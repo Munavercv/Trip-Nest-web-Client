@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './VendorEditProfile.module.css';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 import { updateJwt } from '../../../redux/slices/authSlice'
 
 const VendorEditProfile = () => {
@@ -54,7 +55,7 @@ const VendorEditProfile = () => {
     const fetchVendorDetails = async (vendorId) => {
         setLoading(true);
         try {
-            const response = await axios.get(`/api/common/get-vendor-details/${vendorId}`);
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-vendor-details/${vendorId}`);
             setFormData(response.data.vendorDetails);
             setDataStatus('');
         } catch (error) {
@@ -70,7 +71,7 @@ const VendorEditProfile = () => {
         if (!validateForm()) return;
         setLoading(true);
         try {
-            const response = await axios.put(`/api/vendor/edit-profile/${user.userId}`, formData);            
+            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/edit-profile/${user.userId}`, formData);            
             dispatch(updateJwt({ token: response.data.token }));
             alert('Vendor details updated successfully');
             navigate(-1);

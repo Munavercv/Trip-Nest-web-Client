@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './CreateUser.module.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const CreateUser = () => {
     const navigate = useNavigate()
@@ -69,7 +70,7 @@ const CreateUser = () => {
         setLoading(true);
 
         try {
-            await axios.post('/api/auth/signup', {
+            await axios.post(`${config.API_BASE_URL}/api/auth/signup`, {
                 name: formData.name,
                 email: formData.email,
                 phone: formData.phone,

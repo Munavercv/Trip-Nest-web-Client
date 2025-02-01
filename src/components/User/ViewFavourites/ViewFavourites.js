@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import PackageCard from '../../Common/PackageCard/PackageCard'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const ViewFavourites = () => {
     const { user } = useSelector(state => state.auth)
@@ -13,7 +14,7 @@ const ViewFavourites = () => {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get(`/api/user/get-favourite-packages/${user.userId}`)
+                const response = await axios.get(`${config.API_BASE_URL}/api/user/get-favourite-packages/${user.userId}`)
 
                 setPackages(response.data.packages)
                 if (response.data.packages.length === 0)

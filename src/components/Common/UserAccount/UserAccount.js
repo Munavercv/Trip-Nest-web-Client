@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './UserAccount.module.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const UserAccount = () => {
     const { userId } = useParams()
@@ -15,7 +16,7 @@ const UserAccount = () => {
 
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await axios.get(`/api/admin/get-user-details/${userId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-user-details/${userId}`)
             setDataStatus('')
             setUser(response.data.userDetails[0])
         } catch (error) {
@@ -29,7 +30,7 @@ const UserAccount = () => {
         if(!confirmation) return
 
         try {
-            await axios.delete(`/api/admin/delete-user/${userId}`);
+            await axios.delete(`${config.API_BASE_URL}/api/admin/delete-user/${userId}`);
             setDeleteError('')
             alert('Successfully deleted user account!')
             navigate('/admin/users')

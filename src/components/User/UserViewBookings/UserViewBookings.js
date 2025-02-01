@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './UserViewBookings.module.css'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const UserViewBookings = () => {
   const { user } = useSelector(state => state.auth)
@@ -12,7 +13,7 @@ const UserViewBookings = () => {
 
   const fetchBookings = async (userId) => {
     try {
-      const response = await axios.get(`/api/common/get-bookings-by-user/${userId}`)
+      const response = await axios.get(`${config.API_BASE_URL}/api/common/get-bookings-by-user/${userId}`)
       setBookings(response.data.bookings)
     } catch (error) {
       setDataStatus(error.response?.data?.message || 'Error while fetching your bookings')

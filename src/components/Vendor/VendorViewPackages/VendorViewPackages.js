@@ -3,6 +3,7 @@ import styles from './VendorViewPackage.module.css'
 import PackageCard from '../../Common/PackageCard/PackageCard'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const VendorViewPackages = ({ status }) => {
     const { user } = useSelector((state) => state.auth)
@@ -11,7 +12,7 @@ const VendorViewPackages = ({ status }) => {
 
     const fetchPackages = async (vendorId, status) => {
         try {
-            const response = await axios.get(`/api/vendor/get-${status}-packages/${vendorId}`)
+            const response = await axios.get(`${config.API_BASE_URL}/api/vendor/get-${status}-packages/${vendorId}`)
             if (response.data.packages.length === 0) {
                 setDataStatus('No packages found')
                 return

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './VendorOverviewCards.module.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import config from '../../../config/api'
 import { useSelector } from 'react-redux'
 
 const VendorOverviewCards = () => {
@@ -11,12 +12,12 @@ const VendorOverviewCards = () => {
     const [activePackagesCount, setActivePackagesCount] = useState(0);
 
     const fetchPendingbookingCount = async () => {
-        const response = await axios.get(`/api/vendor/pending-booking-count/${user.userId}`)
+        const response = await axios.get(`${config.API_BASE_URL}/api/vendor/pending-booking-count/${user.userId}`)
         setPendingbookingCount(response.data.count)
     }
 
     const fetchActivePackageCount = async () => {
-        const response = await axios.get(`/api/vendor/active-package-count/${user.userId}`)
+        const response = await axios.get(`${config.API_BASE_URL}/api/vendor/active-package-count/${user.userId}`)
         setActivePackagesCount(response.data.count)
     }
 

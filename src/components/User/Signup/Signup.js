@@ -4,6 +4,7 @@ import Logo from '../../Common/Logo/Logo'
 import { Link } from 'react-router-dom'
 import styles from './Signup.module.css'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -71,7 +72,7 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      await axios.post('/api/auth/signup', {
+      await axios.post(`${config.API_BASE_URL}/api/auth/signup`, {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -89,7 +90,7 @@ const Signup = () => {
   const handleGoogleLogin = async () => {
     setError('')
     try {
-      window.location.href = 'http://localhost:5000/api/auth/google-auth';
+      window.location.href = 'https://tripnest.xyz/api/auth/google-auth';
 
     } catch (error) {
       console.error('failed to login with google', error);

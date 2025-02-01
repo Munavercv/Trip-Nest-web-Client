@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from 'axios'
+import config from '../../../config/api';
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import PackageCard from '../../Common/PackageCard/PackageCard';
@@ -12,7 +13,7 @@ const PackageSearchResult = () => {
         const fetchSearchResults = async () => {
             const query = searchParams.toString()
             try {
-                const response = await axios.get('/api/user/search-packages', { params: { query } });
+                const response = await axios.get(`${config.API_BASE_URL}/api/user/search-packages`, { params: { query } });
                 setPackages(response.data.packages)
             } catch (error) {
                 console.error('Error:', error);

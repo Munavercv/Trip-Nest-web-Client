@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout, checkAuthStatus } from '../../../redux/slices/authSlice';
 import { setCount } from '../../../redux/slices/notificationSlice'
 import axios from 'axios'
+import config from '../../../config/api'
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -34,7 +35,7 @@ const Header = () => {
 
     useEffect(() => {
         const fetchNotificationCount = async () => {
-                const response = await axios.get(`/api/common/get-notification-count/${user.userId}`)
+                const response = await axios.get(`${config.API_BASE_URL}/api/common/get-notification-count/${user.userId}`)
                 const count = response.data.count
                 dispatch(setCount({ count }))
 
