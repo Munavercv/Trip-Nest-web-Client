@@ -7,7 +7,10 @@ import axios from "axios";
 import config from '../../../config/api'
 import io from "socket.io-client";
 
-const socket = io("https://tripnest.xyz");
+const socket = io("https://tripnest.xyz", {
+  path: "/socket.io/",
+  transports: ["websocket", "polling"]
+});
 
 const ChatPage = () => {
   const { user } = useSelector((state) => state.auth);
