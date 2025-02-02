@@ -1,0 +1,20 @@
+.item h5 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.item h6 {
+    color: var(--text-dark-grey);
+}
+
+.item h6 span {
+    color: var(--primary-color);
+}
+
+.item a {
+    text-decoration: none;
+}
+
+.item a:hover {
+    text-decoration: underline;
+}

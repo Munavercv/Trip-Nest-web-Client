@@ -89,7 +89,6 @@ const ViewPackage = () => {
             window.alert('Successfully approved package')
             setPackageDetails(response.data.package)
         } catch (error) {
-            console.error(error.response?.data?.message || "Error while approving package");
             setActionError(error.response?.data?.message || "Error while approving package")
         }
     }
@@ -102,8 +101,7 @@ const ViewPackage = () => {
             window.alert('Successfully rejected package')
             setPackageDetails(response.data.package)
         } catch (error) {
-            console.error(error.response?.data?.message || "Error while rejected package");
-            setActionError(error.response?.data?.message || "Error while rejected package")
+            setActionError(error.response?.data?.message || "Error while rejecting package")
         } finally {
             setIsLoading(false)
             setShowRejectPopup(false)
@@ -118,7 +116,6 @@ const ViewPackage = () => {
             window.alert('Congratulations! Your package is now active')
             setPackageDetails(response.data.package)
         } catch (error) {
-            console.error(error.response?.data?.message || "An error occured while activating package");
             setActionError(error.response?.data?.message || "An error occured while activating package")
         } finally {
             setActivating(false)
@@ -133,7 +130,6 @@ const ViewPackage = () => {
             window.alert('Your package deactivated successfully')
             setPackageDetails(response.data.package)
         } catch (error) {
-            console.error(error.response?.data?.message || "An error occured while deactivating package");
             setActionError(error.response?.data?.message || "An error occured while deactivating package")
         } finally {
             setDeactivating(false)
@@ -162,9 +158,7 @@ const ViewPackage = () => {
             const inboxPath = userRole === 'vendor' ? `/vendor/inbox` : `/inbox`;
             navigate(inboxPath);
         } catch (error) {
-            const errorMessage = error.response?.data?.message || 'Error creating conversation';
-            console.error(errorMessage);
-            setActionError(errorMessage);
+            setActionError(error.response?.data?.message || 'Error creating conversation');
         } finally {
             setChatLoading(false);
         }
@@ -234,7 +228,6 @@ const ViewPackage = () => {
                 else
                     setFavourite(false)
             } catch (error) {
-                console.log(error);
                 setFavourite(false)
             }
 
@@ -381,7 +374,7 @@ const ViewPackage = () => {
                     {userRole === 'vendor' && user.userId === packageDetails.vendorId &&
                         <div className={styles.actions}>
                             <div className="text-center mt-5 mb-2">
-                                <Link>
+                                <Link to={`/vendor/view-bookings-by-package/${packageDetails._id}`}>
                                     View bookings <i className="fa-solid fa-arrow-right"></i>
                                 </Link>
                             </div>

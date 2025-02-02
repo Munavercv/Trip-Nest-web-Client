@@ -49,7 +49,9 @@ const VendorOverviewCards = () => {
                         <div className="card-body text-center">
                             <h5 className="card-title">My packages</h5>
                             <h6 className="card-subtitle mb-3"><span>{activePackagesCount}</span> Active packages</h6>
-                            <button className='primary-btn'>View</button>
+                            <Link to='/vendor/active-packages' >
+                                <button className='primary-btn'>View</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
 import config from '../../../config/api'
+import { useSelector } from 'react-redux'
 
 const BookingsByPackage = () => {
     const { packageId } = useParams()
     const navigate = useNavigate()
+    const { userRole } = useSelector((state) => state.auth)
 
     const [bookings, setBookings] = useState(null)
     const [dataStatus, setDataStatus] = useState('Loading...')
@@ -19,6 +21,11 @@ const BookingsByPackage = () => {
         }
     }
 
+    const gotoBookingDetailsPage = (id) => {
+        userRole === 'admin' ? navigate(`/admin/view-booking-details/${id}`)
+            : navigate(`/vendor/view-booking-details/${id}`)
+    }
+
     useEffect(() => {
         fetchBookings()
     }, [packageId])
@@ -30,11 +37,10 @@ const BookingsByPackage = () => {
             }
             <div className='table-responsive mt-4 px-md-5'>
                 {bookings ?
-                    <table className={`tableDefault table table-bordered table-hover`}>
+                    <table className='tableDefault table table-bordered table-hover'>
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Package</th>
                                 <th>user</th>
                                 <th>Booking Date</th>
                                 <th>Status</th>
@@ -45,10 +51,9 @@ const BookingsByPackage = () => {
                                 <tr
                                     key={index}
                                     style={{ cursor: 'pointer' }}
-                                    onClick={() => navigate(`/vendor/view-booking-details/${booking._id}`)}
+                                    onClick={() => gotoBookingDetailsPage(booking._id)}
                                 >
                                     <td>{index + 1}</td>
-                                    <td>{booking.packageDetails[0].title}</td>
                                     <td>{booking.userDetails[0].email}</td>
                                     <td>{new Date(booking.bookingDate).toLocaleDateString()}</td>
                                     <td className={`
@@ -56,13 +61,9 @@ const BookingsByPackage = () => {
                                             ? 'text-primary'
                                             : booking.status === 'approved'
                                                 ? 'text-success'
-                                                : booking.status === 'inactive'
-                                                    ? 'text-secondary'
-                                                    : booking.status === 'active'
-                                                        ? 'text-info'
-                                                        : 'text-danger'
+                                                : 'text-danger'
                                         }
-                                            `}
+            `}
                                     >{booking.status}</td>
                                 </tr>
                             ))}

@@ -66,7 +66,7 @@ const HomeBanner = () => {
                             counts.packages > 100 ? "100+" : counts.packages
                         }</span>
                         <br />Packages</h3>
-                    <Link to=''>
+                    <Link to='/admin/active-packages'>
                         <button
                             className='primary-btn'
                         >
