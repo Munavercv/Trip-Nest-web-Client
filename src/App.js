@@ -144,7 +144,7 @@ function App() {
         <Route path="/view-my-vendor-application" element={<ProtectedRoutes requiredRole='user' ><ViewVendorApplicationPage /></ProtectedRoutes>} />
         <Route path="/activate-vendor-account/:applicationId" element={<ProtectedRoutes requiredRole='user' ><VendorActivationPage /></ProtectedRoutes>} />
         <Route path="/view-package/:id" element={<UserViewPackagePage />} />
-        <Route path="/packages-by-category" element={<UserViewCategoryPackagesPage />} />
+        <Route path="/packages-by-category/:category" element={<UserViewCategoryPackagesPage />} />
         <Route path="/find-packages" element={<UserFindPackagesPage />} />
         <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
         <Route path="/my-bookings" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingsPage /></ProtectedRoutes>} />
