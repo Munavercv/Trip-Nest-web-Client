@@ -391,11 +391,14 @@ const ViewPackage = () => {
                                     </>
                                 )}
 
-                                <Link to={`/vendor/edit-package/${packageDetails._id}`}>
-                                    <button
-                                        className="primary-btn me-2"
-                                    >Edit</button>
-                                </Link>
+                                {packageDetails.status === 'pending' || packageDetails.status === 'rejected'
+                                    || (packageDetails.status === 'inactive' && packageDetails.totalSlots === packageDetails.availableSlots) ?
+                                    <Link to={`/vendor/edit-package/${packageDetails._id}`}>
+                                        <button
+                                            className="primary-btn me-2"
+                                        >Edit</button>
+                                    </Link> : null
+                                }
 
 
 

@@ -97,6 +97,10 @@ const ChatPage = () => {
     }
   };
 
+  const onBack = () => {
+    setSelectedChat(null)
+  }
+
   return (
     <div className={`${styles.chatPage} container-fluid`}>
       <div className="row h-100">
@@ -111,6 +115,7 @@ const ChatPage = () => {
           {selectedChat ? (
             <ChatWindow
               chat={selectedChat}
+              onBack={onBack}
               messages={messages}
               messageStatus={messageStatus}
               onSendMessage={handleSendMessage}

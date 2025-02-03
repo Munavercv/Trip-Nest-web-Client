@@ -1,0 +1,10 @@
+.title {
+    font-size: 25px;
+    color: var(--primary-color);
+}
+
+.formCreatePackage {
+    max-width: 700px;
+    padding: 30px;
+    background: #fff;
+}
