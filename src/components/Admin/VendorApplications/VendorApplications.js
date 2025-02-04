@@ -57,7 +57,7 @@ const VendorApplications = ({ filter }) => {
     }, [filter])
 
     return (
-        <section className='container-fluid py-5 px-lg-5'>
+        <section className='container-fluid py-5 px-lg-5' id='vendorApplications'>
             <h2 className='section-title text-center mb-3'>{filter} Vendors</h2>
 
             <div className="mb-3 row">

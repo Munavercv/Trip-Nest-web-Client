@@ -28,7 +28,7 @@ const ViewPackagesByStatus = ({ status }) => {
     }, [status])
 
     return (
-        <section className={`${styles.PackagesSec} container-fluid py-4`}>
+        <section className={`${styles.PackagesSec} container-fluid py-4`} id='packagesByCategory'>
             <h4 className='section-title text-center mb-4'> {status} Packages</h4>
 
             <div className="row">

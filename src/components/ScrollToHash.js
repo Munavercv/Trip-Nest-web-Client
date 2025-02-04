@@ -6,12 +6,14 @@ const ScrollToHash = () => {
 
     useEffect(() => {
         if (location.hash) {
-            const element = document.querySelector(location.hash);
-            if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-            }
+            setTimeout(() => {
+                const element = document.querySelector(location.hash);
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 100);
         }
-    }, [location]);
+    }, [location.pathname, location.hash]);
 
     return null;
 };

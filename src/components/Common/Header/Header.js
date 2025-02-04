@@ -35,9 +35,9 @@ const Header = () => {
 
     useEffect(() => {
         const fetchNotificationCount = async () => {
-                const response = await axios.get(`${config.API_BASE_URL}/api/common/get-notification-count/${user.userId}`)
-                const count = response.data.count
-                dispatch(setCount({ count }))
+            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-notification-count/${user.userId}`)
+            const count = response.data.count
+            dispatch(setCount({ count }))
 
         }
 
@@ -90,43 +90,6 @@ const Header = () => {
                                             to='/admin/home'
                                         >Home</Link>
                                     </li>
-                                    <li className="nav-item dropdown">
-                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Vendors
-                                        </Link>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='/admin/active-vendors' >Active</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/disabled-vendors' >Disabled</Link></li>
-                                        </ul>
-                                    </li>
-                                    <li className="nav-item dropdown">
-                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Applications
-                                        </Link>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='/admin/approved-vendor-applications' >Approved</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/rejected-vendor-applications' >Rejected</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/pending-vendor-applications' >Pending</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/activated-vendor-applications' >Activated</Link></li>
-                                        </ul>
-                                    </li>
-                                    <li className="nav-item dropdown">
-                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Packages
-                                        </Link>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='/admin/approved-packages' >Approved</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/rejected-packages' >Rejected</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/pending-packages' >Pending</Link></li>
-                                            <li><Link className="dropdown-item" to='/admin/active-packages' >Active</Link></li>
-                                        </ul>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link className={`nav-link ${styles.navLink}`} to="/admin/users">Users</Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link className={`nav-link ${styles.navLink}`} to="/admin/payments">Payments</Link>
-                                    </li>
                                 </>
                             }
 
@@ -143,7 +106,7 @@ const Header = () => {
                                     <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Packages
                                     </Link>
-                                    <ul className="dropdown-menu">
+                                    <ul className="dropdown-menu text-end text-md-start">
                                         <li><Link className="dropdown-item" to='/#topPackages' >Top packages</Link></li>
                                         <li><Link className="dropdown-item" to='/packages-by-category' >Categories</Link></li>
                                         <li><Link className="dropdown-item" to='/find-packages' >Find packages</Link></li>
@@ -153,17 +116,6 @@ const Header = () => {
                                 {loggedIn && <>
                                     <li className="nav-item">
                                         <Link className={`nav-link ${styles.navLink}`} to="/inbox">Inbox</Link>
-                                    </li>
-                                    <li className="nav-item dropdown">
-                                        <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Account
-                                        </Link>
-                                        <ul className="dropdown-menu">
-                                            <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
-                                            <li><Link className="dropdown-item" to='/my-bookings' >My Bookings</Link></li>
-                                            <li><Link className="dropdown-item" to='/favorites' >Favourites</Link></li>
-                                            {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='/vendor-application' >Register as Vendor</Link></li>}
-                                        </ul>
                                     </li>
                                 </>
                                 }
@@ -190,7 +142,7 @@ const Header = () => {
                                         <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             packages
                                         </Link>
-                                        <ul className="dropdown-menu">
+                                        <ul className="dropdown-menu text-end text-md-start">
                                             <li><Link className="dropdown-item" to='/vendor/active-packages' >Active</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/inactive-packages' >Inactive</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/approved-packages' >Approved</Link></li>
@@ -198,17 +150,11 @@ const Header = () => {
                                             <li><Link className="dropdown-item" to='/vendor/pending-packages' >Pending</Link></li>
                                         </ul>
                                     </li>
-                                    <li>
-                                        <Link
-                                            className={`nav-link ${styles.navLink}`}
-                                            to='/vendor/profile'
-                                        >Account</Link>
-                                    </li>
                                     <li className="nav-item dropdown">
                                         <Link className={`nav-link dropdown-toggle ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Bookings
                                         </Link>
-                                        <ul className="dropdown-menu">
+                                        <ul className="dropdown-menu text-end text-md-start">
                                             <li><Link className="dropdown-item" to='/vendor/view-pending-bookings' >Pending Bookings</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/view-approved-bookings' >Approved Bookings</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/view-rejected-bookings' >Rejected Bookings</Link></li>
@@ -229,15 +175,54 @@ const Header = () => {
                             }
 
                             <li className="nav-item ms-md-2">
-                                {loggedIn ?
-                                    <button className='primary-btn' onClick={handleLogout}>Logout</button>
-                                    :
-                                    <button
-                                        className='primary-btn'
-                                        onClick={() => navigate('/auth/login')}
-                                    >Login</button>
-                                }
+                                {loggedIn ? (
+                                    userRole === 'admin' ? (
+                                        <li className="nav-item dropdown">
+                                            <Link className={`nav-link dropdown-toggle fw-bold ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Admin <i className="fa-solid fa-user"></i>
+                                            </Link>
+                                            <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
+                                                <li><Link className="dropdown-item" to='/admin/auth/login' onClick={handleLogout} >Logout</Link></li>
+                                            </ul>
+                                        </li>
+                                    ) : (userRole === 'vendor' ? (
+                                        <li className="nav-item dropdown">
+                                            <Link className={`nav-link dropdown-toggle fw-bold ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {user.name.split(" ")[0]} <i className="fa-solid fa-user"></i>
+                                            </Link>
+                                            <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
+                                                <li><Link className="dropdown-item" to='/vendor/profile' >Profile</Link></li>
+                                                <li><Link className="dropdown-item" to='/vendor/auth/login' onClick={handleLogout} >Logout</Link></li>
+                                            </ul>
+                                        </li>
+                                    ) :
+                                        <li className="nav-item dropdown">
+                                            <Link className={`nav-link dropdown-toggle fw-bold ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {user.name.split(" ")[0]} <i className="fa-solid fa-user"></i>
+                                            </Link>
+                                            <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
+                                                <li><Link className="dropdown-item" to='/profile' >Profile</Link></li>
+                                                <li><Link className="dropdown-item" to='/my-bookings' >My Bookings</Link></li>
+                                                <li><Link className="dropdown-item" to='/favorites' >Favourites</Link></li>
+                                                {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='/vendor-application' >Register as Vendor</Link></li>}
+                                                <li><Link className="dropdown-item" onClick={handleLogout} to='/auth/login'>Logout</Link></li>
+                                            </ul>
+                                        </li>
+                                    )
+                                ) : (
+                                    <li className="nav-item dropdown">
+                                        <Link className={`nav-link dropdown-toggle fw-bold ${styles.navLink}`} role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Account <i className="fa-solid fa-user"></i>
+                                        </Link>
+                                        <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
+                                            <li><Link className="dropdown-item" to='/auth/login' >Login</Link></li>
+                                            <li><Link className="dropdown-item" to='/auth/signup' >Signup</Link></li>
+                                        </ul>
+                                    </li>
+                                )}
                             </li>
+
+
                         </ul>
                     </div>
                 </div>

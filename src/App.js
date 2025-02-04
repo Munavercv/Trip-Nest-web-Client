@@ -119,7 +119,6 @@ function App() {
         <Route path="/vendor/view-pending-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPendingBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-approved-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewApprovedBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-rejected-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewRejectedBookingsPage /></ProtectedRoutes>} />
-        <Route path="/vendor/view-rejected-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewRejectedBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-bookings-by-package/:packageId" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackageBookingsPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewBookingDetailsPage /></ProtectedRoutes>} />
         <Route path="/vendor/edit-profile" element={<ProtectedRoutes requiredRole='vendor' > <VendorEditProfilePage /></ProtectedRoutes>} />

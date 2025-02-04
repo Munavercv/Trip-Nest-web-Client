@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import config from '../../../config/api';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Vendors = (props) => {
+const Vendors = ({filter}) => {
 
-  const { filter } = props;
   const navigate = useNavigate()
   const [dataStatus, setDataStatus] = useState('Loading...');
   const [searchError, setSearchError] = useState('')
@@ -19,7 +18,7 @@ const Vendors = (props) => {
       if (response.data.vendors.length === 0) {
         setDataStatus('No vendors found!')
         return;
-      } 
+      }
       setVendors(response.data.vendors)
       setDataStatus('')
     } catch (error) {
@@ -53,7 +52,17 @@ const Vendors = (props) => {
 
   return (
     <section className='container py-5'>
-      <h2 className='section-title text-center mb-3'>{filter} Vendors</h2>
+      <h2 className='section-title text-center'>Vendors</h2>
+
+      <div class="dropdown mb-3 text-center">
+        <button class="primary-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {filter}
+        </button>
+        <ul class="dropdown-menu">
+          <li><Link to='/admin/active-vendors' className="dropdown-item">Active</Link></li>
+          <li><Link to='/admin/disabled-vendors' className="dropdown-item">Inactive</Link></li>
+        </ul>
+      </div>
 
       <div className="mb-3 row">
         <form

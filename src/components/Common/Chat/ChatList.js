@@ -13,7 +13,7 @@ const ChatList = ({ chats, onSelectChat, selectedChat }) => {
       <div className="border-bottom border-3 border-secondary p-3 d-flex justify-content-between align-items-center">
         <button
           className="transparent-btn"
-          onClick={() => userRole === 'vendor' ? navigate('/vendor') : navigate('/')}
+          onClick={() => navigate(-1)}
         >
           <i className="fa-solid fa-chevron-left"></i> back
         </button>
