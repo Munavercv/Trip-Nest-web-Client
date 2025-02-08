@@ -14,7 +14,7 @@ const AdminManageApplicationCards = () => {
 
     return (
         <section className={`${styles.cardsSec} container-fluid px-lg-5 px-3 py-4`}>
-            <h4 className='section-title text-center mb-3'>Manage Packages</h4>
+            <h4 className='section-title text-center mb-3'>Manage Applications</h4>
 
             <div className="row row-cols-lg-4 row-cols-sm-2 row-cols-1 justify-content-center">
                 {applicationCounts.map(({ _id, count }, index) => (

@@ -4,14 +4,24 @@ import styles from './UserViewBookingDetails.module.css'
 import axios from 'axios'
 import config from '../../../config/api'
 import { Link } from 'react-router-dom'
+import PaymentOrderModal from './PaymentOrderModal'
+import { useDispatch, useSelector } from 'react-redux'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
+import PaymentDetailsPopup from '../../Common/Popups/PaymentDetailsPopup'
+import { selectPayment } from '../../../redux/slices/paymentSlices'
 
 const UserViewBookingDetails = () => {
     const { bookingId } = useParams()
+    const { user } = useSelector(state => state.auth)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [bookingDetails, setBookingDetails] = useState()
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [actionError, setActionError] = useState('')
+    const [showOrderModal, setShowOrderModal] = useState(false)
+    const [paySuccessModal, setPaySuccessModal] = useState(false)
+    const [showPaymentDetails, setShowPaymentDetails] = useState(false)
 
     const fetchBookingDetails = async () => {
         try {
@@ -25,7 +35,7 @@ const UserViewBookingDetails = () => {
     const handleCancelBooking = async (bookingId) => {
         setActionError('')
         const confirmed = window.confirm('You cannot undo once booking cancelled')
-        if(!confirmed) return
+        if (!confirmed) return
 
         try {
             await axios.delete(`${config.API_BASE_URL}/api/common/delete-booking/${bookingId}`)
@@ -34,6 +44,17 @@ const UserViewBookingDetails = () => {
         } catch (error) {
             setActionError(error.response?.data?.message || 'Error while canceling')
         }
+    }
+
+    const handlePaymentSuccess = () => {
+        setShowOrderModal(false)
+        setPaySuccessModal(true)
+        fetchBookingDetails()
+    }
+
+    const handleShowBookingDetails = () => {
+        dispatch(selectPayment({ orderId: bookingDetails.paymentDetails?.orderId }))
+        setShowPaymentDetails(true)
     }
 
     useEffect(() => {
@@ -71,6 +92,7 @@ const UserViewBookingDetails = () => {
                         <h6><span>Name: </span>{bookingDetails.packageDetails[0].title}</h6>
                         <h6><span>Date : </span>{new Date(bookingDetails.packageDetails[0].startDate).toLocaleDateString()}</h6>
                         <h6><span>Destination : </span>{bookingDetails.packageDetails[0].destination}</h6>
+
                         <Link to={`/view-package/${bookingDetails.packageDetails[0]._id}`}>
                             View More details <i className="fa-solid fa-chevron-right"></i>
                         </Link>
@@ -102,15 +124,33 @@ const UserViewBookingDetails = () => {
                         <h6>{new Date(bookingDetails.bookingDate).toLocaleDateString()}</h6>
                     </div>
 
+                    {bookingDetails.status === 'approved' && <>
+                        <hr className="border-2" />
+                        <div className={`${styles.item} ms-md-5`}>
+                            <h5>Payment</h5>
+                            <h6>{bookingDetails.paymentDetails?.status ? 'Paid' : 'Not paid'}</h6>
+                            {bookingDetails.paymentDetails?.status === true && <Link onClick={handleShowBookingDetails}>
+                                View Payment Details
+                            </Link>}
+                        </div>
+                    </>}
+
                     {/* Action buttons */}
                     <hr className="border-2" />
                     <div className='text-center'>
                         <button
-                        onClick={() => handleCancelBooking(bookingDetails._id)}
+                            onClick={() => handleCancelBooking(bookingDetails._id)}
                             className='primary-btn me-2'
                         >
                             Cancel booking
                         </button>
+                        {!bookingDetails.paymentDetails?.status && bookingDetails.status === 'approved' &&
+                            <button
+                                className='primary-btn me-2'
+                                onClick={() => setShowOrderModal(true)}
+                            >
+                                Pay Now
+                            </button>}
                         <p className='text-danger'>{actionError}</p>
                     </div>
 
@@ -118,8 +158,32 @@ const UserViewBookingDetails = () => {
                 :
                 <h4 className='text-center border-top'>{dataStatus}</h4>
             }
+
+            {bookingDetails && showOrderModal &&
+                <PaymentOrderModal
+                    packageId={bookingDetails.packageDetails[0]._id}
+                    amount={bookingDetails.totalAmount}
+                    bookingId={bookingDetails._id}
+                    vendorId={bookingDetails.packageDetails[0].vendorId}
+                    userId={user.userId}
+                    onClose={() => setShowOrderModal(false)}
+                    packageName={bookingDetails.packageDetails[0].title}
+                    onPaymentSuccess={handlePaymentSuccess}
+                />
+            }
+            {bookingDetails && paySuccessModal &&
+                <SuccessPopup
+                    title='Payment Successful'
+                    description={`Your payment for ${bookingDetails.packageDetails[0].title} is successful`}
+                    onClose={() => setPaySuccessModal(false)}
+                />
+            }
+            {showPaymentDetails &&
+                <PaymentDetailsPopup
+                    close={() => setShowPaymentDetails(false)}
+                />
+            }
         </section>
     )
 }
-
 export default UserViewBookingDetails

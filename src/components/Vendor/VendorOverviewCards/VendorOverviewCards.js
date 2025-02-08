@@ -10,6 +10,7 @@ const VendorOverviewCards = () => {
 
     const [pendingbookingCount, setPendingbookingCount] = useState(0)
     const [activePackagesCount, setActivePackagesCount] = useState(0);
+    const [monthlyRevenue, setMonthlyRevenue] = useState(0)
 
     const fetchPendingbookingCount = async () => {
         const response = await axios.get(`${config.API_BASE_URL}/api/vendor/pending-booking-count/${user.userId}`)
@@ -21,10 +22,16 @@ const VendorOverviewCards = () => {
         setActivePackagesCount(response.data.count)
     }
 
+    const fetchMonthlyRevenue = async () => {
+        const { data } = await axios.get(`${config.API_BASE_URL}/api/vendor/monthly-revenue/${user.userId}`)
+        setMonthlyRevenue(data.revenue)
+    }
+
     useEffect(() => {
         if (user) {
             fetchPendingbookingCount()
             fetchActivePackageCount()
+            fetchMonthlyRevenue()
         }
     }, [user])
 
@@ -60,8 +67,10 @@ const VendorOverviewCards = () => {
                     <div className={`${styles.card} card`}>
                         <div className="card-body text-center">
                             <h5 className="card-title">Revenue this month</h5>
-                            <h6 className="card-subtitle mb-3"><span>0</span></h6>
-                            <button className='primary-btn'>View</button>
+                            <h6 className="card-subtitle mb-3"><span>{monthlyRevenue}Rs.</span></h6>
+                            <Link to='/vendor/all-payments'>
+                                <button className='primary-btn'>View</button>
+                            </Link>
                         </div>
                     </div>
                 </div>

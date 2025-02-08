@@ -4,14 +4,19 @@ import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
 import config from '../../../config/api'
 import { Link } from 'react-router-dom'
+import { selectPayment } from '../../../redux/slices/paymentSlices'
+import { useDispatch } from 'react-redux'
+import PaymentDetailsPopup from '../../Common/Popups/PaymentDetailsPopup'
 
 const ViewBookingDetails = () => {
     const { bookingId } = useParams()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [bookingDetails, setBookingDetails] = useState()
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [actionError, setActionError] = useState('')
+    const [showPaymentDetails, setShowPaymentDetails] = useState(false)
 
     const fetchBookingDetails = async () => {
         try {
@@ -49,6 +54,11 @@ const ViewBookingDetails = () => {
         } catch (error) {
             setActionError(error.response?.data?.message || 'Error while rejecting booking')
         }
+    }
+
+    const handleShowPaymentDetails = () => {
+        dispatch(selectPayment({ orderId: bookingDetails.paymentDetails?.orderId }))
+        setShowPaymentDetails(true)
     }
 
     useEffect(() => {
@@ -123,6 +133,20 @@ const ViewBookingDetails = () => {
                         <h6>{bookingDetails.user[0].email}</h6>
                     </div>
 
+                    {bookingDetails.status === 'approved' && <>
+                        <hr className="border-2" />
+                        <div className={`${styles.item} ms-md-5`}>
+                            <h5>Payment</h5>
+                            <h6>{bookingDetails.paymentDetails?.status ? 'Paid' : 'Not paid'}</h6>
+                            {bookingDetails.paymentDetails?.status === true &&
+                                <Link
+                                    onClick={handleShowPaymentDetails}
+                                >
+                                    View Payment Details
+                                </Link>}
+                        </div>
+                    </>}
+
                     {/* Action buttons */}
                     <hr className="border-2" />
                     {bookingDetails.status === 'pending' &&
@@ -152,7 +176,7 @@ const ViewBookingDetails = () => {
                             </button>
                             <p className='text-danger'>{actionError}</p>
                         </div>}
-                        
+
                     {bookingDetails.status === 'rejected' &&
                         <div className='text-center'>
                             <button
@@ -167,6 +191,12 @@ const ViewBookingDetails = () => {
                 </div>
                 :
                 <h4 className='text-center border-top'>{dataStatus}</h4>
+            }
+
+            {showPaymentDetails &&
+                <PaymentDetailsPopup
+                    close={() => setShowPaymentDetails(false)}
+                />
             }
         </section>
     )

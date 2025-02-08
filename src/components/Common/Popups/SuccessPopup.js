@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Popups.module.css'
 
-const SuccessPopup = ({ title, description, onAction }) => {
+const SuccessPopup = ({ title, description, onClose }) => {
     return (
         <div>
             <div className={styles.popupOverlay}>
@@ -14,7 +14,7 @@ const SuccessPopup = ({ title, description, onAction }) => {
                     <div>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => onAction(true)}
+                            onClick={onClose}
                         >
                             Ok
                         </button>

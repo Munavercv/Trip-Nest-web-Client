@@ -25,18 +25,13 @@ const UserProfile = () => {
             navigate('/')
             dispatch(logout())
         } catch (error) {
-            console.log(error)
             alert('An error occured while deleting your account')
         }
     }
 
     const fetchApplicationNameAndStatus = async (userId) => {
-        try {
             const response = await axios.get(`${config.API_BASE_URL}/api/user/get-application-name-and-status/${userId}`);
             setApplication(response.data.application)
-        } catch (error) {
-            console.error(error)
-        }
     }
 
     useEffect(() => {
@@ -86,14 +81,12 @@ const UserProfile = () => {
                                         to='/my-bookings'
                                     >My bookings</Link>
                                 </li>
-                                {user.isAppliedForVendor &&
-                                    <li>
-                                        <Link
-                                            to='/view-my-vendor-application'
-                                            className={styles.links}
-                                        >Vendor application</Link>
-                                    </li>
-                                }
+                                <li>
+                                    <Link
+                                        className={styles.links}
+                                        to='/my-payments'
+                                    >My payments</Link>
+                                </li>
                             </ul>
                         </div>
                     </div>

@@ -64,6 +64,8 @@ import UserViewFavourites from "./pages/user/UserViewFavourites";
 import VendorViewPackageBookingsPage from './pages/vendor/VendorViewPackageBookingsPage'
 import AdminViewBookingDetailsPage from "./pages/admin/AdminViewBookingDetailsPage";
 import VendorEditPackagePage from "./pages/vendor/VendorEditPackagePage";
+import UserViewPaymentsPage from "./pages/user/UserViewPaymentsPage";
+import VendorViewPaymentsPage from "./pages/vendor/VendorViewPaymentsPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -123,6 +125,7 @@ function App() {
         <Route path="/vendor/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewBookingDetailsPage /></ProtectedRoutes>} />
         <Route path="/vendor/edit-profile" element={<ProtectedRoutes requiredRole='vendor' > <VendorEditProfilePage /></ProtectedRoutes>} />
         <Route path="/vendor/edit-package/:packageId" element={<ProtectedRoutes requiredRole='vendor' ><VendorEditPackagePage /> </ProtectedRoutes>} />
+        <Route path="/vendor/all-payments" element={<ProtectedRoutes requiredRole='vendor' ><VendorViewPaymentsPage /> </ProtectedRoutes>} />
 
 
         {/* USER routes */}
@@ -149,6 +152,7 @@ function App() {
         <Route path="/my-bookings" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingsPage /></ProtectedRoutes>} />
         <Route path="/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingDetailsPage /></ProtectedRoutes>} />
         <Route path="/favorites" element={<ProtectedRoutes requiredRole='user' ><UserViewFavourites /></ProtectedRoutes>} />
+        <Route path="/my-payments" element={<ProtectedRoutes requiredRole='user' ><UserViewPaymentsPage /></ProtectedRoutes>} />
 
 
       </Routes>
