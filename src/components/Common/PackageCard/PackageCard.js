@@ -1,12 +1,28 @@
 import React from 'react'
 import styles from './PackageCard.module.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const PackageCard = ({ imageUrl, price, title, description, destination, category, _id, rating }) => {
     const { userRole } = useSelector((state) => state.auth)
+    const navigate = useNavigate()
+
+    const viewPakcage = () => {
+        if (userRole === 'admin') {
+            navigate(`/admin/view-package/${_id}`)
+        } else if (userRole === 'vendor') {
+            navigate(`/vendor/view-package/${_id}`)
+        } else {
+            navigate(`/view-package/${_id}`)
+        }
+    }
+
     return (
-        <div className={`${styles.card} card my-4 shadow-sm`}>
+        <div
+            onClick={viewPakcage}
+            className={`${styles.card} card my-4 shadow-sm`}
+            style={{ cursor: 'pointer' }}
+        >
             <div className={styles.imgDiv}>
                 <img src={imageUrl} className="card-img-top" alt="Package image" />
             </div>

@@ -43,14 +43,11 @@ const LoginForm = ({ title, role }) => {
       dispatch(loginSuccess({ token }));
       setLoading(false)
 
-      // if (role === 'user') navigate('/');
-      // if (role === 'vendor') navigate('/vendor');
-      // if (role === 'admin') navigate('/admin/home');
       const redirectPath = location.state?.from?.pathname || location.state?.from || '/';
       navigate(redirectPath, { replace: true });
 
     } catch (error) {
-      setError(error.response?.data?.message || "Invalid email or password");
+      setError(error.response?.data?.message || "Incorrect email or password");
       setLoading(false)
     }
 

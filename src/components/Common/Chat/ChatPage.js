@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import ChatList from "./ChatList";
 import ChatWindow from "./ChatWindow";
 import styles from "./Chat.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import config from '../../../config/api'
 import io from "socket.io-client";
+import { removeChat, selectChat } from "../../../redux/slices/chatSlice";
 
-const socket = io("https://tripnest.xyz", {
+const socket = io(`${config.API_BASE_URL}`, {
   path: "/socket.io/",
   transports: ["websocket", "polling"]
 });
@@ -15,6 +16,8 @@ const socket = io("https://tripnest.xyz", {
 const ChatPage = () => {
   const { user } = useSelector((state) => state.auth);
   const { selectedChatId } = useSelector((state) => state.chat);
+  const dispatch = useDispatch()
+
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageStatus, setMessageStatus] = useState("Loading...");
@@ -71,7 +74,6 @@ const ChatPage = () => {
             setMessages(response.data.messages);
           }
         } catch (error) {
-          console.error("Error fetching messages:", error.response?.data?.message || error.message);
           setMessageStatus("Failed to load messages.");
         }
       }
@@ -97,8 +99,16 @@ const ChatPage = () => {
     }
   };
 
+  const handleSelectChat = (chat) => {
+    dispatch(selectChat({ chatId: chat._id }));
+    setSelectedChat(chat);
+    setMessages([]);
+  };
+
   const onBack = () => {
+    dispatch(removeChat())
     setSelectedChat(null)
+    setMessages([])
   }
 
   return (
@@ -107,7 +117,7 @@ const ChatPage = () => {
         <div className={`col-lg-4 col-md-4 col-12 ${styles.chatListContainer} ${selectedChat && "d-none d-md-block"}`}>
           <ChatList
             chats={chats}
-            onSelectChat={setSelectedChat}
+            onSelectChat={handleSelectChat}
             selectedChat={selectedChat}
           />
         </div>

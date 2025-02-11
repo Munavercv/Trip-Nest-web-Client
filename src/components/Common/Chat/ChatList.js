@@ -30,7 +30,14 @@ const ChatList = ({ chats, onSelectChat, selectedChat }) => {
               key={conversation._id}
               className={`${styles.chatItem} ${selectedChat?._id === conversation._id ? styles.activeChat : ""
                 }`}
-              onClick={() => onSelectChat(conversation)
+              onClick={() => {
+                if (selectedChat) {
+                  if (conversation._id === selectedChat?._id) {
+                    return
+                  }
+                }
+                onSelectChat(conversation)
+              }
               }>
               <img
                 src={(participantDetails?.dpUrl || participantDetails?.logoUrl) || defaultAvatar}
