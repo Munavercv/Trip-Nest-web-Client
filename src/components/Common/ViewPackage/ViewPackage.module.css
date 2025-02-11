@@ -81,3 +81,18 @@
 .addToFavouriteButton:hover{
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+.ratingBtn {
+  color: black;
+  background-color: #ffc107;
+  padding: 0.3rem 0.8rem;
+  border: none;
+  font-size: 17px;
+  font-weight: 400;
+  transition: all 200ms ease-in;
+  margin-left: 2px;
+}
+
+.ratingBtn:hover{
+  background-color: #d4a004;
+}

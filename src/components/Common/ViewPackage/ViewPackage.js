@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import styles from './ViewPackage.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuthStatus } from '../../../redux/slices/authSlice'
@@ -11,6 +11,7 @@ import InputPopup from '../Popups/InputPopup'
 import ConfirmPopup from '../Popups/ConfirmPopup'
 import UserBookingModal from './UserBookingModal'
 import SuccessPopup from '../Popups/SuccessPopup'
+import AddRatingModal from './AddRatingModal'
 
 const ViewPackage = () => {
     const { id } = useParams()
@@ -37,24 +38,28 @@ const ViewPackage = () => {
     const [approvePackagePopup, setApprovePackagePopup] = useState(false)
     const [activatePopup, setActivatePopup] = useState(false)
     const [deactivatePopup, setDeactivatePopup] = useState(false)
+    const [showRatingModal, setShowRatingModal] = useState(false)
     const [errors, setErrors] = useState({
         delete: '',
         approve: '',
         activate: '',
-        deactivate: ''
+        deactivate: '',
+        rating: '',
     })
     const [loading, setLoading] = useState({
         delete: false,
         approve: false,
         activate: false,
-        deactivate: false
+        deactivate: false,
+        rating: false
     })
     const [showSuccessPopup, setShowSuccessPopup] = useState({
         delete: false,
         approve: false,
         reject: false,
         activate: false,
-        deactivate: false
+        deactivate: false,
+        rating: false
     })
 
     const fetchPackage = async (id) => {
@@ -279,6 +284,31 @@ const ViewPackage = () => {
         }
     }
 
+    const handleRatePackage = async (rating) => {
+        setErrors({ rating: '' })
+        setLoading({ rating: true })
+        try {
+            const { data } = await axios.put(`${config.API_BASE_URL}/api/user/add-review`, {
+                rating,
+                packageId: id,
+                userId: user.userId
+            })
+            setShowRatingModal(false)
+            setPackageDetails((prevDetails) => ({
+                ...prevDetails,
+                rating: {
+                    ...prevDetails.rating,
+                    avgRating: data.updatedAvgRating
+                }
+            }));
+            setShowSuccessPopup({ rating: true })
+        } catch (error) {
+            setErrors({ rating: error.response?.data?.message || 'Cannot send' })
+        } finally {
+            setLoading({ rating: false })
+        }
+    }
+
 
     useEffect(() => {
         fetchPackage(id)
@@ -429,6 +459,19 @@ const ViewPackage = () => {
                                         : 'want to know More? chat'}
                                 </button>
                             </Link>
+                            <button
+                                className={styles.ratingBtn}
+                                onClick={() => {
+                                    dispatch(checkAuthStatus())
+                                    if (!user) {
+                                        setGotoLoginPopup(true)
+                                        return
+                                    }
+                                    setShowRatingModal(true)
+                                }}
+                            >
+                                Rate package
+                            </button>
                         </div>
                     }
 
@@ -657,6 +700,27 @@ const ViewPackage = () => {
                     title='Rejected'
                     description='Successfully rejected package'
                     onClose={() => setShowSuccessPopup({ reject: false })}
+                />
+            }
+
+            {showRatingModal &&
+                <AddRatingModal
+                    close={() => {
+                        setErrors({ rating: '' })
+                        setLoading({ rating: false })
+                        setShowRatingModal(false)
+                    }}
+                    onRate={handleRatePackage}
+                    isLoading={loading.rating}
+                    error={errors.rating}
+                />
+            }
+
+            {showSuccessPopup.rating &&
+                <SuccessPopup
+                    title='Thank you'
+                    description='Your rating added'
+                    onClose={() => setShowSuccessPopup({ rating: false })}
                 />
             }
 
