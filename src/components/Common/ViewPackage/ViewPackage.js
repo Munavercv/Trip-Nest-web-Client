@@ -19,6 +19,7 @@ const ViewPackage = () => {
     const { user, userRole, loggedIn } = useSelector((state) => state.auth)
     const navigate = useNavigate()
 
+    const [review, setReview] = useState(null)
     const [showRejectPopup, setShowRejectPopup] = useState(false)
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [packageDetails, setPackageDetails] = useState()
@@ -294,6 +295,7 @@ const ViewPackage = () => {
                 userId: user.userId
             })
             setShowRatingModal(false)
+            fetchReview()
             setPackageDetails((prevDetails) => ({
                 ...prevDetails,
                 rating: {
@@ -308,6 +310,26 @@ const ViewPackage = () => {
             setLoading({ rating: false })
         }
     }
+
+    const fetchReview = async () => {
+        const { data } = await axios.get(`${config.API_BASE_URL}/api/user/get-review`, {
+            params: {
+                userId: user.userId,
+                packageId: id
+            }
+        })
+        setReview(data.review)
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (userRole === 'user' && user) {
+                await fetchReview();
+            }
+        };
+
+        fetchData();
+    }, [userRole, user, id]);
 
 
     useEffect(() => {
@@ -459,7 +481,7 @@ const ViewPackage = () => {
                                         : 'want to know More? chat'}
                                 </button>
                             </Link>
-                            <button
+                            {!review && < button
                                 className={styles.ratingBtn}
                                 onClick={() => {
                                     dispatch(checkAuthStatus())
@@ -471,7 +493,7 @@ const ViewPackage = () => {
                                 }}
                             >
                                 Rate package
-                            </button>
+                            </button>}
                         </div>
                     }
 
@@ -576,7 +598,8 @@ const ViewPackage = () => {
                 <h4 className='text-center fw-medium'>{dataStatus}</h4>
             }
 
-            {showRejectPopup &&
+            {
+                showRejectPopup &&
                 <InputPopup
                     title='Are you sure to reject this package'
                     description='Please enter the reason to reject'
@@ -588,7 +611,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showBookingModal &&
+            {
+                showBookingModal &&
                 <UserBookingModal
                     onAction={handleBookingPopupAction}
                     isLoading={isLoading}
@@ -597,7 +621,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {bookingSuccess &&
+            {
+                bookingSuccess &&
                 <ConfirmPopup
                     title='Booking successfull'
                     description='See your bookings'
@@ -607,7 +632,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {deletePopup &&
+            {
+                deletePopup &&
                 <ConfirmPopup
                     title='Delete Package'
                     description="Deleting the package will erase all the data of this package. You won't be able to retreive it again"
@@ -619,7 +645,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {gotoLoginPopup &&
+            {
+                gotoLoginPopup &&
                 <ConfirmPopup
                     title='Please Login to continue'
                     allowText='Ok'
@@ -628,7 +655,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {approvePackagePopup &&
+            {
+                approvePackagePopup &&
                 <ConfirmPopup
                     title='Are you sure want to approve this package?'
                     allowText='Yes'
@@ -639,7 +667,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {deactivatePopup &&
+            {
+                deactivatePopup &&
                 <ConfirmPopup
                     title='Deactivate'
                     description='Are you sure want to deactivate this package?'
@@ -651,7 +680,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.deactivate &&
+            {
+                showSuccessPopup.deactivate &&
                 <SuccessPopup
                     title='Deactivated'
                     description='Successfully Deactivated Package'
@@ -659,7 +689,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {activatePopup &&
+            {
+                activatePopup &&
                 <ConfirmPopup
                     title='Activate'
                     description='Activating this package make the package public'
@@ -671,7 +702,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.activate &&
+            {
+                showSuccessPopup.activate &&
                 <SuccessPopup
                     title='Activated'
                     description='Package Activated successfully'
@@ -679,7 +711,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.delete &&
+            {
+                showSuccessPopup.delete &&
                 <SuccessPopup
                     title='Deleted'
                     description='Successfully deleted package'
@@ -687,7 +720,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.approve &&
+            {
+                showSuccessPopup.approve &&
                 <SuccessPopup
                     title='Approved'
                     description='Successfully approved package'
@@ -695,7 +729,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.reject &&
+            {
+                showSuccessPopup.reject &&
                 <SuccessPopup
                     title='Rejected'
                     description='Successfully rejected package'
@@ -703,7 +738,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showRatingModal &&
+            {
+                showRatingModal &&
                 <AddRatingModal
                     close={() => {
                         setErrors({ rating: '' })
@@ -716,7 +752,8 @@ const ViewPackage = () => {
                 />
             }
 
-            {showSuccessPopup.rating &&
+            {
+                showSuccessPopup.rating &&
                 <SuccessPopup
                     title='Thank you'
                     description='Your rating added'

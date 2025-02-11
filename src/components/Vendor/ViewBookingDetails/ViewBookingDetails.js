@@ -159,6 +159,14 @@ const ViewBookingDetails = () => {
                     <div className={`${styles.item} ms-md-5`}>
                         <h5>User Email: </h5>
                         <h6>{bookingDetails.user[0].email}</h6>
+                        <h5>Whatsapp: </h5>
+                        <h6>
+                            {bookingDetails.userWhatsapp}</h6>
+                            <a
+                                href={`https://wa.me/${bookingDetails.userWhatsapp.replace(/\s+/g, '')}?text=Hello, I am contacting you regarding your *${bookingDetails.packageDetails[0].title}* booking on *Trip Nest* platform`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >Chat on Whatsapp <i className="fa-brands fa-whatsapp"></i></a>
                     </div>
 
                     {bookingDetails.status === 'approved' && <>

@@ -6,6 +6,7 @@ const UserBookingModal = ({ isLoading, onAction, error, price }) => {
     const [inputValues, setInputValues] = useState({
         numberOfSeats: 0,
         specialRequests: '',
+        wtspNumber: ''
     });
 
     const handleInputChange = (e) => {
@@ -26,8 +27,9 @@ const UserBookingModal = ({ isLoading, onAction, error, price }) => {
                     <p className="fw-semibold">
                     </p>
 
-                    <div className="mb-3">
-                        <input
+                    <div className="mb-1 text-start">
+                    <label htmlFor="numberOfSeats" className="ms-2">Number of seats</label>
+                    <input
                             type="number"
                             name='numberOfSeats'
                             className="form-input"
@@ -36,8 +38,20 @@ const UserBookingModal = ({ isLoading, onAction, error, price }) => {
                             onChange={handleInputChange}
                         />
                     </div>
-                    <div className="mb-3">
-                        <textarea
+                    <div className="mb-1 text-start">
+                        <label htmlFor="wtspNumber" className="ms-2">Whatsapp Number (with country code)</label>
+                        <input
+                            type="number"
+                            name='wtspNumber'
+                            className="form-input"
+                            id="wtspNumber"
+                            value={inputValues.wtspNumber}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className="mb-1 text-start">
+                    <label htmlFor="specialRequests" className="ms-2">Number of seats</label>
+                    <textarea
                             type="text"
                             className="form-input"
                             name='specialRequests'
@@ -48,7 +62,7 @@ const UserBookingModal = ({ isLoading, onAction, error, price }) => {
                         />
                     </div>
                     <p className='text-start'>
-                        Total Amount: Rs.{totalAmount.toFixed(2)}
+                        Total Amount: <strong> Rs.{totalAmount.toFixed(2)}</strong>
                     </p>
                     {error && <p className="text-danger mt-2">{error}</p>}
 
@@ -56,7 +70,11 @@ const UserBookingModal = ({ isLoading, onAction, error, price }) => {
                         <button
                             className="primary-btn me-2"
                             onClick={() => onAction(true, inputValues, totalAmount)}
-                            disabled={isLoading}
+                            disabled={
+                                isLoading ||
+                                inputValues.numberOfSeats < 1 ||
+                                inputValues.wtspNumber.length < 10
+                            }
                             type='submit'
                         >
                             {isLoading ? 'Processing...' : 'Book'}
