@@ -3,14 +3,20 @@ import styles from './UserAccount.module.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import config from '../../../config/api'
+import ConfirmPopup from '../Popups/ConfirmPopup'
+import SuccessPopup from '../Popups/SuccessPopup'
 
 const UserAccount = () => {
     const { userId } = useParams()
-    const [dpUrl, setDpUrl] = useState('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bW9kZWx8ZW58MHx8MHx8fDA%3D')
     const navigate = useNavigate()
+    const defaultAvatar = '/images/default-dp.png'
+
+
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [user, setUser] = useState()
     const [deleteError, setDeleteError] = useState('')
+    const [showDeletePopup, setShowDeletePopup] = useState(false)
+    const [deleteSuccess, setDeleteSuccess] = useState(false)
 
     const goback = () => navigate(-1)
 
@@ -20,24 +26,28 @@ const UserAccount = () => {
             setDataStatus('')
             setUser(response.data.userDetails[0])
         } catch (error) {
-            console.log("Internal server error: ", error);
             setDataStatus('Error fetching user details!')
         }
     }
 
     const deleteUser = async (userId) => {
-        const confirmation = window.confirm('Are you sure want to delete this user?')
-        if(!confirmation) return
-
         try {
             await axios.delete(`${config.API_BASE_URL}/api/admin/delete-user/${userId}`);
             setDeleteError('')
-            alert('Successfully deleted user account!')
-            navigate('/admin/users')
+            setDeleteSuccess(true)
         } catch (error) {
-            console.log(error)
             setDeleteError('an error occured')
+        } finally {
+            setShowDeletePopup(false)
         }
+    }
+
+    const handleDeletePopupAction = (confired) => {
+        if (confired) {
+            deleteUser(user._id)
+        }
+        else
+            setShowDeletePopup(false)
     }
 
     useEffect(() => {
@@ -55,12 +65,10 @@ const UserAccount = () => {
                     <div className="row my-4">
                         <div className="col-md-6 text-center mb-2">
                             <div className={`d-flex justify-content-center ${styles.profilePic}`} >
-                                {dpUrl ? <img
-                                    src={dpUrl}
+                                <img
+                                    src={user.dpUrl ? user.dpUrl : defaultAvatar}
                                     alt="Model"
                                 />
-                                    :
-                                    <div className={styles.circle} ></div>}
                             </div>
                             <div className={styles.details} >
                                 <p className='mb-1'>{user.email}</p>
@@ -71,11 +79,8 @@ const UserAccount = () => {
                         <div className="col-md-6 mt-5 d-flex justify-content-center">
                             <ul className={styles.quickLinks} style={{ listStyleType: 'none' }}>
                                 <li>Quick Links</li>
-                                {/* <li>
-                                    <Link className={styles.links} >Change password</Link>
-                                </li> */}
                                 <li>
-                                    <Link className={styles.links} >Packages</Link>
+                                    <Link className={styles.links} >Enrolled Packages</Link>
                                 </li>
                             </ul>
                         </div>
@@ -88,7 +93,7 @@ const UserAccount = () => {
                         >Edit</button>
                         <button
                             className='primary-btn'
-                            onClick={() => deleteUser(user._id)}
+                            onClick={() => setShowDeletePopup(true)}
                         >Delete</button>
                         <p className='text-danger'>{deleteError}</p>
                     </div>
@@ -97,6 +102,21 @@ const UserAccount = () => {
 
 
             <hr className='border-4 my-5 w-100' />
+
+            {/* Popups to handle delete user */}
+            {showDeletePopup && <ConfirmPopup
+                title='Are you sure want to delete this user?'
+                description='Deleting this user account erase all data of this user.'
+                allowText='Delete'
+                denyText='Cancel'
+                onAction={handleDeletePopupAction}
+            />}
+            {deleteSuccess && <SuccessPopup
+                title='Successfully deleted user account'
+                onClose={() => {
+                    navigate(-1)
+                }}
+            />}
 
         </section >
 

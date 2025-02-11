@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import SuccessPopup from '../../Common/Popups/SuccessPopup'
 import PaymentDetailsPopup from '../../Common/Popups/PaymentDetailsPopup'
 import { selectPayment } from '../../../redux/slices/paymentSlices'
+import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
 
 const UserViewBookingDetails = () => {
     const { bookingId } = useParams()
@@ -22,6 +23,12 @@ const UserViewBookingDetails = () => {
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [paySuccessModal, setPaySuccessModal] = useState(false)
     const [showPaymentDetails, setShowPaymentDetails] = useState(false)
+    const [showCancelPopup, setShowCancelPopup] = useState(false)
+    const [cancelSuccess, setCancelSuccess] = useState(false)
+    const [cancelError, setCancelError] = useState('')
+    const [loading, setLoading] = useState({
+        cancel: false
+    })
 
     const fetchBookingDetails = async () => {
         try {
@@ -33,16 +40,24 @@ const UserViewBookingDetails = () => {
     }
 
     const handleCancelBooking = async (bookingId) => {
-        setActionError('')
-        const confirmed = window.confirm('You cannot undo once booking cancelled')
-        if (!confirmed) return
-
+        setCancelError('')
+        setLoading({ cancel: true })
         try {
-            await axios.delete(`${config.API_BASE_URL}/api/common/delete-booking/${bookingId}`)
-            window.alert('Booking cancelled')
-            navigate(-1)
+            await axios.delete(`${config.API_BASE_URL}/api/common/cancel-booking/${bookingId}`)
+            setShowCancelPopup(false)
+            setCancelSuccess(true)
         } catch (error) {
-            setActionError(error.response?.data?.message || 'Error while canceling')
+            setCancelError(error.response?.data?.message || 'Error while canceling')
+        } finally {
+            setLoading({ cancel: false })
+        }
+    }
+
+    const handleCancelBookingPopup = (confirmed) => {
+        if (confirmed) {
+            handleCancelBooking(bookingDetails._id)
+        } else {
+            setShowCancelPopup(false)
         }
     }
 
@@ -75,7 +90,9 @@ const UserViewBookingDetails = () => {
                         ? 'text-primary'
                         : bookingDetails.status === 'approved'
                             ? 'text-success'
-                            : 'text-danger'
+                            : bookingDetails.status === 'cancelled'
+                                ? 'text-secondary'
+                                : 'text-danger'
                         }`}
                 >
                     {bookingDetails.status}
@@ -138,12 +155,12 @@ const UserViewBookingDetails = () => {
                     {/* Action buttons */}
                     <hr className="border-2" />
                     <div className='text-center'>
-                        <button
-                            onClick={() => handleCancelBooking(bookingDetails._id)}
+                        {bookingDetails.status !== 'cancelled' && <button
+                            onClick={() => setShowCancelPopup(true)}
                             className='primary-btn me-2'
                         >
                             Cancel booking
-                        </button>
+                        </button>}
                         {!bookingDetails.paymentDetails?.status && bookingDetails.status === 'approved' &&
                             <button
                                 className='primary-btn me-2'
@@ -159,6 +176,29 @@ const UserViewBookingDetails = () => {
                 <h4 className='text-center border-top'>{dataStatus}</h4>
             }
 
+            {/* cancellation handling popups */}
+            {showCancelPopup &&
+                <ConfirmPopup
+                    title='Are you sure to cancel this booking?'
+                    description="You won't be able to undo booking once cancelled, contact vendor for refunding"
+                    allowText='Ok'
+                    denyText='No'
+                    error={cancelError}
+                    isLoading={loading.cancel}
+                    onAction={handleCancelBookingPopup}
+                />
+            }
+            {cancelSuccess &&
+                <SuccessPopup
+                    title='Successfully cancelled booking'
+                    onClose={() => {
+                        setCancelSuccess(false)
+                        fetchBookingDetails()
+                    }}
+                />
+            }
+
+            {/* payment handling popups */}
             {bookingDetails && showOrderModal &&
                 <PaymentOrderModal
                     packageId={bookingDetails.packageDetails[0]._id}

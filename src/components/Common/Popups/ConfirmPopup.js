@@ -17,7 +17,7 @@ const ConfirmPopup = ({ title, description, allowText, denyText, onAction, isLoa
                             onClick={() => onAction(true)}
                             disabled={isLoading}
                         >
-                            {isLoading ? 'Processing...' : allowText}
+                            {isLoading ? 'Please Wait' : allowText}
                         </button>
                         <button
                             className='outline-btn'
@@ -27,7 +27,7 @@ const ConfirmPopup = ({ title, description, allowText, denyText, onAction, isLoa
                             {denyText}
                         </button>
                     </div>
-                    <p>{error}</p>
+                    <p className='text-danger'>{error}</p>
 
                 </div>
             </div>

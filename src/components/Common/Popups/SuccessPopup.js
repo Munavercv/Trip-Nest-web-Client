@@ -6,6 +6,7 @@ const SuccessPopup = ({ title, description, onClose }) => {
         <div>
             <div className={styles.popupOverlay}>
                 <div className={styles.popupContent}>
+                    <i className="fa-regular fa-circle-check fs-2"></i>
                     <h4 className='fw-bold'>{title}</h4>
                     <p className='fw-semibold'>
                         {description}

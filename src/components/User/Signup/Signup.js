@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom'
 import styles from './Signup.module.css'
 import axios from 'axios'
 import config from '../../../config/api'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const Signup = () => {
   const navigate = useNavigate()
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [success, setSuccess] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -79,9 +81,8 @@ const Signup = () => {
         password: formData.password,
       })
       setLoading(false)
-      navigate('/auth/login')
+      setSuccess(true)
     } catch (error) {
-      console.error(error)
       setError(error.response?.data?.message || "An error occured");
       setLoading(false)
     }
@@ -90,10 +91,9 @@ const Signup = () => {
   const handleGoogleLogin = async () => {
     setError('')
     try {
-      window.location.href = 'https://tripnest.xyz/api/auth/google-auth';
+      window.location.href = `${config.API_BASE_URL}/api/auth/google-auth`;
 
     } catch (error) {
-      console.error('failed to login with google', error);
       setError('failed to login with google');
     }
   }
@@ -232,6 +232,13 @@ const Signup = () => {
         </p>
       </div>
 
+      {success &&
+        <SuccessPopup
+          title='Account Created successfully'
+          description='Your account Created successfully. Login to continue'
+          onClose={() => navigate('/auth/login')}
+        />
+      }
 
     </section>
   )

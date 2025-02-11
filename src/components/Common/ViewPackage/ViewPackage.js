@@ -10,13 +10,12 @@ import config from '../../../config/api'
 import InputPopup from '../Popups/InputPopup'
 import ConfirmPopup from '../Popups/ConfirmPopup'
 import UserBookingModal from './UserBookingModal'
+import SuccessPopup from '../Popups/SuccessPopup'
 
 const ViewPackage = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { user, userRole, loggedIn } = useSelector((state) => state.auth)
-    const location = useLocation()
-    const currentPath = location.pathname
     const navigate = useNavigate()
 
     const [showRejectPopup, setShowRejectPopup] = useState(false)
@@ -33,6 +32,30 @@ const ViewPackage = () => {
     const [bookingError, setBookingError] = useState('')
     const [bookingSuccess, setBookingSuccess] = useState(false)
     const [favourite, setFavourite] = useState(false)
+    const [deletePopup, setDeletePopup] = useState(false)
+    const [gotoLoginPopup, setGotoLoginPopup] = useState(false)
+    const [approvePackagePopup, setApprovePackagePopup] = useState(false)
+    const [activatePopup, setActivatePopup] = useState(false)
+    const [deactivatePopup, setDeactivatePopup] = useState(false)
+    const [errors, setErrors] = useState({
+        delete: '',
+        approve: '',
+        activate: '',
+        deactivate: ''
+    })
+    const [loading, setLoading] = useState({
+        delete: false,
+        approve: false,
+        activate: false,
+        deactivate: false
+    })
+    const [showSuccessPopup, setShowSuccessPopup] = useState({
+        delete: false,
+        approve: false,
+        reject: false,
+        activate: false,
+        deactivate: false
+    })
 
     const fetchPackage = async (id) => {
         try {
@@ -49,10 +72,7 @@ const ViewPackage = () => {
 
     const handleUpdateFavourites = async (id, action) => {
         if (!user) {
-            const confirmed = window.confirm('Please login')
-            if (confirmed) {
-                navigate('/auth/login', { state: { from: `/view-package/${packageDetails?._id}` } });
-            }
+            setGotoLoginPopup(true)
             return
         }
         try {
@@ -66,30 +86,32 @@ const ViewPackage = () => {
     }
 
     const handleDeletePackage = async () => {
-        setActionError('')
+        setErrors({ delete: '' })
+        setLoading({ delete: true })
         try {
-            const confirmed = window.confirm('Are you sure to delete this package')
-            if (!confirmed) return
-            setDeleting(true)
             await axios.delete(`${config.API_BASE_URL}/api/common/delete-package/${packageDetails._id}`)
-            window.alert('Package deleted successfully')
-            navigate(-1)
+            setDeletePopup(false)
+            setShowSuccessPopup({ delete: true })
         } catch (error) {
-            setActionError(error.response?.data?.message || "Something went wrong while deleting package")
-            setDeleting(false)
+            setErrors({ delete: error.response?.data?.message || "Something went wrong while deleting package" })
+        } finally {
+            setLoading({ delete: false })
         }
     }
 
     const handleApprovePackage = async (id) => {
-        setActionError('')
-        const confirmed = window.confirm('Are you sure to approve this package')
-        if (!confirmed) return
+        setErrors({ approve: '' })
+        setLoading({ approve: true })
+
         try {
             const response = await axios.put(`${config.API_BASE_URL}/api/admin/approve-package/${id}`)
-            window.alert('Successfully approved package')
             setPackageDetails(response.data.package)
+            setApprovePackagePopup(false)
+            setShowSuccessPopup({ approve: true })
         } catch (error) {
-            setActionError(error.response?.data?.message || "Error while approving package")
+            setErrors({ approve: error.response?.data?.message || "Error while approving package" })
+        } finally {
+            setLoading({ approve: false })
         }
     }
 
@@ -98,8 +120,8 @@ const ViewPackage = () => {
         setIsLoading(true)
         try {
             const response = await axios.put(`${config.API_BASE_URL}/api/admin/reject-package/${id}`, { rejectionReason })
-            window.alert('Successfully rejected package')
             setPackageDetails(response.data.package)
+            setShowSuccessPopup({ reject: true })
         } catch (error) {
             setActionError(error.response?.data?.message || "Error while rejecting package")
         } finally {
@@ -109,30 +131,50 @@ const ViewPackage = () => {
     }
 
     const handleActivatePackage = async (id) => {
-        setActionError('')
-        setActivating(true)
+        setErrors({ activate: '' })
+        setLoading({ activate: true })
         try {
             const response = await axios.put(`${config.API_BASE_URL}/api/vendor/activate-package/${id}`)
-            window.alert('Congratulations! Your package is now active')
+            setActivatePopup(false)
             setPackageDetails(response.data.package)
+            setShowSuccessPopup({ activate: true })
         } catch (error) {
-            setActionError(error.response?.data?.message || "An error occured while activating package")
+            setErrors({ activate: error.response?.data?.message || "An error occured while activating package" })
         } finally {
-            setActivating(false)
+            setLoading({ activate: false })
+        }
+    }
+
+    const handleActivatePackagePopup = (confirm) => {
+        if (confirm) {
+            handleActivatePackage(packageDetails._id)
+        } else {
+            setErrors({ activate: '' })
+            setActivatePopup(false)
         }
     }
 
     const handleDeactivatePackage = async (id) => {
         setActionError('')
-        setDeactivating(true)
+        setLoading({ deactivate: true })
         try {
             const response = await axios.put(`${config.API_BASE_URL}/api/vendor/deactivate-package/${id}`)
-            window.alert('Your package deactivated successfully')
             setPackageDetails(response.data.package)
+            setDeactivatePopup(false)
+            setShowSuccessPopup({ deactivate: true })
         } catch (error) {
-            setActionError(error.response?.data?.message || "An error occured while deactivating package")
+            setErrors({ deactivate: error.response?.data?.message || "An error occured while deactivating package" })
         } finally {
-            setDeactivating(false)
+            setLoading({ deactivate: false })
+        }
+    }
+
+    const deactivatePopupAction = (confirmed) => {
+        if (confirmed) {
+            handleDeactivatePackage(packageDetails._id)
+        } else {
+            setDeactivatePopup(false)
+            setErrors({ deactivate: '' })
         }
     }
 
@@ -141,10 +183,7 @@ const ViewPackage = () => {
         await dispatch(checkAuthStatus());
 
         if (!loggedIn) {
-            const confirmed = window.confirm('Please log in to start a conversation.');
-            if (confirmed) {
-                navigate('/auth/login', { state: { from: `/view-package/${packageDetails?._id}` } });
-            }
+            setGotoLoginPopup(true)
             return;
         }
 
@@ -214,6 +253,32 @@ const ViewPackage = () => {
             setBookingSuccess(false)
         }
     }
+
+    const handleDeletePopupAction = (confirmed) => {
+        if (confirmed) {
+            handleDeletePackage()
+        } else {
+            setDeletePopup(false)
+            setErrors({ delete: '' })
+        }
+    }
+
+    const handleGotoLoginPopup = (confirmed) => {
+        if (confirmed) {
+            navigate('/auth/login', { state: { from: `/view-package/${packageDetails?._id}` } });
+        } else {
+            setGotoLoginPopup(false)
+        }
+    }
+
+    const handleApprovePopupAction = (confirmed) => {
+        if (confirmed) {
+            handleApprovePackage(packageDetails._id)
+        } else {
+            setApprovePackagePopup(false)
+        }
+    }
+
 
     useEffect(() => {
         fetchPackage(id)
@@ -344,12 +409,8 @@ const ViewPackage = () => {
                                 onClick={() => {
                                     dispatch(checkAuthStatus())
                                     if (!user) {
-                                        const confirmed = window.confirm('please login')
-                                        if (confirmed) {
-                                            navigate('/auth/login', { state: { from: currentPath } })
-                                        } else {
-                                            return
-                                        }
+                                        setGotoLoginPopup(true)
+                                        return
                                     }
                                     setShowBookingModal(true)
                                 }}
@@ -382,7 +443,7 @@ const ViewPackage = () => {
                                 {(packageDetails.status === 'approved' || packageDetails.status === 'inactive') && (
                                     <>
                                         <button
-                                            onClick={() => handleActivatePackage(packageDetails._id)}
+                                            onClick={() => setActivatePopup(true)}
                                             disabled={activating}
                                             className="primary-btn me-2"
                                         >
@@ -404,7 +465,7 @@ const ViewPackage = () => {
 
                                 {packageDetails.status === 'active' && <>
                                     <button
-                                        onClick={() => handleDeactivatePackage(packageDetails._id)}
+                                        onClick={() => setDeactivatePopup(true)}
                                         disabled={deactivating}
                                         className="primary-btn me-2"
                                     >
@@ -417,7 +478,7 @@ const ViewPackage = () => {
                                 </>}
 
                                 <button
-                                    onClick={handleDeletePackage}
+                                    onClick={() => setDeletePopup(true)}
                                     disabled={deleting}
                                     className="outline-btn"
                                 >
@@ -443,7 +504,7 @@ const ViewPackage = () => {
                             <div className="text-center">
                                 {(packageDetails.status === 'rejected' || packageDetails.status === 'pending') &&
                                     <button
-                                        onClick={() => handleApprovePackage(packageDetails._id)}
+                                        onClick={() => setApprovePackagePopup(true)}
                                         className="primary-btn me-2"
                                     >Approve</button>}
                                 {packageDetails.status === 'pending' && <button
@@ -454,7 +515,7 @@ const ViewPackage = () => {
                                     className="primary-btn me-2"
                                 >Reject</button>}
                                 <button
-                                    onClick={handleDeletePackage}
+                                    onClick={() => setDeletePopup(true)}
                                     disabled={deleting}
                                     className="outline-btn"
                                 >
@@ -500,6 +561,102 @@ const ViewPackage = () => {
                     allowText='Ok'
                     denyText='Cancel'
                     onAction={handleBookingSuccessPopupAction}
+                />
+            }
+
+            {deletePopup &&
+                <ConfirmPopup
+                    title='Delete Package'
+                    description="Deleting the package will erase all the data of this package. You won't be able to retreive it again"
+                    allowText='Ok'
+                    denyText='Cancel'
+                    isLoading={loading.delete}
+                    error={errors.delete}
+                    onAction={handleDeletePopupAction}
+                />
+            }
+
+            {gotoLoginPopup &&
+                <ConfirmPopup
+                    title='Please Login to continue'
+                    allowText='Ok'
+                    denyText='Cancel'
+                    onAction={handleGotoLoginPopup}
+                />
+            }
+
+            {approvePackagePopup &&
+                <ConfirmPopup
+                    title='Are you sure want to approve this package?'
+                    allowText='Yes'
+                    denyText='No'
+                    isLoading={loading.approve}
+                    error={errors.approve}
+                    onAction={handleApprovePopupAction}
+                />
+            }
+
+            {deactivatePopup &&
+                <ConfirmPopup
+                    title='Deactivate'
+                    description='Are you sure want to deactivate this package?'
+                    allowText='Yes'
+                    denyText='No'
+                    isLoading={loading.deactivate}
+                    error={errors.deactivate}
+                    onAction={deactivatePopupAction}
+                />
+            }
+
+            {showSuccessPopup.deactivate &&
+                <SuccessPopup
+                    title='Deactivated'
+                    description='Successfully Deactivated Package'
+                    onClose={() => setShowSuccessPopup({ deactivate: false })}
+                />
+            }
+
+            {activatePopup &&
+                <ConfirmPopup
+                    title='Activate'
+                    description='Activating this package make the package public'
+                    allowText='Ok'
+                    denyText='Cancel'
+                    onAction={handleActivatePackagePopup}
+                    isLoading={loading.activate}
+                    error={errors.activate}
+                />
+            }
+
+            {showSuccessPopup.activate &&
+                <SuccessPopup
+                    title='Activated'
+                    description='Package Activated successfully'
+                    onClose={() => setShowSuccessPopup({ activate: false })}
+                />
+            }
+
+            {showSuccessPopup.delete &&
+                <SuccessPopup
+                    title='Deleted'
+                    description='Successfully deleted package'
+                    onClose={() => navigate(-1)}
+                />
+            }
+
+            {showSuccessPopup.approve &&
+                <SuccessPopup
+                    title='Approved'
+                    description='Successfully approved package'
+                    onClose={() => setShowSuccessPopup({ approve: false })}
+                />
+            }
+
+            {showSuccessPopup.reject &&
+                <SuccessPopup
+                    title='Rejected'
+                    description='Successfully rejected package'
+                    onClose={() => setShowSuccessPopup({ reject: false })}
                 />
             }
 

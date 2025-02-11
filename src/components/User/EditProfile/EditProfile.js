@@ -5,6 +5,7 @@ import styles from './EditProfile.module.css'
 import { updateJwt } from '../../../redux/slices/authSlice'
 import axios from 'axios'
 import config from '../../../config/api'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const EditProfile = () => {
     const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const EditProfile = () => {
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const [selectedFile, setSelectedFile] = useState(null);
+    const [editSuccess, setEditSuccess] = useState(false)
     const [formData, setFormData] = useState({
         name: user.name,
         email: user.email,
@@ -69,7 +71,7 @@ const EditProfile = () => {
         formDataObj.append('phone', formData.phone);
 
         if (selectedFile) {
-            formDataObj.append('file', selectedFile); // Include file
+            formDataObj.append('file', selectedFile);
         }
 
         setLoading(true);
@@ -80,14 +82,12 @@ const EditProfile = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            setLoading(false);
             dispatch(updateJwt({ token: response.data.token }));
-            window.alert('Updated successfully');
-            navigate(-1);
+            setEditSuccess(true)
         } catch (error) {
-            console.error(error);
             setError(error.response?.data?.message || 'An error occurred');
-            setLoading(false);
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -108,7 +108,7 @@ const EditProfile = () => {
                                     alt="Profile picture" />
                             </div>
 
-                                <label htmlFor="">Profile picture</label>
+                            <label htmlFor="">Profile picture</label>
                             <div className="input-group mb-3">
                                 <input
                                     type="file"
@@ -190,6 +190,16 @@ const EditProfile = () => {
                     <h4 className='text-secondary text-center'>An error occured</h4>
                 }
             </div>
+
+
+            {editSuccess &&
+                <SuccessPopup
+                    title='Successfully Updated Your account'
+                    onClose={() => {
+                        navigate(-1)
+                    }}
+                />
+            }
 
 
         </section>

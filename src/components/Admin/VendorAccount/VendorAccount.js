@@ -3,13 +3,19 @@ import styles from './VendorAccount.module.css'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import config from '../../../config/api'
+import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const VendorAccount = () => {
-
     const { vendorId } = useParams()
     const navigate = useNavigate()
     const [vendorDetails, setVendorDetails] = useState()
     const [actionError, setActionError] = useState('')
+    const [showRemoveAccPopup, setShowRemoveAccPopup] = useState(false)
+    const [removeAccSuccess, setRemoveAccSuccess] = useState(false)
+    const [showStatusPopup, setShowStatusPopup] = useState(false)
+    const [pendingStatusUpdate, setPendingStatusUpdate] = useState({})
+    const [statusUpdateSuccess, setStatusUpdateSuccess] = useState(false)
 
     const goback = () => {
         navigate(-1)
@@ -20,38 +26,51 @@ const VendorAccount = () => {
             const response = await axios.get(`${config.API_BASE_URL}/api/admin/get-vendor-details/${vendorId}`)
             setVendorDetails(response.data.vendorDetails)
         } catch (error) {
-            console.error('failed to fetch vendor details', error);
+            console.error('failed to fetch vendor details', error)
         }
     }
 
     const handleStatusUpdate = async (vendorId, status) => {
         setActionError('')
-        const confirm = window.confirm('Are you sure?')
-        if (!confirm) return
-
         try {
             await axios.put(`${config.API_BASE_URL}/api/admin/vendor-status-update/${vendorId}`, { status: status })
-            window.alert('successully updated user status')
             setActionError('')
-            fetchVendorDetails(vendorId)
+            setStatusUpdateSuccess(true)
         } catch (error) {
-            console.error(error);
-            setActionError('Error while updating user!')
+            setActionError('Error while updating vendor status!')
         }
     }
 
-    const handleRemoveVendor = async (vendorId) => {
-        setActionError('')
-        const confirm = window.confirm('Are you sure want to remove this vendor?')
-        if (!confirm) return
+    const handleStatusPopupAction = (confirmed) => {
+        if (confirmed && pendingStatusUpdate.vendorId) {
+            handleStatusUpdate(pendingStatusUpdate.vendorId, pendingStatusUpdate.status)
+        }
+        setShowStatusPopup(false)
+        setPendingStatusUpdate({})
+    }
 
+    const handleStatusButtonClick = (status) => {
+        setPendingStatusUpdate({ vendorId, status })
+        setShowStatusPopup(true)
+    }
+
+    const handleRemoveVendor = async () => {
+        setActionError('')
         try {
-            await axios.delete(`${config.API_BASE_URL}/api/admin/delete-vendor/${vendorId}`)
-            window.alert('Successfully removed user!')
-            navigate(-1)
+            await axios.delete(`${config.API_BASE_URL}/api/admin/delete-vendor/${vendorDetails._id}`)
+            setRemoveAccSuccess(true)
         } catch (error) {
-            console.error(error);
             setActionError('Error while deleting vendor')
+        } finally {
+            setShowRemoveAccPopup(false)
+        }
+    }
+
+    const handleRemoveVendorPopup = (confirmed) => {
+        if (confirmed) {
+            handleRemoveVendor()
+        } else {
+            setShowRemoveAccPopup(false)
         }
     }
 
@@ -97,9 +116,9 @@ const VendorAccount = () => {
                             </li>
                             <li>
                                 <Link
-                                to={`/admin/view-packages-by-vendor/${vendorDetails._id}`}
-                                 className={styles.links} 
-                                 >Packages</Link>
+                                    to={`/admin/view-packages-by-vendor/${vendorDetails._id}`}
+                                    className={styles.links}
+                                >Packages</Link>
                             </li>
                             <li>
                                 <Link className={styles.links} >Remove account</Link>
@@ -113,49 +132,34 @@ const VendorAccount = () => {
                     {vendorDetails.status === 'pending' && <>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => {
-                                const status = 'active';
-                                handleStatusUpdate(vendorDetails._id, status)
-                            }}
+                            onClick={() => handleStatusButtonClick('active')}
                         >Approve</button>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => {
-                                const status = 'rejected';
-                                handleStatusUpdate(vendorDetails._id, status)
-                            }}
+                            onClick={() => handleStatusButtonClick('rejected')}
                         >Reject</button>
                     </>}
                     {vendorDetails.status === 'rejected' && <>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => {
-                                const status = 'active';
-                                handleStatusUpdate(vendorDetails._id, status)
-                            }}
+                            onClick={() => handleStatusButtonClick('active')}
                         >Approve</button>
                     </>}
                     {vendorDetails.status === 'active' && <>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => {
-                                const status = 'disabled';
-                                handleStatusUpdate(vendorDetails._id, status)
-                            }}
+                            onClick={() => handleStatusButtonClick('disabled')}
                         >Disable</button>
                     </>}
                     {vendorDetails.status === 'disabled' && <>
                         <button
                             className='primary-btn me-2'
-                            onClick={() => {
-                                const status = 'active';
-                                handleStatusUpdate(vendorDetails._id, status)
-                            }}
+                            onClick={() => handleStatusButtonClick('active')}
                         >Activate</button>
                     </>}
                     <button
                         className='primary-btn'
-                        onClick={() => handleRemoveVendor(vendorDetails._id)}
+                        onClick={() => setShowRemoveAccPopup(true)}
                     >Remove</button>
                     <p className="text-center">{actionError}</p>
                 </div>
@@ -163,8 +167,44 @@ const VendorAccount = () => {
 
             <hr className='border-4 my-5 w-100' />
 
+            {/* For remove account */}
+            {showRemoveAccPopup &&
+                <ConfirmPopup
+                    title='Are you sure to remove this account'
+                    description='Removing this account will erase all data of this vendor. Disable the account if you are not sure.'
+                    denyText='Cancel'
+                    allowText='Remove'
+                    onAction={handleRemoveVendorPopup}
+                />}
+            {removeAccSuccess &&
+                <SuccessPopup
+                    title='Successful'
+                    description='Successfully removed this vendor'
+                    onClose={() => navigate(-1)}
+                />
+            }
+
+            {/* For status update confirmation */}
+            {showStatusPopup &&
+                <ConfirmPopup
+                    title='Are you sure you want to update the status?'
+                    description={`This action will update the status to "${pendingStatusUpdate.status}".`}
+                    denyText='Cancel'
+                    allowText='Confirm'
+                    onAction={handleStatusPopupAction}
+                />}
+                {statusUpdateSuccess &&
+                <SuccessPopup
+                title='Status updated successfully'
+                description={`his Vendor account is "${pendingStatusUpdate.status}"`}
+                onClose={() => {
+                    setStatusUpdateSuccess(false)
+                    fetchVendorDetails(vendorId)
+                }}
+                />
+                }
         </section>
     )
 }
 
-export default VendorAccount
+export default VendorAccount;

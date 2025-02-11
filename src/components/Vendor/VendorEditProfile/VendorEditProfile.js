@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios'
 import config from '../../../config/api';
 import { updateJwt } from '../../../redux/slices/authSlice'
+import SuccessPopup from '../../Common/Popups/SuccessPopup';
 
 const VendorEditProfile = () => {
     const { user } = useSelector((state) => state.auth);
@@ -16,6 +17,7 @@ const VendorEditProfile = () => {
     const [formData, setFormData] = useState(null);
     const [validationErrors, setValidationErrors] = useState({});
     const [updationError, setUpdationError] = useState('')
+    const [updateSuccess, setUpdateSuccess] = useState(false)
 
     const validateForm = () => {
         const newErrors = {};
@@ -71,10 +73,9 @@ const VendorEditProfile = () => {
         if (!validateForm()) return;
         setLoading(true);
         try {
-            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/edit-profile/${user.userId}`, formData);            
+            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/edit-profile/${user.userId}`, formData);
             dispatch(updateJwt({ token: response.data.token }));
-            alert('Vendor details updated successfully');
-            navigate(-1);
+            setUpdateSuccess(true)
         } catch (error) {
             setUpdationError(error.response?.data?.message || 'Error updating vendor details');
         } finally {
@@ -206,6 +207,13 @@ const VendorEditProfile = () => {
                     <h4 className="text-secondary text-center">{dataStatus}</h4>
                 )}
             </div>
+
+            {updateSuccess &&
+                <SuccessPopup
+                    title='Your Account Updated successfully'
+                    onClose={() => navigate(-1)}
+                />
+            }
         </section>
     );
 };

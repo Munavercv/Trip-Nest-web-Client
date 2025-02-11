@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import styles from './EditUser.module.css'
 import axios from 'axios'
 import config from '../../../config/api';
+import SuccessPopup from '../../Common/Popups/SuccessPopup';
 
 const EditUser = () => {
     const { userId } = useParams()
@@ -11,6 +12,7 @@ const EditUser = () => {
     const [loading, setLoading] = useState(false);
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [validationErrors, setValidationErrors] = useState({});
+    const [updateSuccess, setUpdateSuccess] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -33,7 +35,6 @@ const EditUser = () => {
             })
             setDataStatus('')
         } catch (error) {
-            console.log("Internal server error: ", error);
             setDataStatus('Error fetching user details!')
         }
     }
@@ -89,10 +90,8 @@ const EditUser = () => {
                 },
             })
             setLoading(false)
-            navigate(-1)
-            window.alert('Updated successfully')
+            setUpdateSuccess(true)
         } catch (error) {
-            console.error(error)
             setError(error.response?.data?.message || "An error occured");
             setLoading(false)
         }
@@ -176,6 +175,12 @@ const EditUser = () => {
                     </form>}
             </div>
 
+            {updateSuccess &&
+                <SuccessPopup
+                    title='Successfully updated user'
+                    onClose={() => navigate(-1)}
+                />
+            }
 
         </section>
 

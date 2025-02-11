@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 import { selectPayment } from '../../../redux/slices/paymentSlices'
 import { useDispatch } from 'react-redux'
 import PaymentDetailsPopup from '../../Common/Popups/PaymentDetailsPopup'
+import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const ViewBookingDetails = () => {
     const { bookingId } = useParams()
@@ -15,8 +17,17 @@ const ViewBookingDetails = () => {
 
     const [bookingDetails, setBookingDetails] = useState()
     const [dataStatus, setDataStatus] = useState('Loading...')
-    const [actionError, setActionError] = useState('')
     const [showPaymentDetails, setShowPaymentDetails] = useState(false)
+    const [showApprovePopup, setShowApprovePopup] = useState(false)
+    const [showRejectPopup, setShowRejectPopup] = useState(false)
+    const [approveError, setApproveError] = useState('')
+    const [rejectError, setRejectError] = useState('')
+    const [loading, setLoading] = useState({
+        approve: false,
+        reject: false
+    })
+    const [approveSuccess, setApproveSuccess] = useState(false)
+    const [rejectSuccess, setRejectSuccess] = useState(false)
 
     const fetchBookingDetails = async () => {
         try {
@@ -27,32 +38,49 @@ const ViewBookingDetails = () => {
         }
     }
 
-    const handleApproveBooking = async () => {
-        setActionError('')
-        const confirmed = window.confirm("Approve booking?")
-        if (!confirmed) return
+    const handleApprovePopup = (confirmed) => {
+        if (confirmed) {
+            handleApproveBooking()
+        } else {
+            setApproveError('')
+            setShowApprovePopup(false)
+        }
+    }
 
+    const handleApproveBooking = async () => {
+        setApproveError('')
+        setLoading({ approve: true })
         try {
             await axios.put(`${config.API_BASE_URL}/api/vendor/approve-booking/${bookingId}`)
-            window.alert('successfully approved booking')
-            fetchBookingDetails()
+            setShowApprovePopup(false)
+            setApproveSuccess(true)
         } catch (error) {
-            setActionError(error.response?.data?.message || 'Error while approving booking')
+            setApproveError(error.response?.data?.message || 'Error while approving booking')
+        } finally {
+            setLoading({ approve: false })
+        }
+    }
+
+    const handleRejectPopup = (confirmed) => {
+        if (confirmed) {
+            handleRejectBooking()
+        } else {
+            setRejectError('')
+            setShowRejectPopup(false)
         }
     }
 
     const handleRejectBooking = async () => {
-        setActionError('');
-        const confirmed = window.confirm('Reject booking?')
-
-        if (!confirmed) return
-
+        setRejectError('');
+        setLoading({ reject: true })
         try {
             await axios.put(`${config.API_BASE_URL}/api/vendor/reject-booking/${bookingId}`)
-            window.alert('successfully rejected booking');
-            fetchBookingDetails()
+            setShowRejectPopup(false)
+            setRejectSuccess(true)
         } catch (error) {
-            setActionError(error.response?.data?.message || 'Error while rejecting booking')
+            setRejectError(error.response?.data?.message || 'Error while rejecting booking')
+        } finally {
+            setLoading({ reject: false })
         }
     }
 
@@ -153,39 +181,36 @@ const ViewBookingDetails = () => {
                         <div className='text-center'>
                             <button
                                 className='primary-btn me-2'
-                                onClick={handleApproveBooking}
+                                onClick={() => setShowApprovePopup(true)}
                             >
                                 <i className="fa-solid fa-check"></i> Approve
                             </button>
                             <button
                                 className='primary-btn me-2'
-                                onClick={handleRejectBooking}
+                                onClick={() => setShowRejectPopup(true)}
                             >
                                 <i className="fa-solid fa-xmark"></i> Reject
                             </button>
-                            <p className='text-danger'>{actionError}</p>
                         </div>}
 
                     {bookingDetails.status === 'approved' &&
                         <div className='text-center'>
                             <button
                                 className='primary-btn me-2'
-                                onClick={handleRejectBooking}
+                                onClick={() => setShowRejectPopup(true)}
                             >
-                                <i className="fa-solid fa-xmark"></i> Cancel Booking
+                                <i className="fa-solid fa-xmark"></i> Reject
                             </button>
-                            <p className='text-danger'>{actionError}</p>
                         </div>}
 
                     {bookingDetails.status === 'rejected' &&
                         <div className='text-center'>
                             <button
                                 className='primary-btn me-2'
-                                onClick={handleApproveBooking}
+                                onClick={() => setShowApprovePopup(true)}
                             >
                                 <i className="fa-solid fa-check"></i> Approve
                             </button>
-                            <p className='text-danger'>{actionError}</p>
                         </div>}
 
                 </div>
@@ -196,6 +221,46 @@ const ViewBookingDetails = () => {
             {showPaymentDetails &&
                 <PaymentDetailsPopup
                     close={() => setShowPaymentDetails(false)}
+                />
+            }
+
+            {showApprovePopup &&
+                <ConfirmPopup
+                    title='Approve Booking?'
+                    allowText='Yes'
+                    denyText='No'
+                    onAction={handleApprovePopup}
+                    isLoading={loading.approve}
+                    error={approveError}
+                />
+            }
+            {approveSuccess &&
+                <SuccessPopup
+                    title='Successfully approved booking'
+                    onClose={() => {
+                        setApproveSuccess(false)
+                        fetchBookingDetails('')
+                    }}
+                />
+            }
+
+            {showRejectPopup &&
+                <ConfirmPopup
+                    title='Reject Booking?'
+                    allowText='Yes'
+                    denyText='No'
+                    onAction={handleRejectPopup}
+                    isLoading={loading.reject}
+                    error={rejectError}
+                />
+            }
+            {rejectSuccess &&
+                <SuccessPopup
+                    title='Successfully rejected booking'
+                    onClose={() => {
+                        setRejectSuccess(false)
+                        fetchBookingDetails('')
+                    }}
                 />
             }
         </section>

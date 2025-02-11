@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import styles from './EditVendor.module.css'
 import axios from 'axios'
 import config from '../../../config/api'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const EditVendor = () => {
     const { vendorId } = useParams()
@@ -11,6 +12,7 @@ const EditVendor = () => {
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
+    const [updateSuccess, setUpdateSuccess] = useState(false)
     const [formData, setFormData] = useState({
         businessName: '',
         email: '',
@@ -53,7 +55,6 @@ const EditVendor = () => {
             })
             setDataStatus('')
         } catch (error) {
-            console.error(error);
             setDataStatus('Error while fetching vendor details')
         }
     }
@@ -80,12 +81,10 @@ const EditVendor = () => {
                     ...formData,
                 }
             })
-            setLoading(false)
-            navigate(-1)
-            window.alert('Updated successfully')
+            setUpdateSuccess(true)
         } catch (error) {
-            console.log(error);
             setError(error.response?.data?.message || 'An error occured while updating vendor')
+        } finally {
             setLoading(false)
         }
     }
@@ -225,6 +224,13 @@ const EditVendor = () => {
                         </div>
                     </form>}
             </div>
+
+            {updateSuccess &&
+                <SuccessPopup
+                    title='Vendor account updated successfully'
+                    onClose={() => navigate(-1)}
+                />
+            }
 
         </section>
     )

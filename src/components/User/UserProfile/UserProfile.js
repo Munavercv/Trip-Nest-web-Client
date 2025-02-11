@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import config from '../../../config/api'
 import { logout } from '../../../redux/slices/authSlice'
+import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
+import SuccessPopup from '../../Common/Popups/SuccessPopup'
 
 const UserProfile = () => {
     const dispatch = useDispatch()
@@ -12,26 +14,47 @@ const UserProfile = () => {
     const defaultDpUrl = '/images/default-dp.png'
     const navigate = useNavigate()
     const [application, setApplication] = useState()
+    const [showDeleteConfirmPopup, setShowDeleteConfirmPopup] = useState(false)
+    const [deleteSuccess, setDeleteSuccess] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+    const [deleteError, setDeleteError] = useState('')
 
     const goback = () => navigate(-1)
 
     const deleteUser = async (userId) => {
-        const confirmation = window.confirm('Are you sure want to delete your account?')
-        if (!confirmation) return
-
+        setDeleteError('')
+        setDeleteLoading(true)
         try {
             await axios.delete(`${config.API_BASE_URL}/api/user/delete-account/${userId}`);
-            alert('Successfully deleted your account!')
-            navigate('/')
-            dispatch(logout())
+            setDeleteSuccess(true)
+            setShowDeleteConfirmPopup(false)
         } catch (error) {
-            alert('An error occured while deleting your account')
+            setDeleteError(error.response?.data?.message || 'An error occured while deleting your account')
+        } finally {
+            setDeleteLoading(false)
         }
     }
 
+    const handleDeleteConfirmPopup = (confirmed) => {
+        if (confirmed) {
+            deleteUser(user.userId)
+        } else {
+            setShowDeleteConfirmPopup(false)
+        }
+    }
+
+    const handleDeleteSuccessPopup = () => {
+        navigate('/')
+        dispatch(logout())
+    }
+
     const fetchApplicationNameAndStatus = async (userId) => {
+        try {
             const response = await axios.get(`${config.API_BASE_URL}/api/user/get-application-name-and-status/${userId}`);
             setApplication(response.data.application)
+        } catch (error) {
+            setApplication(null)
+        }
     }
 
     useEffect(() => {
@@ -72,7 +95,7 @@ const UserProfile = () => {
                                 <li>
                                     <Link
                                         className={styles.links}
-                                        onClick={() => deleteUser(user.userId)}
+                                        onClick={setShowDeleteConfirmPopup}
                                     >Delete account</Link>
                                 </li>
                                 <li>
@@ -115,6 +138,22 @@ const UserProfile = () => {
                         </div>
                     </Link>
                 </div>}
+
+            {/* handle delete account */}
+            {showDeleteConfirmPopup && <ConfirmPopup
+                title='Are You sure want to delete your account'
+                description="Deleting this account will erase all of your data. you won't be able to recover it again"
+                denyText='Cancel'
+                allowText='Delete'
+                error={deleteError}
+                isLoading={deleteLoading}
+                onAction={handleDeleteConfirmPopup}
+            />}
+            {deleteSuccess &&
+                <SuccessPopup
+                    title='Successfully removed account'
+                    onClose={handleDeleteSuccessPopup}
+                />}
 
         </section >
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../Logo/Logo'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './Header.module.css'
@@ -7,27 +7,43 @@ import { logout, checkAuthStatus } from '../../../redux/slices/authSlice';
 import { setCount } from '../../../redux/slices/notificationSlice'
 import axios from 'axios'
 import config from '../../../config/api'
+import ConfirmPopup from '../Popups/ConfirmPopup'
+import SuccessPopup from '../Popups/SuccessPopup'
 
 const Header = () => {
     const dispatch = useDispatch()
     const { loggedIn, userRole, user } = useSelector((state) => state.auth);
     const { notificationCount } = useSelector(state => state.notification)
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false)
+    const [showLogoutSuccessPopup, setShowLogoutSuccessPopup] = useState(false)
     const navigate = useNavigate()
 
 
-    const handleLogout = () => {
-        const confirm = window.confirm('Logout?');
-        if (!confirm) return
+    const handleLogout = (confirmed) => {
+        if (confirmed) {
+            dispatch(logout());
+            localStorage.removeItem('token');
 
-        dispatch(logout());
-        localStorage.removeItem('token');
+            if (!userRole || userRole === "user") {
+                navigate('/');
+            } else {
+                navigate(`/${userRole}/auth/login`)
+            }
+            setShowLogoutPopup(false)
+            setShowLogoutSuccessPopup(true)
+        } else {
+            setShowLogoutPopup(false)
+        }
+    };
 
+    const handleCloseLogoutSuccessPopup = () => {
+        setShowLogoutSuccessPopup(false)
         if (!userRole || userRole === "user") {
             navigate('/');
         } else {
             navigate(`/${userRole}/auth/login`)
         }
-    };
+    }
 
     useEffect(() => {
         dispatch(checkAuthStatus());
@@ -167,7 +183,7 @@ const Header = () => {
                                         <ul className="dropdown-menu">
                                             <li>
                                                 <Link
-                                                to='/vendor/all-payments'
+                                                    to='/vendor/all-payments'
                                                     className='dropdown-item'
                                                 >Payments</Link> </li>
                                         </ul>
@@ -183,7 +199,7 @@ const Header = () => {
                                                 Admin <i className="fa-solid fa-user"></i>
                                             </Link>
                                             <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
-                                                <li><Link className="dropdown-item" to='/admin/auth/login' onClick={handleLogout} >Logout</Link></li>
+                                                <li><Link className="dropdown-item" onClick={() => setShowLogoutPopup(true)} >Logout</Link></li>
                                             </ul>
                                         </li>
                                     ) : (userRole === 'vendor' ? (
@@ -193,7 +209,7 @@ const Header = () => {
                                             </Link>
                                             <ul className={`${styles.accountDropMenu} dropdown-menu text-end text-md-start`}>
                                                 <li><Link className="dropdown-item" to='/vendor/profile' >Profile</Link></li>
-                                                <li><Link className="dropdown-item" to='/vendor/auth/login' onClick={handleLogout} >Logout</Link></li>
+                                                <li><Link className="dropdown-item" onClick={() => setShowLogoutPopup(true)} >Logout</Link></li>
                                             </ul>
                                         </li>
                                     ) :
@@ -206,7 +222,7 @@ const Header = () => {
                                                 <li><Link className="dropdown-item" to='/my-bookings' >My Bookings</Link></li>
                                                 <li><Link className="dropdown-item" to='/favorites' >Favourites</Link></li>
                                                 {!user.isAppliedForVendor && <li><Link className="dropdown-item" to='/vendor-application' >Register as Vendor</Link></li>}
-                                                <li><Link className="dropdown-item" onClick={handleLogout} to='/auth/login'>Logout</Link></li>
+                                                <li><Link className="dropdown-item" onClick={() => setShowLogoutPopup(true)}>Logout</Link></li>
                                             </ul>
                                         </li>
                                     )
@@ -228,6 +244,24 @@ const Header = () => {
                     </div>
                 </div>
             </nav>
+
+            {
+                showLogoutPopup &&
+                <ConfirmPopup
+                    title='Are sure want to Logout?'
+                    allowText='Yes'
+                    denyText='No'
+                    onAction={handleLogout}
+                />
+            }
+
+            {
+                showLogoutSuccessPopup &&
+                <SuccessPopup 
+                title='Successfully logged out'
+                onClose={handleCloseLogoutSuccessPopup}
+                />
+            }
 
         </header>
     )
