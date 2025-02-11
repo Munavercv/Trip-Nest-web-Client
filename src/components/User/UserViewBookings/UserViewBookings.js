@@ -22,7 +22,7 @@ const UserViewBookings = () => {
 
   useEffect(() => {
     fetchBookings(user.userId)
-  },[user])
+  }, [user])
 
   return (
     <section className='container py-4'>
@@ -32,12 +32,12 @@ const UserViewBookings = () => {
         bookings.map((booking, index) => (
           <Link to={`/view-booking-details/${booking._id}`} key={index}>
             <div className={`${styles.bookingTile} row align-items-center px-sm-5 px-2 mb-3`}>
-              <h6 className="text-start col-6 my-0 fw-bold">{booking.packageData[0].title}</h6>
+              <h6 className="text-start col-6 my-0 fw-bold">{booking.packageData[0]?.title}</h6>
               <p className={`text-end col-6 my-0 fw-semibold ${booking.status === 'pending'
                 ? 'text-primary'
                 : booking.status === 'approved'
                   ? 'text-success'
-                    : 'text-danger'
+                  : 'text-danger'
                 }`}
               >{booking.status}</p>
             </div>

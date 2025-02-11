@@ -214,7 +214,7 @@ const UserViewBookingDetails = () => {
             {bookingDetails && paySuccessModal &&
                 <SuccessPopup
                     title='Payment Successful'
-                    description={`Your payment for ${bookingDetails.packageDetails[0].title} is successful`}
+                    description={`Your payment for ${bookingDetails.packageDetails[0]?.title} is successful`}
                     onClose={() => setPaySuccessModal(false)}
                 />
             }
