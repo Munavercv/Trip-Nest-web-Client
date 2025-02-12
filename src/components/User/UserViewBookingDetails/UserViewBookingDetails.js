@@ -19,7 +19,6 @@ const UserViewBookingDetails = () => {
 
     const [bookingDetails, setBookingDetails] = useState()
     const [dataStatus, setDataStatus] = useState('Loading...')
-    const [actionError, setActionError] = useState('')
     const [showOrderModal, setShowOrderModal] = useState(false)
     const [paySuccessModal, setPaySuccessModal] = useState(false)
     const [showPaymentDetails, setShowPaymentDetails] = useState(false)
@@ -106,11 +105,11 @@ const UserViewBookingDetails = () => {
                     <hr className="border-2" />
                     <div className={`${styles.item} ms-md-5`}>
                         <h5>Package Details</h5>
-                        <h6><span>Name: </span>{bookingDetails.packageDetails[0].title}</h6>
-                        <h6><span>Date : </span>{new Date(bookingDetails.packageDetails[0].startDate).toLocaleDateString()}</h6>
-                        <h6><span>Destination : </span>{bookingDetails.packageDetails[0].destination}</h6>
+                        <h6><span>Name: </span>{bookingDetails.packageDetails.title}</h6>
+                        <h6><span>Date : </span>{new Date(bookingDetails.packageDetails.startDate).toLocaleDateString()}</h6>
+                        <h6><span>Destination : </span>{bookingDetails.packageDetails.destination}</h6>
 
-                        <Link to={`/view-package/${bookingDetails.packageDetails[0]._id}`}>
+                        <Link to={`/view-package/${bookingDetails.packageDetails._id}`}>
                             View More details <i className="fa-solid fa-chevron-right"></i>
                         </Link>
                     </div>
@@ -152,6 +151,15 @@ const UserViewBookingDetails = () => {
                         </div>
                     </>}
 
+                    <hr className="border-2" />
+                    <div className={`${styles.item} ms-md-5`}>
+                        <h6>Having any trouble? <br />
+                            <a
+                             href={`tel:${bookingDetails.vendorDetails.contact.phone}`}
+                             ><i class="fa-solid fa-phone"></i> Contact with vendor </a>
+                        </h6>
+                    </div>
+
                     {/* Action buttons */}
                     <hr className="border-2" />
                     <div className='text-center'>
@@ -168,7 +176,6 @@ const UserViewBookingDetails = () => {
                             >
                                 Pay Now
                             </button>}
-                        <p className='text-danger'>{actionError}</p>
                     </div>
 
                 </div>
@@ -201,20 +208,20 @@ const UserViewBookingDetails = () => {
             {/* payment handling popups */}
             {bookingDetails && showOrderModal &&
                 <PaymentOrderModal
-                    packageId={bookingDetails.packageDetails[0]._id}
+                    packageId={bookingDetails.packageDetails._id}
                     amount={bookingDetails.totalAmount}
                     bookingId={bookingDetails._id}
-                    vendorId={bookingDetails.packageDetails[0].vendorId}
+                    vendorId={bookingDetails.packageDetails.vendorId}
                     userId={user.userId}
                     onClose={() => setShowOrderModal(false)}
-                    packageName={bookingDetails.packageDetails[0].title}
+                    packageName={bookingDetails.packageDetails.title}
                     onPaymentSuccess={handlePaymentSuccess}
                 />
             }
             {bookingDetails && paySuccessModal &&
                 <SuccessPopup
                     title='Payment Successful'
-                    description={`Your payment for ${bookingDetails.packageDetails[0]?.title} is successful`}
+                    description={`Your payment for ${bookingDetails.packageDetails?.title} is successful`}
                     onClose={() => setPaySuccessModal(false)}
                 />
             }
