@@ -14,6 +14,7 @@ const LoginForm = ({ title, role }) => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false);
   const location = useLocation()
+  const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -57,10 +58,9 @@ const LoginForm = ({ title, role }) => {
   const handleGoogleLogin = async () => {
     setError('')
     try {
-      window.location.href = 'https://tripnest.xyz/api/auth/google-auth';
+      window.location.href = `${config.API_BASE_URL}/api/auth/google-auth`;
 
     } catch (error) {
-      console.error('failed to login with google', error);
       setError('failed to login with google')
     }
   }
@@ -117,15 +117,32 @@ const LoginForm = ({ title, role }) => {
             />
           </div>
 
-          <div className="text-start">
+          <div className="text-start" style={{ position: 'relative' }}>
             <label htmlFor="password" className="ms-2">Password</label>
-            <input type="password"
+            <input
+              type={showPassword ? 'text' : 'password'}
               className="form-input"
               name='password'
               id="password"
               value={formData.password}
               onChange={handleChange}
+              style={{ paddingRight: '40px' }}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className='text-secondary'
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <i className={showPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
+            </button>
           </div>
 
           <p className='text-danger mb-2 text-center' style={{ fontSize: '15px' }}> {error}</p>
