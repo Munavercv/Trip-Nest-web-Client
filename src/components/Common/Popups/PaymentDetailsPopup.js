@@ -42,12 +42,16 @@ const PaymentDetailsPopup = ({ close }) => {
                                 <li><span className='fw-semibold me-2'>Amount : </span>Rs.{paymentDetails.amount}</li>
                                 <li><span className='fw-semibold me-2'>Package : </span>{paymentDetails.bookingId.packageId.title}</li>
                                 {userRole === 'user' ?
-                                    <li><span className='fw-semibold me-2'>To : </span>{paymentDetails.vendorId.contact.email}</li> :
+                                    <li><span className='fw-semibold me-2'>To : </span>{paymentDetails.vendorId.supportContact.email}</li> :
                                     <li><span className='fw-semibold me-2'>From : </span>{paymentDetails.userId.email}</li>
                                 }
                                 <li><span className='fw-semibold me-2'>Date : </span>{new Date(paymentDetails.date).toLocaleDateString()}</li>
                                 <li><span className='fw-semibold me-2'>Status : </span>{paymentDetails.status}</li>
                             </ul>
+                            {userRole === 'user' && <p>
+                                Having any issues? <a href={`tel:${paymentDetails.vendorId.supportContact.phone}`}>
+                                    Contact vendor <i className="fa-solid fa-phone"></i></a>
+                            </p>}
                         </>
                         :
                         <h2 className='section-title text-center'>{dataStatus}</h2>

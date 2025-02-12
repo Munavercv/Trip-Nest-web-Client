@@ -156,7 +156,7 @@ const UserViewBookingDetails = () => {
                         <h6>Having any trouble? <br />
                             <a
                              href={`tel:${bookingDetails.vendorDetails.contact.phone}`}
-                             ><i class="fa-solid fa-phone"></i> Contact with vendor </a>
+                             ><i className="fa-solid fa-phone"></i> Contact with vendor </a>
                         </h6>
                     </div>
 
