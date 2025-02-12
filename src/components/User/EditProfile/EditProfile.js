@@ -6,6 +6,8 @@ import { updateJwt } from '../../../redux/slices/authSlice'
 import axios from 'axios'
 import config from '../../../config/api'
 import SuccessPopup from '../../Common/Popups/SuccessPopup'
+import imageCompression from "browser-image-compression";
+import loadingImg from '../../../assets/spinner-loading-dots.png'
 
 const EditProfile = () => {
     const dispatch = useDispatch()
@@ -31,14 +33,30 @@ const EditProfile = () => {
         }));
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setSelectedFile(file);
-            setPreview(URL.createObjectURL(file));
+        setPreview(loadingImg)
+    
+        if (!file) return;
+    
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1024,
+            useWebWorker: true,
+        };
+    
+        try {
+            const compressedFile = await imageCompression(file, options);
+    
+            setSelectedFile(compressedFile);
+            setPreview(URL.createObjectURL(compressedFile));
             setRemoveImage(false);
+            
+        } catch (error) {
+            console.error("Image compression error:", error);
         }
     };
+    
 
     const handleRemoveImage = () => {
         setSelectedFile(null);
@@ -109,7 +127,7 @@ const EditProfile = () => {
                         <div className='mb-2 text-center'>
                             <div className={`${styles.imgPreview}`}>
                                 <img
-                                    src={preview || "/default-avatar.png"}
+                                    src={preview || "/images/default-dp.png"}
                                     alt="Profile picture" />
                             </div>
                             <div>
@@ -133,23 +151,6 @@ const EditProfile = () => {
                                 ></i>
                             </div>
 
-
-                            {/* <label htmlFor="">Profile picture</label>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="file"
-                                    className='form-control'
-                                    id="inputGroupFile04"
-                                    onChange={handleFileChange}
-                                />
-
-                                <button
-                                    className="outline-btn"
-                                    type="button"
-                                    id="inputGroupFileAddon04"
-                                    onClick={() => setSelectedFile(null)}
-                                >Remove</button>
-                            </div> */}
                         </div>
 
                         <div className="mb-2 text-start">
