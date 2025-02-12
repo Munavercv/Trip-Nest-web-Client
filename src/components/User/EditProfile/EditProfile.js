@@ -11,14 +11,15 @@ const EditProfile = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
+    const [preview, setPreview] = useState(user.dpUrl);
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState({});
     const [selectedFile, setSelectedFile] = useState(null);
     const [editSuccess, setEditSuccess] = useState(false)
+    const [removeImage, setRemoveImage] = useState(false);
     const [formData, setFormData] = useState({
         name: user.name,
-        email: user.email,
         phone: user.phone,
     });
 
@@ -31,7 +32,18 @@ const EditProfile = () => {
     };
 
     const handleFileChange = (e) => {
-        setSelectedFile(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+            setPreview(URL.createObjectURL(file));
+            setRemoveImage(false);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setSelectedFile(null);
+        setPreview(null);
+        setRemoveImage(true);
     };
 
     const validateForm = () => {
@@ -39,12 +51,6 @@ const EditProfile = () => {
 
         if (!formData.name.trim()) {
             newErrors.name = "Name is required";
-        }
-
-        if (!formData.email.trim()) {
-            newErrors.email = "Email is required";
-        } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-            newErrors.email = "Enter a valid email address";
         }
 
         if (!formData.phone.trim()) {
@@ -67,30 +73,29 @@ const EditProfile = () => {
 
         const formDataObj = new FormData();
         formDataObj.append('name', formData.name);
-        formDataObj.append('email', formData.email);
         formDataObj.append('phone', formData.phone);
 
         if (selectedFile) {
             formDataObj.append('file', selectedFile);
+        }
+        if (removeImage) {
+            formDataObj.append("removeImage", "true");
         }
 
         setLoading(true);
 
         try {
             const response = await axios.put(`${config.API_BASE_URL}/api/user/edit-profile/${user.userId}`, formDataObj, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             dispatch(updateJwt({ token: response.data.token }));
-            setEditSuccess(true)
+            setEditSuccess(true);
         } catch (error) {
             setError(error.response?.data?.message || 'An error occurred');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
-
     return (
         <section className={`${styles.editUserSec} container-fluid px-md-5 px-2 py-3`} >
 
@@ -104,11 +109,32 @@ const EditProfile = () => {
                         <div className='mb-2 text-center'>
                             <div className={`${styles.imgPreview}`}>
                                 <img
-                                    src={selectedFile ? URL.createObjectURL(selectedFile) : user.dpUrl}
+                                    src={preview || "/default-avatar.png"}
                                     alt="Profile picture" />
                             </div>
+                            <div>
+                                <label htmlFor='fileInput'>
+                                    <i
+                                        style={{ cursor: 'pointer' }}
+                                        className="fa-solid fa-pen me-5 text-secondary"
+                                    ></i>
+                                </label>
+                                <input
+                                    type='file'
+                                    id='fileInput'
+                                    className='d-none'
+                                    onChange={handleFileChange}
+                                    accept='image/*'
+                                />
+                                <i
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={handleRemoveImage}
+                                    className="fa-solid fa-trash text-secondary"
+                                ></i>
+                            </div>
 
-                            <label htmlFor="">Profile picture</label>
+
+                            {/* <label htmlFor="">Profile picture</label>
                             <div className="input-group mb-3">
                                 <input
                                     type="file"
@@ -123,7 +149,7 @@ const EditProfile = () => {
                                     id="inputGroupFileAddon04"
                                     onClick={() => setSelectedFile(null)}
                                 >Remove</button>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="mb-2 text-start">
@@ -136,19 +162,6 @@ const EditProfile = () => {
                                 onChange={handleChange}
                             />
                             {validationErrors.name && <p className="text-danger" style={{ fontSize: '12px' }}>{validationErrors.name}</p>}
-                        </div>
-
-                        <div className="mb-2 text-start">
-                            <label htmlFor="email" className="ms-2">Email</label>
-                            <input type="email"
-                                name='email'
-                                className="form-input"
-                                id="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                            {validationErrors.email && <p className="text-danger" style={{ fontSize: '12px' }}>{validationErrors.email}</p>}
-
                         </div>
 
                         <div className="mb-2 text-start">
