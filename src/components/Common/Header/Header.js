@@ -9,6 +9,7 @@ import axios from 'axios'
 import config from '../../../config/api'
 import ConfirmPopup from '../Popups/ConfirmPopup'
 import SuccessPopup from '../Popups/SuccessPopup'
+import ContactSupportPopup from '../Popups/ContactSupportPopup'
 
 const Header = () => {
     const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const Header = () => {
     const [showLogoutPopup, setShowLogoutPopup] = useState(false)
     const [showLogoutSuccessPopup, setShowLogoutSuccessPopup] = useState(false)
     const navigate = useNavigate()
+    const [showContactSupport, setShowContactSupport] = useState(false)
 
 
     const handleLogout = (confirmed) => {
@@ -164,6 +166,7 @@ const Header = () => {
                                             <li><Link className="dropdown-item" to='/vendor/approved-packages' >Approved</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/rejected-packages' >Rejected</Link></li>
                                             <li><Link className="dropdown-item" to='/vendor/pending-packages' >Pending</Link></li>
+                                            <li><Link className="dropdown-item" to='/vendor/expired-packages' >Expired</Link></li>
                                         </ul>
                                     </li>
                                     <li className="nav-item dropdown">
@@ -186,6 +189,12 @@ const Header = () => {
                                                     to='/vendor/all-payments'
                                                     className='dropdown-item'
                                                 >Payments</Link> </li>
+                                            <li
+                                                style={{ cursor: 'pointer' }}
+                                                className='dropdown-item'
+                                                onClick={() => setShowContactSupport(true)}
+                                            >
+                                                Contact support </li>
                                         </ul>
                                     </li>
                                 </>
@@ -257,10 +266,16 @@ const Header = () => {
 
             {
                 showLogoutSuccessPopup &&
-                <SuccessPopup 
-                title='Successfully logged out'
-                onClose={handleCloseLogoutSuccessPopup}
+                <SuccessPopup
+                    title='Successfully logged out'
+                    onClose={handleCloseLogoutSuccessPopup}
                 />
+            }
+
+            {showContactSupport &&
+                <ContactSupportPopup
+                onClose={() => setShowContactSupport(false)}
+                 />
             }
 
         </header>
