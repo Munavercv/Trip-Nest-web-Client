@@ -66,6 +66,7 @@ import AdminViewBookingDetailsPage from "./pages/admin/AdminViewBookingDetailsPa
 import VendorEditPackagePage from "./pages/vendor/VendorEditPackagePage";
 import UserViewPaymentsPage from "./pages/user/UserViewPaymentsPage";
 import VendorViewPaymentsPage from "./pages/vendor/VendorViewPaymentsPage";
+import VendorExpiredPackagesPage from "./pages/vendor/VendorExpiredPackagesPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -116,6 +117,7 @@ function App() {
         <Route path="/vendor/rejected-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorRejectedPackages /></ProtectedRoutes>} />
         <Route path="/vendor/inactive-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorInactivePackages /></ProtectedRoutes>} />
         <Route path="/vendor/active-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorActivePackages /></ProtectedRoutes>} />
+        <Route path="/vendor/expired-packages" element={<ProtectedRoutes requiredRole='vendor' > <VendorExpiredPackagesPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-package/:id" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPackagePage /></ProtectedRoutes>} />
         <Route path="/vendor/inbox" element={<ProtectedRoutes requiredRole='vendor' > <VendorChatPage /></ProtectedRoutes>} />
         <Route path="/vendor/view-pending-bookings" element={<ProtectedRoutes requiredRole='vendor' > <VendorViewPendingBookingsPage /></ProtectedRoutes>} />

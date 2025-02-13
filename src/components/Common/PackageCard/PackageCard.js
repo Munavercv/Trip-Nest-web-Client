@@ -3,7 +3,7 @@ import styles from './PackageCard.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const PackageCard = ({ imageUrl, price, title, description, destination, category, _id, rating }) => {
+const PackageCard = ({ imageUrl, price, title, destination, category, _id, rating }) => {
     const { userRole } = useSelector((state) => state.auth)
     const navigate = useNavigate()
 

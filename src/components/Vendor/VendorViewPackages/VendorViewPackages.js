@@ -20,7 +20,6 @@ const VendorViewPackages = ({ status }) => {
 
             setPackages(response.data.packages)
         } catch (error) {
-            console.error(error.response?.data?.message || 'Internal server error');
             setDataStatus(error.response?.data?.message || 'Internal server error')
         }
     }

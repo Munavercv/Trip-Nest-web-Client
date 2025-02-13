@@ -51,7 +51,7 @@ const EditProfile = () => {
             setSelectedFile(compressedFile);
             setPreview(URL.createObjectURL(compressedFile));
             setRemoveImage(false);
-            
+
         } catch (error) {
             console.error("Image compression error:", error);
         }
