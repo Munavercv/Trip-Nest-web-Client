@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Import useParams
+import { useNavigate, useParams } from "react-router-dom";
 import PackageCard from "../../Common/PackageCard/PackageCard";
 import axios from "axios";
 import config from "../../../config/api";
 
 const ViewPackagesByCategory = () => {
-  const { category: urlCategory } = useParams(); // Get category from URL
+  const { category: urlCategory } = useParams();
   const navigate = useNavigate()
-  const [category, setCategory] = useState(urlCategory || "All"); // Set initial category
+  const [category, setCategory] = useState(urlCategory || "All");
   const [dataStatus, setDataStatus] = useState("Loading...");
   const [packages, setPackages] = useState(null);
   const [page, setPage] = useState(1);
@@ -41,7 +41,7 @@ const ViewPackagesByCategory = () => {
   }, [category, page]);
 
   return (
-    <section className="container-fluid py-4 px-0">
+    <section className="container-fluid py-4 mx-0">
       <div>
         <ul className="nav nav-underline mb-md-3 d-flex align-items-center justify-content-center">
           {categories.map((cat, index) => (
@@ -60,7 +60,9 @@ const ViewPackagesByCategory = () => {
         </ul>
       </div>
 
-      <div style={{ backgroundColor: "var(--section-grey)" }} className="py-4">
+<hr className="border-2" />
+
+      <div className="py-4">
         <h4 className="section-title text-center">{category} Packages</h4>
 
         <div className="row">

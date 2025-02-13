@@ -20,7 +20,7 @@ const PackageCard = ({ imageUrl, price, title, destination, category, _id, ratin
     return (
         <div
 
-            className={`${styles.card} card my-4 shadow-sm`}
+            className={`${styles.card} card my-4 shadow`}
         >
             <div
                 onClick={viewPakcage}

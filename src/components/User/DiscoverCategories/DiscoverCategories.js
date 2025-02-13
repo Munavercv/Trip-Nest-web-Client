@@ -31,10 +31,9 @@ const DiscoverCategories = () => {
 
       <div className={`${styles.head} d-flex justify-content-between`}>
         <h4 className="section-title ms-md-5">Discover Themes</h4>
-
       </div>
 
-      <div className="row row-cols-md-5 row-cols-sm-3 row-cols-2 g-2 g-md-4 my-2 px-lg-3 justify-content-center">
+      <div className="row row-cols-md-5 row-cols-sm-3 row-cols-2 g-2 g-md-4 my-2 px-lg-3">
         {tiles.map((tile, index) => (
           <div className="col" key={index}>
             <Link to={`/packages-by-category/${tile.text}`}>
@@ -48,7 +47,7 @@ const DiscoverCategories = () => {
           </div>
         ))}
       </div>
-
+      
       <div className="text-end mt-4">
         <Link
           to='/packages-by-category/All'
@@ -56,6 +55,7 @@ const DiscoverCategories = () => {
         >Explore more <i className="fa-solid fa-chevron-right"></i>
         </Link>
       </div>
+
 
     </section>
   )

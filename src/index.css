@@ -4,17 +4,19 @@
     --text-grey: #6E7984;
     --text-dark-grey: #585858;
     --section-grey: #eee;
-    --color-pending: #FFA726; 
-    --color-approved: #66BB6A; 
-    --color-active: #42A5F5; 
-    --color-rejected: #EF5350; 
-    --color-inactive: #9E9E9E; 
-    --color-cancelled: #78909C; 
+    --color-pending: #FFA726;
+    --color-approved: #66BB6A;
+    --color-active: #42A5F5;
+    --color-rejected: #EF5350;
+    --color-inactive: #9E9E9E;
+    --color-cancelled: #78909C;
 }
 
 
 body {
     font-family: "Inter", serif;
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -208,7 +210,7 @@ td {
         padding: 0;
     }
 
-    .section-title{
+    .section-title {
         font-size: 24px;
         font-weight: 600;
     }
@@ -266,18 +268,23 @@ td {
 .bg-pending {
     background-color: var(--color-pending);
 }
+
 .bg-approved {
     background-color: var(--color-approved);
 }
+
 .bg-active {
     background-color: var(--color-active);
 }
+
 .bg-inactive {
     background-color: var(--color-inactive);
 }
+
 .bg-rejected {
     background-color: var(--color-rejected);
 }
+
 .bg-cancelled {
     background-color: var(--color-cancelled);
 }

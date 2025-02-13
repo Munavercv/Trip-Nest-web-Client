@@ -51,7 +51,7 @@ const AdminViewPaymentsTable = () => {
     }, [])
 
     return (
-        <section className='container-fluid py-4'>
+        <section className='container-fluid py-4 px-1'>
             <h4 className='section-title text-center mt-2'>Payments</h4>
 
             <div className="d-md-none text-start">

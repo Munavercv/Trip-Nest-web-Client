@@ -464,7 +464,8 @@ const ViewPackage = () => {
                     {userRole === 'user' && packageDetails.status === 'active' &&
                         <div className={`${styles.actions} text-center mt-5`}>
                             <button
-                                className="primary-btn me-2"
+                                className="primary-btn me-2 mb-3"
+                                style={{padding: '0.5rem 1.5rem'}}
                                 onClick={() => {
                                     dispatch(checkAuthStatus())
                                     if (!user) {
@@ -476,13 +477,14 @@ const ViewPackage = () => {
                             >
                                 Book Now
                             </button>
+                            <br />
                             <Link>
                                 <button
                                     disabled={chatLoading}
                                     onClick={() => {
                                         handleStartConversation(packageDetails.vendorId, user?.userId)
                                     }}
-                                    className="outline-btn me-2 mt-2 mt-sm-0"
+                                    className="outline-btn me-2 mt-2 mt-sm-0 mb-2"
                                 >
                                     {chatLoading ? 'Please wait...'
                                         : 'want to know More? chat'}

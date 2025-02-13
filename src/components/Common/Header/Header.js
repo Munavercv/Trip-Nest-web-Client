@@ -78,6 +78,17 @@ const Header = () => {
                     } >
                         <Logo />
                     </Link>
+                    {loggedIn && (
+                        <div className="d-flex align-items-center me-auto ms-md-3 ms-2">
+                            <button className={`nav-link ${styles.navLink} ${styles.notificationIcon}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                                <i className="fa-solid fa-bell"></i>
+                                <span className="position-absolute top-1 px-1 py-1 translate-middle badge rounded-pill bg-danger">
+                                    {notificationCount && notificationCount}
+                                </span>
+                            </button>
+                        </div>
+                    )}
+
                     <button
                         className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                         style={{ color: 'var(--primary-color)', fontSize: '25px' }}
@@ -87,17 +98,6 @@ const Header = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mb-2 mb-md-0 text-end me-md-0 me-4 ms-md-auto">
 
-                            {
-                                loggedIn &&
-                                <li>
-                                    <button className={`nav-link position-relative ${styles.navLink} ${styles.notificationIcon}`} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                                        <i className="fa-solid fa-bell"></i>
-                                        <span className="position-absolute top-1 px-1 py-1 translate-middle badge rounded-pill bg-danger">
-                                            {notificationCount && notificationCount}
-                                        </span>
-                                    </button>
-                                </li>
-                            }
 
                             {loggedIn && userRole === 'admin' &&
                                 <>
@@ -274,8 +274,8 @@ const Header = () => {
 
             {showContactSupport &&
                 <ContactSupportPopup
-                onClose={() => setShowContactSupport(false)}
-                 />
+                    onClose={() => setShowContactSupport(false)}
+                />
             }
 
         </header>
