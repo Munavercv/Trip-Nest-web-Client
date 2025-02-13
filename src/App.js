@@ -67,6 +67,8 @@ import VendorEditPackagePage from "./pages/vendor/VendorEditPackagePage";
 import UserViewPaymentsPage from "./pages/user/UserViewPaymentsPage";
 import VendorViewPaymentsPage from "./pages/vendor/VendorViewPaymentsPage";
 import VendorExpiredPackagesPage from "./pages/vendor/VendorExpiredPackagesPage";
+import AdminViewExpiredPackages from "./pages/admin/AdminViewExpiredPackages";
+import AdminViewAllPaymentsPage from "./pages/admin/AdminViewAllPaymentsPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -101,10 +103,12 @@ function App() {
         <Route path="/admin/rejected-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewRejectedPackages /></ProtectedRoutes>} />
         <Route path="/admin/active-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewActivePackages /></ProtectedRoutes>} />
         <Route path="/admin/inactive-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewInactivePackages /></ProtectedRoutes>} />
+        <Route path="/admin/expired-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminViewExpiredPackages /></ProtectedRoutes>} />
         <Route path="/admin/view-package/:id" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackagePage /></ProtectedRoutes>} />
         <Route path="/admin/view-packages-by-vendor/:vendorId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackagesByVendorPage /></ProtectedRoutes>} />
         <Route path="/admin/view-bookings-by-package/:packageId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackageBookingsPage /></ProtectedRoutes>} />
         <Route path="/admin/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewBookingDetailsPage /></ProtectedRoutes>} />
+        <Route path="/admin/view-all-payments" element={<ProtectedRoutes requiredRole='admin' ><AdminViewAllPaymentsPage /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}

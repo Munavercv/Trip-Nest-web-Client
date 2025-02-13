@@ -141,7 +141,7 @@ const ViewPackage = () => {
         setErrors({ activate: '' })
         setLoading({ activate: true })
         try {
-            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/activate-package/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/activate-package/${id}`)
             setActivatePopup(false)
             setPackageDetails(response.data.package)
             setShowSuccessPopup({ activate: true })
@@ -161,29 +161,29 @@ const ViewPackage = () => {
         }
     }
 
-    // const handleDeactivatePackage = async (id) => {
-    //     setActionError('')
-    //     setLoading({ deactivate: true })
-    //     try {
-    //         const response = await axios.put(`${config.API_BASE_URL}/api/vendor/deactivate-package/${id}`)
-    //         setPackageDetails(response.data.package)
-    //         setDeactivatePopup(false)
-    //         setShowSuccessPopup({ deactivate: true })
-    //     } catch (error) {
-    //         setErrors({ deactivate: error.response?.data?.message || "An error occured while deactivating package" })
-    //     } finally {
-    //         setLoading({ deactivate: false })
-    //     }
-    // }
+    const handleDeactivatePackage = async (id) => {
+        setActionError('')
+        setLoading({ deactivate: true })
+        try {
+            const response = await axios.put(`${config.API_BASE_URL}/api/admin/deactivate-package/${id}`)
+            setPackageDetails(response.data.package)
+            setDeactivatePopup(false)
+            setShowSuccessPopup({ deactivate: true })
+        } catch (error) {
+            setErrors({ deactivate: error.response?.data?.message || "An error occured while deactivating package" })
+        } finally {
+            setLoading({ deactivate: false })
+        }
+    }
 
-    // const deactivatePopupAction = (confirmed) => {
-    //     if (confirmed) {
-    //         handleDeactivatePackage(packageDetails._id)
-    //     } else {
-    //         setDeactivatePopup(false)
-    //         setErrors({ deactivate: '' })
-    //     }
-    // }
+    const deactivatePopupAction = (confirmed) => {
+        if (confirmed) {
+            handleDeactivatePackage(packageDetails._id)
+        } else {
+            setDeactivatePopup(false)
+            setErrors({ deactivate: '' })
+        }
+    }
 
     const handleStartConversation = async (vendorId, userId) => {
         setActionError('');
@@ -375,7 +375,7 @@ const ViewPackage = () => {
                 </button>
 
 
-                {packageDetails?.status === 'expired' && userRole !== 'user' && <h5
+                {packageDetails?.status && userRole !== 'user' && <h5
                     className={`fw-bold text-end ${packageDetails.status === 'pending'
                         ? 'text-primary'
                         : packageDetails.status === 'approved'
@@ -512,7 +512,7 @@ const ViewPackage = () => {
                                 </Link>
                             </div>
                             <div className="text-center">
-                                {packageDetails.status === 'approved' &&
+                                {(packageDetails.status === 'approved' || packageDetails.status === 'inactive') &&
                                     <>
                                         <button
                                             onClick={() => setActivatePopup(true)}
@@ -532,21 +532,6 @@ const ViewPackage = () => {
                                     </Link> : null
                                 }
 
-
-
-                                {/* {packageDetails.status === 'active' && <>
-                                    <button
-                                        onClick={() => setDeactivatePopup(true)}
-                                        disabled={deactivating}
-                                        className="primary-btn me-2"
-                                    >
-                                        {deactivating ?
-                                            "Deactivating..."
-                                            :
-                                            "Deactivate"
-                                        }
-                                    </button>
-                                </>} */}
 
                                 {packageDetails.status !== 'expired' && packageDetails.status !== 'active' && <button
                                     onClick={() => setDeletePopup(true)}
@@ -585,6 +570,32 @@ const ViewPackage = () => {
                                     }}
                                     className="primary-btn me-2"
                                 >Reject</button>}
+                                {packageDetails.status === 'active' && <>
+                                    <button
+                                        onClick={() => setDeactivatePopup(true)}
+                                        disabled={deactivating}
+                                        className="primary-btn me-2"
+                                    >
+                                        {deactivating ?
+                                            "Deactivating..."
+                                            :
+                                            "Deactivate"
+                                        }
+                                    </button>
+                                </>}
+
+                                {packageDetails.status === 'inactive' &&
+                                    <>
+                                        <button
+                                            onClick={() => setActivatePopup(true)}
+                                            disabled={activating}
+                                            className="primary-btn me-2"
+                                        >
+                                            {activating ? "Activating..." : "Activate"}
+                                        </button>
+                                    </>
+                                }
+
                                 <button
                                     onClick={() => setDeletePopup(true)}
                                     disabled={deleting}
@@ -673,7 +684,7 @@ const ViewPackage = () => {
                 />
             }
 
-            {/* {
+            {
                 deactivatePopup &&
                 <ConfirmPopup
                     title='Deactivate'
@@ -684,7 +695,7 @@ const ViewPackage = () => {
                     error={errors.deactivate}
                     onAction={deactivatePopupAction}
                 />
-            } */}
+            }
 
             {
                 showSuccessPopup.deactivate &&

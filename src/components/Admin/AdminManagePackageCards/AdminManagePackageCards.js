@@ -24,6 +24,7 @@ const AdminManagePackageCards = () => {
                             _id === 'approved' ? 'bg-approved' :
                             _id === 'rejected' ? 'bg-rejected' :
                             _id === 'inactive' ? 'bg-inactive' :
+                            _id === 'expired' ? 'bg-inactive' :
                             'bg-pending'
                         }`}>
                             <div className="card-body text-center">

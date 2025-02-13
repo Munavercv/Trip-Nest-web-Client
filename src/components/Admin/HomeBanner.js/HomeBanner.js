@@ -96,7 +96,7 @@ const HomeBanner = () => {
                             counts.payments > 100 ? "100+" : counts.payments
                         }</span>
                         <br />Payments</h3>
-                    <Link to=''>
+                    <Link to='/admin/view-all-payments'>
                         <button
                             className='primary-btn'
                         >

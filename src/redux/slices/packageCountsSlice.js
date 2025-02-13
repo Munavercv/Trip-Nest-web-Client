@@ -16,6 +16,7 @@ const initialState = [
     { _id: "pending", count: 0 },
     { _id: "inactive", count: 0 },
     { _id: "rejected", count: 0 },
+    { _id: "expired", count: 0 },
 ];
 
 const packageCountsSlice = createSlice({
