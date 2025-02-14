@@ -24,6 +24,7 @@ const ViewPackage = () => {
     const [showRejectPopup, setShowRejectPopup] = useState(false)
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [packageDetails, setPackageDetails] = useState()
+    const [vendor, setVendor] = useState()
     const [formattedDate, setFormattedDate] = useState('')
     const [actionError, setActionError] = useState('')
     const [isLoading, setIsLoading] = useState(false);
@@ -66,10 +67,11 @@ const ViewPackage = () => {
 
     const fetchPackage = async (id) => {
         try {
-            const response = await axios.get(`${config.API_BASE_URL}/api/common/get-package/${id}`)
-            setPackageDetails(response.data.package);
+            const { data } = await axios.get(`${config.API_BASE_URL}/api/common/get-package/${id}`)
+            setPackageDetails(data.package);
+            setVendor(data.vendor)
             setDataStatus('')
-            const isoDate = response.data.package.startDate;
+            const isoDate = data.package.startDate;
             const date = new Date(isoDate);
             setFormattedDate(date.toISOString().split('T')[0]);
         } catch (error) {
@@ -415,7 +417,8 @@ const ViewPackage = () => {
 
             {packageDetails ?
                 <>
-                    <div className="text-center mt-4">
+                    <div className="text-center">
+
                         <div className={styles.imageContainer}>
                             <img
                                 src={packageDetails.imageUrl}
@@ -423,16 +426,43 @@ const ViewPackage = () => {
                                 className={`${styles.packageImage} img-fluid rounded`}
                             />
                         </div>
-                        <p className="text-muted mt-3 mb-0">
-                            <i className="fa-solid fa-star" style={{ color: '#ffdf00' }}></i> {packageDetails.rating.avgRating}
-                        </p>
+
+                        <div className="d-flex justify-content-center gap-4 my-3">
+                            {userRole !== 'vendor' &&
+                                <div className="d-flex justify-content-center mt-2">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={vendor.dpUrl}
+                                            alt="Profile"
+                                            className="rounded-circle border"
+                                            style={{ width: "40px", height: "40px", objectFit: "cover" }}
+                                        />
+                                        <Link
+                                            className='text-dark'
+                                            to={userRole === 'admin' ? `/admin/view-vendor/${packageDetails.vendorId}`
+                                                : `/vendor-profile/${packageDetails.vendorId}`
+                                            }>
+                                            <span className="ms-2 fw-bold">{vendor.name}</span>
+                                        </Link>
+                                    </div>
+                                </div>}
+
+                            <p className="text-muted mt-3 mb-0">
+                                <i className="fa-solid fa-star" style={{ color: '#ffdf00' }}></i> {packageDetails.rating.avgRating}
+                            </p>
+                        </div>
+
                         <h2 className="mt-1 fw-bold">{packageDetails.title}</h2>
-                        <h4 className="mt-3 fw-semibold">
-                            <i className="fa-solid fa-map-location-dot"></i> {packageDetails.destination}
-                        </h4>
-                        <p className="text-muted">
-                            {packageDetails.days} days
-                        </p>
+
+                        <div className="d-flex justify-content-center gap-4 my-3">
+                            <h4 className="fw-semibold">
+                                <i className="fa-solid fa-map-location-dot"></i> {packageDetails.destination}
+                            </h4>
+                            <p className="text-muted">
+                                {packageDetails.days} days
+                            </p>
+                        </div>
+
                     </div>
 
                     <div className={`${styles.detailsSection} pt-3`}>
@@ -465,7 +495,7 @@ const ViewPackage = () => {
                         <div className={`${styles.actions} text-center mt-5`}>
                             <button
                                 className="primary-btn me-2 mb-3"
-                                style={{padding: '0.5rem 1.5rem'}}
+                                style={{ padding: '0.5rem 1.5rem' }}
                                 onClick={() => {
                                     dispatch(checkAuthStatus())
                                     if (!user) {

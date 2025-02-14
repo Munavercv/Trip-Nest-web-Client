@@ -88,8 +88,8 @@ const VendorAccount = () => {
                 <div className="row my-4">
                     <div className="col-md-6 text-center mb-2">
                         <div className={`d-flex justify-content-center ${styles.profilePic}`} >
-                            {vendorDetails.logoUrl ? <img
-                                src={vendorDetails.logoUrl}
+                            {vendorDetails.dpUrl ? <img
+                                src={vendorDetails.dpUrl}
                                 alt="Profile pic"
                             />
                                 :

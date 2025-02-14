@@ -23,21 +23,26 @@ const UserViewTopPackages = () => {
     }, [])
 
     return (
-        <section 
-        id='topPackages'
-        className={`${styles.topPackagesSec} container-fluid py-4`}>
+        <section
+            id='topPackages'
+            className={`${styles.topPackagesSec} container-fluid py-4`}>
             <h4 className='section-title text-center'>Top Packages</h4>
 
-            <CustomSlider settings={sliderSettings}>
-                {packages.length > 0 &&
-                    packages.map((packageDetails, index) => (
+            {packages.length > 1 ? (
+                <CustomSlider settings={sliderSettings}>
+                    {packages.map((packageDetails, index) => (
                         <div key={index} className="px-2 d-flex justify-content-center">
-                            <PackageCard
-                                {...packageDetails}
-                            />
+                            <PackageCard {...packageDetails} />
                         </div>
                     ))}
-            </CustomSlider>
+                </CustomSlider>
+            ) : (
+                packages.map((packageDetails, index) => (
+                    <div key={index} className="px-2 d-flex justify-content-center">
+                        <PackageCard {...packageDetails} />
+                    </div>
+                ))
+            )}
         </section>
 
     )
