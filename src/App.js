@@ -70,6 +70,7 @@ import VendorExpiredPackagesPage from "./pages/vendor/VendorExpiredPackagesPage"
 import AdminViewExpiredPackages from "./pages/admin/AdminViewExpiredPackages";
 import AdminViewAllPaymentsPage from "./pages/admin/AdminViewAllPaymentsPage";
 import UserViewVendorProfilePage from "./pages/user/UserViewVendorProfilePage";
+import UserViewPackagesByVendor from "./pages/user/UserViewPackagesByVendorPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -156,6 +157,7 @@ function App() {
         <Route path="/packages-by-category/:category" element={<UserViewCategoryPackagesPage />} />
         <Route path="/find-packages" element={<UserFindPackagesPage />} />
         <Route path="/vendor-profile/:vendorId" element={<UserViewVendorProfilePage />} />
+        <Route path="/packages-by-vendor/:vendorId" element={<UserViewPackagesByVendor />} />
         <Route path="/inbox" element={<ProtectedRoutes requiredRole='user' ><UserChatPage /></ProtectedRoutes>} />
         <Route path="/my-bookings" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingsPage /></ProtectedRoutes>} />
         <Route path="/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='user' ><UserViewBookingDetailsPage /></ProtectedRoutes>} />

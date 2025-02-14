@@ -69,7 +69,7 @@ const Header = () => {
         <header>
             <nav className="navbar navbar-expand-md bg-white shadow-sm">
                 <div className="container-fluid px-md-5">
-                    <Link className="navbar-brand" to={
+                    <Link className={`navbar-brand py-0 ${styles.logo}`} to={
                         userRole === 'user'
                             ? '/'
                             : userRole === 'admin'

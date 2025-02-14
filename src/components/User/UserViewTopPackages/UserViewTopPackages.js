@@ -38,7 +38,7 @@ const UserViewTopPackages = () => {
                 </CustomSlider>
             ) : (
                 packages.map((packageDetails, index) => (
-                    <div key={index} className="px-2 d-flex justify-content-center">
+                    <div key={index} className="px-2 d-flex">
                         <PackageCard {...packageDetails} />
                     </div>
                 ))

@@ -32,11 +32,12 @@ const FindPackagesForm = () => {
     };
 
     return (
-        <section className="container text-center py-4">
+        <section className="container text-center pt-2">
             <h1 className="section-title mb-3">Find packages</h1>
             <form onSubmit={handleSubmit}>
                 <div className="row text-center">
-                    <div className="col-md-3 mb-3">
+                    <div className="col-lg-3 mb-1">
+                        <label htmlFor="month">Destination</label>
                         <input
                             type="text"
                             name="destination"
@@ -47,7 +48,8 @@ const FindPackagesForm = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="col-md-3 mb-3">
+                    <div className="col-lg-3 mb-1">
+                        <label htmlFor="month">Month</label>
                         <input
                             type="month"
                             name="month"
@@ -57,7 +59,8 @@ const FindPackagesForm = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="col-md-3 mb-3">
+                    <div className="col-lg-3 mb-1">
+                        <label htmlFor="month">Theme</label>
                         <select
                             name="category"
                             className="form-input w-100"
@@ -74,7 +77,7 @@ const FindPackagesForm = () => {
                             ))}
                         </select>
                     </div>
-                    <div className="col-md-2 mb-3">
+                    <div className="col-lg-2 mt-md-4">
                         <button type="submit" className="form-btn w-100">
                             Find
                         </button>

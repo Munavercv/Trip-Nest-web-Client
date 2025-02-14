@@ -52,7 +52,8 @@ const UserViewVendorProfile = () => {
                                 {vendorDetails.address.state}
                             </p>}
                             {vendorDetails.websiteUrl &&
-                                <a href={vendorDetails.websiteUrl}>
+                                <a href={vendorDetails.websiteUrl}
+                                >
                                     <i
                                         className="fa-solid fa-globe"></i> {vendorDetails.websiteUrl.replace(/^https?:\/\//, '')}
                                 </a>
@@ -60,15 +61,23 @@ const UserViewVendorProfile = () => {
                         </div>
                     </div>
 
+                    <div className='text-center my-3'>
+                        <Link
+                            to={`/packages-by-vendor/${vendorId}`}
+                            className='primary-btn py-3'
+                        >
+                            Packages <i className="fa-solid fa-suitcase"></i></Link>
+                    </div>
+
                     <div className="mt-3 d-flex justify-content-center text-center">
                         <a
                             href={`https://wa.me/${vendorDetails.supportContact?.phone.replace(/\s+/g, '')}`}
                             target="_blank" rel="noopener noreferrer"
-                            className='btn btn-success me-2'
+                            className='btn btn-success'
                         ><i className="fa-brands fa-whatsapp"></i> Whatsapp</a>
                         <a
                             href={`tel:${vendorDetails.supportContact?.phone}`}
-                            className='btn btn-primary'
+                            className='btn btn-primary mx-2'
                         ><i className="fa-solid fa-headset"></i> Call</a>
                     </div>
                 </div>}

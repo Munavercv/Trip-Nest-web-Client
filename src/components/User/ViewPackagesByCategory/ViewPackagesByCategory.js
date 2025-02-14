@@ -38,6 +38,7 @@ const ViewPackagesByCategory = () => {
 
   useEffect(() => {
     fetchPackages(category);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [category, page]);
 
   return (

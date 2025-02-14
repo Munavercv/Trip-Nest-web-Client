@@ -143,7 +143,7 @@ const ViewPackage = () => {
         setErrors({ activate: '' })
         setLoading({ activate: true })
         try {
-            const response = await axios.put(`${config.API_BASE_URL}/api/admin/activate-package/${id}`)
+            const response = await axios.put(`${config.API_BASE_URL}/api/vendor/activate-package/${id}`)
             setActivatePopup(false)
             setPackageDetails(response.data.package)
             setShowSuccessPopup({ activate: true })
