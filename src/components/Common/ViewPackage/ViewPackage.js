@@ -25,12 +25,8 @@ const ViewPackage = () => {
     const [dataStatus, setDataStatus] = useState('Loading...')
     const [packageDetails, setPackageDetails] = useState()
     const [vendor, setVendor] = useState()
-    const [formattedDate, setFormattedDate] = useState('')
     const [actionError, setActionError] = useState('')
     const [isLoading, setIsLoading] = useState(false);
-    const [deleting, setDeleting] = useState(false)
-    const [activating, setActivating] = useState(false)
-    const [deactivating, setDeactivating] = useState(false)
     const [chatLoading, setChatLoading] = useState(false)
     const [showBookingModal, setShowBookingModal] = useState(false)
     const [bookingError, setBookingError] = useState('')
@@ -71,11 +67,8 @@ const ViewPackage = () => {
             setPackageDetails(data.package);
             setVendor(data.vendor)
             setDataStatus('')
-            const isoDate = data.package.startDate;
-            const date = new Date(isoDate);
-            setFormattedDate(date.toISOString().split('T')[0]);
         } catch (error) {
-            setDataStatus(error.response?.data?.message || "internal server error")
+            setDataStatus(error.response?.data?.message || "Package not found")
         }
     }
 
@@ -474,7 +467,11 @@ const ViewPackage = () => {
                                 <i className="fa-solid fa-indian-rupee-sign"></i> {packageDetails.price}/person
                             </div>
                             <div>
-                                <i className="fa fa-calendar"></i> {formattedDate}
+                                <i className="fa fa-calendar"></i> {new Date(packageDetails.startDate).toLocaleDateString('en-US', {
+                                    day: 'numeric',
+                                    month: 'short',
+                                    year: 'numeric'
+                                })}
                             </div>
                             <div>
                                 <i className="fa fa-person"></i> {packageDetails.availableSlots} seats available
@@ -548,10 +545,9 @@ const ViewPackage = () => {
                                     <>
                                         <button
                                             onClick={() => setActivatePopup(true)}
-                                            disabled={activating}
                                             className="primary-btn me-2"
                                         >
-                                            {activating ? "Activating..." : "Activate"}
+                                            Activate
                                         </button>
                                     </>
                                 }
@@ -567,14 +563,9 @@ const ViewPackage = () => {
 
                                 {packageDetails.status !== 'expired' && packageDetails.status !== 'active' && <button
                                     onClick={() => setDeletePopup(true)}
-                                    disabled={deleting}
                                     className="outline-btn"
                                 >
-                                    {deleting ?
-                                        "Deleting..."
-                                        :
-                                        "Delete"
-                                    }
+                                    Delete
                                 </button>}
                                 <p className='text-center text-danger'>{actionError}</p>
                             </div>
@@ -605,14 +596,9 @@ const ViewPackage = () => {
                                 {packageDetails.status === 'active' && <>
                                     <button
                                         onClick={() => setDeactivatePopup(true)}
-                                        disabled={deactivating}
                                         className="primary-btn me-2"
                                     >
-                                        {deactivating ?
-                                            "Deactivating..."
-                                            :
-                                            "Deactivate"
-                                        }
+                                        Deactivate
                                     </button>
                                 </>}
 
@@ -620,24 +606,18 @@ const ViewPackage = () => {
                                     <>
                                         <button
                                             onClick={() => setActivatePopup(true)}
-                                            disabled={activating}
                                             className="primary-btn me-2"
                                         >
-                                            {activating ? "Activating..." : "Activate"}
+                                            Activate
                                         </button>
                                     </>
                                 }
 
                                 <button
                                     onClick={() => setDeletePopup(true)}
-                                    disabled={deleting}
                                     className="outline-btn"
                                 >
-                                    {deleting ?
-                                        "Deleting..."
-                                        :
-                                        "Delete"
-                                    }
+                                    Delete
                                 </button>
                                 <p className='text-center text-danger'>{actionError}</p>
                             </div>

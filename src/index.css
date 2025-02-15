@@ -161,16 +161,16 @@ label {
 
 .outline-btn {
     color: var(--primary-color);
-    background-color: white;
+    background-color: #dedede;
     padding: 0.2rem 0.7rem;
-    border: 2px solid #111;
+    border: none;
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
 }
 
 .outline-btn:hover {
-    background-color: #dedede;
+    background-color: #bcbcbc;
 }
 
 .transparent-btn {

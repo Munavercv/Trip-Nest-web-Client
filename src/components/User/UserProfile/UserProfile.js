@@ -49,8 +49,8 @@ const UserProfile = () => {
                             </div>
                         </div>
 
-                        <div className="col-md-6 mt-5 d-flex justify-content-center">
-                            <ul className={styles.quickLinks} style={{ listStyleType: 'none' }}>
+                        <div className="col-md-6 mt-5 d-flex justify-content-center text-md-start text-center">
+                            <ul className={`ps-0 ${styles.quickLinks}`} style={{ listStyleType: 'none' }}>
                                 <li>Quick Links</li>
                                 <li>
                                     <Link
@@ -84,7 +84,17 @@ const UserProfile = () => {
 
             <hr className='border-4 mt-5 mb-0 w-100' />
 
-            <UserViewBookings />
+            <UserViewBookings
+                showLess={true}
+            />
+
+            <div className='text-center'>
+                <Link
+                to='/my-bookings'
+                >
+                    <button className='outline-btn'>Show all <i className="fa-solid fa-chevron-right"></i></button>
+                </Link>
+            </div>
 
         </section >
 

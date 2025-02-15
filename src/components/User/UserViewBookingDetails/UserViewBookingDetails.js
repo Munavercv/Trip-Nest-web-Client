@@ -106,7 +106,11 @@ const UserViewBookingDetails = () => {
                     <div className={`${styles.item} ms-md-5`}>
                         <h5>Package Details</h5>
                         <h6><span>Name: </span>{bookingDetails.packageDetails.title}</h6>
-                        <h6><span>Date : </span>{new Date(bookingDetails.packageDetails.startDate).toLocaleDateString()}</h6>
+                        <h6><span>Date : </span>{new Date(bookingDetails.packageDetails.startDate).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                        })}</h6>
                         <h6><span>Destination : </span>{bookingDetails.packageDetails.destination}</h6>
 
                         <Link to={`/view-package/${bookingDetails.packageDetails._id}`}>
@@ -137,7 +141,11 @@ const UserViewBookingDetails = () => {
                     <hr className="border-2" />
                     <div className={`${styles.item} ms-md-5`}>
                         <h5>Booking Date: </h5>
-                        <h6>{new Date(bookingDetails.bookingDate).toLocaleDateString()}</h6>
+                        <h6>{new Date(bookingDetails.bookingDate).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                        })}</h6>
                     </div>
 
                     {bookingDetails.status === 'approved' && <>
@@ -155,8 +163,8 @@ const UserViewBookingDetails = () => {
                     <div className={`${styles.item} ms-md-5`}>
                         <h6>Having any trouble? <br />
                             <a
-                             href={`tel:${bookingDetails.vendorDetails.contact.phone}`}
-                             ><i className="fa-solid fa-phone"></i> Contact with vendor </a>
+                                href={`tel:${bookingDetails.vendorDetails.contact.phone}`}
+                            ><i className="fa-solid fa-phone"></i> Contact with vendor </a>
                         </h6>
                     </div>
 
