@@ -4,6 +4,7 @@ import VendorHomeBanner from '../../components/Vendor/VendorHomeBanner/VendorHom
 import VendorOverviewCards from '../../components/Vendor/VendorOverviewCards/VendorOverviewCards'
 import LandingManagePackages from '../../components/Vendor/LandingManagePackages/LandingManagePackages'
 import YourTopPackages from '../../components/Vendor/YourTopPackages/YourTopPackages'
+import HomeUpcomingPackages from '../../components/Vendor/HomeUpcomingPackages/HomeUpcomingPackages'
 
 const VendorHomePage = () => {
     return (
@@ -13,6 +14,7 @@ const VendorHomePage = () => {
             <VendorOverviewCards />
             <LandingManagePackages />
             <YourTopPackages />
+            <HomeUpcomingPackages />
         </div>
     )
 }

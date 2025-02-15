@@ -13,7 +13,7 @@ const LandingManagePackages = () => {
         <button className='primary-btn me-2'>Pending packages</button>
       </Link>
       <Link to='/vendor/create-package'
-      ><button className='primary-btn me-2'>Create package</button></Link>
+      ><button className='primary-btn mt-sm-0 mt-2'>Create package</button></Link>
     </section>
   )
 }
