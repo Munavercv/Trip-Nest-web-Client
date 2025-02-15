@@ -53,7 +53,7 @@ const NotificationSidebar = () => {
                     <button
                         type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div className="offcanvas-body">
+                <div className="offcanvas-body p-0">
                     {notifications && <>
                         {notifications.map((notification) => (
                             <div
@@ -62,20 +62,23 @@ const NotificationSidebar = () => {
                                 <div
                                     data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
                                     data-bs-toggle={notification.navLink ? "offcanvas" : undefined}
-                                    onClick={() => {
-                                        if (notification?.navLink){
-                                            handleNotificationMarkAsRead(notification._id)
-                                            navigate(notification.navLink)
-                                        }
-                                    }
-                                    }
-                                    className="list-group-item list-group-item-action py-3 lh-sm cursor-pointer">
-                                    <div className="mb-1 d-flex w-100 align-items-center justify-content-between">
-                                        <strong className="mb-1">{notification.title}</strong>
-                                        <small>{new Date(notification.createdAt).toLocaleDateString()}</small>
+                                    className="list-group-item list-group-item-action pt-3 lh-sm">
+                                    <div className="cursor-pointer"
+                                        onClick={() => {
+                                            if (notification?.navLink) {
+                                                handleNotificationMarkAsRead(notification._id)
+                                                navigate(notification.navLink)
+                                            }
+                                        }}
+                                    >
+                                        <div className="mb-1 d-flex w-100 align-items-center justify-content-between">
+                                            <strong className="mb-1">{notification.title}</strong>
+                                            <small>{new Date(notification.createdAt).toLocaleDateString()}</small>
+                                        </div>
+                                        <div className="col-10 mb-1 small">{notification.body}</div>
                                     </div>
-                                    <div className="col-10 mb-1 small">{notification.body}</div>
-                                    <div className="text-end mb-0">
+                                    <div className="text-end mb-0"
+                                    >
                                         <button
                                             className='btn btn-light btn-sm'
                                             onClick={() => handleNotificationMarkAsRead(notification._id)}

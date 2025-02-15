@@ -4,6 +4,7 @@ import HomeBanner from '../../components/Admin/HomeBanner.js/HomeBanner'
 import AdminManagePackageCards from '../../components/Admin/AdminManagePackageCards/AdminManagePackageCards'
 import AdminManageApplicationCards from '../../components/Admin/AdminManageApplicationCards/AdminManageApplicationCards'
 import ManageVendorsSection from '../../components/Admin/ManageVendorsSection/ManageVendorsSection'
+import HomeUpcomingPackages from '../../components/Admin/HomeUpcomingPackages/HomeUpcomingPackages'
 
 const AdminHome = () => {
     return (
@@ -14,6 +15,7 @@ const AdminHome = () => {
             <ManageVendorsSection />
             <hr className='border-3' />
             <AdminManageApplicationCards />
+            <HomeUpcomingPackages />
         </div>
     )
 }

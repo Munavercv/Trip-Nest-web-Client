@@ -71,6 +71,7 @@ import AdminViewExpiredPackages from "./pages/admin/AdminViewExpiredPackages";
 import AdminViewAllPaymentsPage from "./pages/admin/AdminViewAllPaymentsPage";
 import UserViewVendorProfilePage from "./pages/user/UserViewVendorProfilePage";
 import UserViewPackagesByVendor from "./pages/user/UserViewPackagesByVendorPage";
+import AdminUpcomingPackagesPage from "./pages/admin/AdminUpcomingPackagesPage";
 
 function App() {
   const dispatch = useDispatch()
@@ -111,6 +112,7 @@ function App() {
         <Route path="/admin/view-bookings-by-package/:packageId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewPackageBookingsPage /></ProtectedRoutes>} />
         <Route path="/admin/view-booking-details/:bookingId" element={<ProtectedRoutes requiredRole='admin' ><AdminViewBookingDetailsPage /></ProtectedRoutes>} />
         <Route path="/admin/view-all-payments" element={<ProtectedRoutes requiredRole='admin' ><AdminViewAllPaymentsPage /></ProtectedRoutes>} />
+        <Route path="/admin/upcoming-packages" element={<ProtectedRoutes requiredRole='admin' ><AdminUpcomingPackagesPage /></ProtectedRoutes>} />
 
 
         {/* VENDOR routes */}
