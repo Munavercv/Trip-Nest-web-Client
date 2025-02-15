@@ -1,52 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './UserProfile.module.css'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import config from '../../../config/api'
-import { logout } from '../../../redux/slices/authSlice'
-import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
-import SuccessPopup from '../../Common/Popups/SuccessPopup'
+import UserViewBookings from '../UserViewBookings/UserViewBookings'
 
 const UserProfile = () => {
-    const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
     const defaultDpUrl = '/images/default-dp.png'
     const navigate = useNavigate()
     const [application, setApplication] = useState()
-    const [showDeleteConfirmPopup, setShowDeleteConfirmPopup] = useState(false)
-    const [deleteSuccess, setDeleteSuccess] = useState(false)
-    const [deleteLoading, setDeleteLoading] = useState(false)
-    const [deleteError, setDeleteError] = useState('')
 
     const goback = () => navigate(-1)
-
-    const deleteUser = async (userId) => {
-        setDeleteError('')
-        setDeleteLoading(true)
-        try {
-            await axios.delete(`${config.API_BASE_URL}/api/user/delete-account/${userId}`);
-            setDeleteSuccess(true)
-            setShowDeleteConfirmPopup(false)
-        } catch (error) {
-            setDeleteError(error.response?.data?.message || 'An error occured while deleting your account')
-        } finally {
-            setDeleteLoading(false)
-        }
-    }
-
-    const handleDeleteConfirmPopup = (confirmed) => {
-        if (confirmed) {
-            deleteUser(user.userId)
-        } else {
-            setShowDeleteConfirmPopup(false)
-        }
-    }
-
-    const handleDeleteSuccessPopup = () => {
-        navigate('/')
-        dispatch(logout())
-    }
 
     const fetchApplicationNameAndStatus = async (userId) => {
         try {
@@ -95,12 +61,6 @@ const UserProfile = () => {
                                 <li>
                                     <Link
                                         className={styles.links}
-                                        onClick={setShowDeleteConfirmPopup}
-                                    >Delete account</Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        className={styles.links}
                                         to='/my-bookings'
                                     >My bookings</Link>
                                 </li>
@@ -110,50 +70,21 @@ const UserProfile = () => {
                                         to='/my-payments'
                                     >My payments</Link>
                                 </li>
+                                {user.isAppliedForVendor && application && <li>
+                                    <Link
+                                        className={styles.links}
+                                        to='/view-my-vendor-application'
+                                    >Vendor Application</Link>
+                                </li>}
                             </ul>
                         </div>
                     </div>
                 </>
             }
 
+            <hr className='border-4 mt-5 mb-0 w-100' />
 
-            <hr className='border-4 mt-5 w-100' />
-
-            {user.isAppliedForVendor && application &&
-                <div className='px-sm-5 px-2'>
-                    <h3 className='section-title text-center mb-3'>Vendor application</h3>
-
-                    <Link to='/view-my-vendor-application' >
-                        <div className={`${styles.applicationTile} row align-items-center px-sm-5 px-2`}>
-                            <h6 className="text-start col-6 my-0 fw-bold">{application.businessName}</h6>
-                            <p className={`text-end col-6 my-0 fw-semibold ${application.status === 'pending'
-                                ? 'text-primary'
-                                : application.status === 'approved'
-                                    ? 'text-success'
-                                    : application.status === 'activated'
-                                        ? 'text-secondary'
-                                        : 'text-danger'
-                                }`}
-                            >{application.status}</p>
-                        </div>
-                    </Link>
-                </div>}
-
-            {/* handle delete account */}
-            {showDeleteConfirmPopup && <ConfirmPopup
-                title='Are You sure want to delete your account'
-                description="Deleting this account will erase all of your data. you won't be able to recover it again"
-                denyText='Cancel'
-                allowText='Delete'
-                error={deleteError}
-                isLoading={deleteLoading}
-                onAction={handleDeleteConfirmPopup}
-            />}
-            {deleteSuccess &&
-                <SuccessPopup
-                    title='Successfully removed account'
-                    onClose={handleDeleteSuccessPopup}
-                />}
+            <UserViewBookings />
 
         </section >
 

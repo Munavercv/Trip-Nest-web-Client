@@ -26,7 +26,7 @@ const UserViewBookings = () => {
 
   return (
     <section className='container py-4'>
-      <h3 className='section-title text-center mb-4'>Your bookings</h3>
+      <h3 className='section-title text-center mb-4'>My bookings</h3>
 
       {bookings ?
         bookings.map((booking, index) => (
