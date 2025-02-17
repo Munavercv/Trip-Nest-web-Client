@@ -82,6 +82,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+    border-radius: 10px;
 }
 
 .form-check-input:checked {
@@ -131,6 +132,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+    border-radius: 5px;
 }
 
 .primary-btn:disabled {
@@ -153,6 +155,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+    border-radius: 10px;
 }
 
 .green-btn:hover {
@@ -162,11 +165,12 @@ label {
 .outline-btn {
     color: var(--primary-color);
     background-color: #dedede;
-    padding: 0.2rem 0.7rem;
+    padding: .3rem .8rem;
     border: none;
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
+    border-radius: 10px;
 }
 
 .outline-btn:hover {
@@ -176,7 +180,7 @@ label {
 .transparent-btn {
     background: none;
     border: none;
-
+    border-radius: 10px;
 }
 
 @media (max-width: 576px) {
