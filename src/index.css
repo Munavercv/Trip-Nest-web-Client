@@ -82,7 +82,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .form-check-input:checked {
@@ -155,7 +155,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .green-btn:hover {
@@ -170,7 +170,7 @@ label {
     font-size: 17px;
     font-weight: 400;
     transition: all 200ms ease-in;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .outline-btn:hover {

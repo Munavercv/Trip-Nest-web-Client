@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import styles from './CreatePackageForm.module.css'
 import { useNavigate } from 'react-router'
 import axios from 'axios'
@@ -9,6 +9,8 @@ import ConfirmPopup from '../../Common/Popups/ConfirmPopup'
 const CreatePackageForm = () => {
     const { user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
+    const fileInputRef = useRef(null);
+
     const [loading, setLoading] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null)
     const [submitError, setSubmitError] = useState('')
@@ -107,6 +109,10 @@ const CreatePackageForm = () => {
             inclusions: "",
         })
         setSelectedFile(null)
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     }
 
     const successPopupAction = (confirmed) => {
@@ -280,6 +286,7 @@ const CreatePackageForm = () => {
                                     name='packageImage'
                                     onChange={handleFileChange}
                                     accept='image/*'
+                                    ref={fileInputRef}
                                 />
                                 {fileError && <p className="text-danger" style={{ fontSize: '14px' }}>{fileError}</p>}
                             </div>

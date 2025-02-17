@@ -309,7 +309,7 @@ const VendorEditPackageForm = () => {
                 <SuccessPopup
                     title='Package updated successfully'
                     description='Your package will be reviewed and published soon'
-                    onAction={successPopupAction}
+                    onClose={successPopupAction}
                 />
             }
 

@@ -38,7 +38,6 @@ const VendorAccountActivation = () => {
         await axios.put(`${config.API_BASE_URL}/api/auth/activate-vendor-account/${applicationId}`, { password })
         setShowSuccessPopup(true);
       } catch (error) {
-        console.error();
         setError(error.response?.data?.message || 'An error occured while activating account')
       } finally {
         setLoading(false)
@@ -111,7 +110,7 @@ const VendorAccountActivation = () => {
       {showSuccessPopup && <SuccessPopup
         title='Congratulations! Your vendor account has been created'
         description='You will be Logged out and redirected to Vendor Login page'
-        onAction={handleSuccessPopupAction}
+        onClose={handleSuccessPopupAction}
       />}
 
     </section>

@@ -175,7 +175,7 @@ const ViewVendorApplication = () => {
 
                     <hr className='border-2' />
                     <div className='text-center'>
-                        <button
+                        {applicationData?.status === 'pending' && <button
                             onClick={() => {
                                 setActionError('')
                                 setShowDeletePopup(true)
@@ -183,7 +183,7 @@ const ViewVendorApplication = () => {
                             className='primary-btn me-2'
                         >
                             Delete Application
-                        </button>
+                        </button>}
                         {applicationData?.status === 'approved' && <button
                             onClick={() => {
                                 navigate(`/activate-vendor-account/${applicationData._id}`)
